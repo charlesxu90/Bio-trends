@@ -57,17 +57,20 @@ em { font-style: italic; }
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-soft);
 }
-.site-head__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.brand { display: inline-flex; align-items: center; gap: 0.55ch; text-decoration: none; font-weight: 800; letter-spacing: -0.02em; font-size: 1.12rem; }
+/* Fluid header: brand + nav sit on one line when there's room; as the viewport
+   narrows the nav wraps below the brand (and its links wrap among themselves)
+   instead of overflowing/clipping. */
+.site-head__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 1rem; min-height: 64px; padding-block: 0.5rem; }
+.brand { display: inline-flex; align-items: center; gap: 0.55ch; text-decoration: none; font-weight: 800; letter-spacing: -0.02em; font-size: 1.12rem; flex: 0 0 auto; }
 .brand__logo { width: 1.9em; height: 1.9em; display: block; border-radius: 6px; }
 .brand__dim { color: var(--muted); font-weight: 600; }
-.nav { display: flex; gap: clamp(1rem, 3vw, 2rem); align-items: center; font-weight: 600; }
+.nav { display: flex; flex-wrap: wrap; gap: 0.4rem clamp(0.9rem, 3vw, 2rem); align-items: center; justify-content: flex-end; font-weight: 600; }
 .nav a { text-decoration: none; color: var(--muted); transition: color var(--dur) var(--ease); }
 .nav a:hover { color: var(--ink); }
 .nav__ext { color: var(--ink); }
+/* phones: give the nav its own full-width line, left-aligned with tappable links */
 @media (max-width: 640px) {
-  .site-head__inner { flex-wrap: wrap; height: auto; padding-block: 0.55rem; row-gap: 0.45rem; }
-  .nav { flex-basis: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 0.35rem 1.25rem; }
+  .nav { flex-basis: 100%; justify-content: flex-start; gap: 0.35rem 1.25rem; }
   .nav a { padding: 0.3rem 0; }
 }
 

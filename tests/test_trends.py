@@ -41,3 +41,8 @@ def test_bucket_for_quarter():
 
 def test_bucket_for_month_is_identity():
     assert bucket_for("2026-05", "month") == "2026-05"
+
+
+def test_bucket_for_year():
+    assert bucket_for("2026-05", "year") == "2026"
+    assert bucket_for("2025-12", "year") == "2025"

@@ -14,8 +14,9 @@ Feed catalog: **[Journal-RSS.md](Journal-RSS.md)**.
 
 ## What it does
 
-- **Topic trends** — top / emerging / fading topics per journal (or family) per
-  month, computed from article counts and month-over-month change.
+- **Topic trends** — top / emerging / fading topics per journal (or family),
+  viewable at **Year / Quarter / Month** granularity (the site defaults to Year),
+  computed from article counts and period-over-period change.
 - **Browse articles** — filter by family / journal / month / topic, search titles,
   abstracts, and authors; sort by recency or citations.
 - **Citations** — optional Semantic Scholar / OpenAlex counts, looked up by DOI.
@@ -38,6 +39,14 @@ them regularly and **accumulates** into a deduplicated per-journal-month store, 
 trends build up over time. Running the pipeline with no new items just re-derives
 the outputs — safe to run anytime.
 
+**Historical backfill.** RSS only carries the current issue, so to see a full year
+of trends use `bio-trend backfill --years 2024,2025`. It pulls historical articles
+(title, authors, DOI, date — abstracts when available) from **Crossref** by ISSN
+into the same monthly store, deduped by DOI against RSS rows. Because a backfill can
+be tens of thousands of papers, `export-site`/`refresh` accept `--shard-months N` to
+cap the *browsable* paper list to the most recent N months while **trends still use
+the full history**.
+
 **Polling cadence.** Each journal declares a publication **frequency** in
 [`Journal-RSS.md`](Journal-RSS.md) / `config/journals.json`
 (`continuous` · `weekly` · `biweekly` · `monthly`). `ingest` polls a feed only when
@@ -58,8 +67,9 @@ PYTHONNOUSERSITE=1 ./env/bin/bio-trend <command>
 |---|---|
 | `check-feeds [--check]` | List tracked feeds (with frequency); `--check` probes each over the network |
 | `ingest [--journal KEY] [--force]` | Poll feeds that are *due* per their frequency; accumulate into `data/<key>/<YYYY-MM>.csv` |
+| `backfill --years 2024,2025 [--journal KEY]` | Fetch historical articles from Crossref into the same store |
 | `assign <csv>` | Assign biology topics to a papers CSV (deterministic) |
-| `trends [--bucket month\|quarter] [--group-by journal\|family]` | Compute top/emerging/fading |
+| `trends [--bucket year\|quarter\|month] [--group-by journal\|family]` | Compute top/emerging/fading |
 | `candidates <csv>` | Extract candidate keywords (scispaCy) for taxonomy curation |
 | `curate <decision.json>` | Apply a curation decision to the taxonomy |
 | `citations <csv> --topics t1,t2` | Fetch citation counts (DOI-first, cached) |

@@ -46,6 +46,7 @@ def refresh(
     force: bool = False,
     group_by: str = GROUP_JOURNAL,
     bucket: str = BUCKET_MONTH,
+    max_shard_months: int | None = None,
     log: Callable[[str], None] = print,
 ) -> dict[str, Any]:
     """Run the pipeline and return a summary dict."""
@@ -85,7 +86,7 @@ def refresh(
 
     manifest = export_site(
         site_dir, taxonomy=taxonomy, registry=registry, data_dir=data_dir,
-        group_by=group_by, bucket=bucket,
+        group_by=group_by, bucket=bucket, max_shard_months=max_shard_months,
     )
     summary["site_papers"] = sum(s["count"] for s in manifest["shards"])
     summary["site_shards"] = len(manifest["shards"])

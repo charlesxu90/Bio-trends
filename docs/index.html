@@ -50,13 +50,17 @@
           <h2 id="trends-h" class="section__title"><span class="section__num">01</span> Topic Trends</h2>
           <p class="section__hint">Pick a journal and month. Click any topic to jump to its papers.</p>
         </div>
-        <div class="picker" role="group" aria-label="Choose journal and period">
+        <div class="picker" role="group" aria-label="Choose granularity, journal and period">
+          <div class="picker__group">
+            <span class="picker__label">Granularity</span>
+            <div class="picker__row" id="bucket-pills"></div>
+          </div>
           <div class="picker__group">
             <span class="picker__label">Journal</span>
             <div class="picker__row" id="group-pills"></div>
           </div>
           <div class="picker__group">
-            <span class="picker__label">Month</span>
+            <span class="picker__label" id="period-label">Period</span>
             <div class="picker__row picker__row--periods" id="period-pills"></div>
           </div>
         </div>
@@ -80,8 +84,8 @@
             <select id="f-journal" class="field__input"><option value="">All journals</option></select>
           </label>
           <label class="field">
-            <span class="field__label">Month</span>
-            <select id="f-period" class="field__input"><option value="">All months</option></select>
+            <span class="field__label">Period</span>
+            <select id="f-period" class="field__input"><option value="">All periods</option></select>
           </label>
           <label class="field">
             <span class="field__label">Topic</span>

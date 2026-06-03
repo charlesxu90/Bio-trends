@@ -35,17 +35,28 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
   is polled only when due, tracked in `data/.ingest_state.json` (`--force` overrides).
 - **`assign.py`** — deterministic case-sensitive substring match over lowercased
   `title + " " + abstract`. **Taxonomy keywords must be lowercase** to match.
+- **`backfill.py`** — historical fetch from **Crossref** by ISSN (`bio-trend
+  backfill --years 2024,2025`), mapped to the same record schema and merged via
+  `ingest.accumulate`. Crossref abstracts are often empty for these publishers, so
+  backfilled rows are usually assigned on title alone. (OpenAlex source IDs are also
+  stored in config — richer abstracts — but its API is unreachable from some egress
+  IPs, so Crossref is the default.)
 - **`trends.py`** — top/emerging/fading per *(group, period)* where group is a
-  journal (default) or family, and period is a month (default) or quarter.
+  journal (default) or family, and period is **year / quarter / month**. The site
+  exports all three granularities and defaults to year.
 - **`site.py`** — exports `docs/data/{manifest,trends}.json` + per-journal-month
-  paper shards for the static GitHub Pages browser in `docs/`.
+  paper shards for the static GitHub Pages browser in `docs/`. `trends.json` is keyed
+  by bucket (`{year, quarter, month}`). `max_shard_months` (`--shard-months`) caps the
+  browsable shards to recent months while trends keep full history.
 - **`citations.py`** — optional; DOI-first citation lookup, cached in sidecars.
 - **`candidates.py` / `curate_io.py`** — the taxonomy-curation seam (scispaCy NER +
   decision apply). The reasoning is done by the `/curate-topics` skill.
 
 ## Config is the source of truth
 
-- `config/journals.json` — tracked journals + feeds (mirrors `Journal-RSS.md`).
+- `config/journals.json` — tracked journals + feeds (mirrors `Journal-RSS.md`); each
+  also carries `frequency` (poll cadence), `openalex` (source id) and `issn` (for
+  Crossref backfill).
 - `config/taxonomy.json` — biology topic → keywords (order significant).
 - `config/useless_keywords.json` — noise blocklist.
 

@@ -71,6 +71,34 @@ def test_refresh_then_export_site(tmp_path, monkeypatch):
     assert {r["title"] for r in shard} == {"CRISPR base editing", "T cell receptor map"}
 
 
+def test_export_site_caps_shards_but_trends_use_all(tmp_path):
+    config_dir = tmp_path / "config"
+    data_dir = tmp_path / "data"
+    _make_config(config_dir)
+    cell = data_dir / "cell"
+    cell.mkdir(parents=True)
+    # three months of data
+    for month in ("2025-11", "2025-12", "2026-01"):
+        pd.DataFrame([{"title": "CRISPR", "abstract": "crispr", "journal": "Cell",
+                       "family": "Cell Press", "published_date": f"{month}-05", "doi": f"10.1/{month}",
+                       "link": "", "authors": "", "topic": "genome editing"}]).to_csv(
+            cell / f"{month}.csv_topics.csv", index=False
+        )
+
+    taxonomy = Taxonomy.load(config_dir)
+    registry = JournalRegistry.load(config_dir)
+    manifest = export_site(tmp_path / "site", taxonomy=taxonomy, registry=registry,
+                           data_dir=data_dir, max_shard_months=1)
+
+    # only the most recent month is emitted as a browsable shard
+    assert len(manifest["shards"]) == 1
+    assert manifest["shards"][0]["period"] == "2026-01"
+    # but yearly trends still cover both 2025 and 2026
+    trends = json.loads((tmp_path / "site" / "trends.json").read_text())
+    years = {t["period"] for t in trends["year"]}
+    assert {"2025", "2026"} <= years
+
+
 def test_export_site_reads_citation_sidecar(tmp_path):
     config_dir = tmp_path / "config"
     data_dir = tmp_path / "data"

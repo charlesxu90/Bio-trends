@@ -48,6 +48,8 @@ GROUP_JOURNAL = "journal"
 GROUP_FAMILY = "family"
 BUCKET_MONTH = "month"
 BUCKET_QUARTER = "quarter"
+BUCKET_YEAR = "year"
+BUCKETS = (BUCKET_YEAR, BUCKET_QUARTER, BUCKET_MONTH)
 
 
 @dataclass
@@ -70,9 +72,11 @@ def month_of(path: Path) -> str | None:
 
 
 def bucket_for(month: str, bucket: str) -> str:
-    """Map a ``YYYY-MM`` month to its time bucket."""
+    """Map a ``YYYY-MM`` month to its time bucket (``year`` / ``quarter`` / ``month``)."""
+    year, mon = month.split("-")
+    if bucket == BUCKET_YEAR:
+        return year
     if bucket == BUCKET_QUARTER:
-        year, mon = month.split("-")
         return f"{year}-Q{(int(mon) - 1) // 3 + 1}"
     return month
 

@@ -4,10 +4,13 @@
 const DATA = "data/";
 const PAGE = 20;
 
+const BUCKET_LABELS = { year: "Year", quarter: "Quarter", month: "Month" };
+
 const state = {
   manifest: null,
-  trends: [],
+  trends: {},        // { bucket: [ {group, period, top, emerging, fading, counts}, ... ] }
   papers: [],        // all paper records, flattened across shards
+  bucket: "year",    // selected granularity (default: year)
   group: null,
   period: null,
   shown: PAGE,
@@ -39,6 +42,7 @@ async function init() {
     return;
   }
   buildHeroStats();
+  buildBucketPicker();
   buildTrendPicker();
   buildFilters();
   await loadAllPapers();
@@ -64,17 +68,51 @@ function buildHeroStats() {
 }
 
 // ---- trends -----------------------------------------------------------------
+function currentTrends() {
+  return state.trends[state.bucket] || [];
+}
+
+function buildBucketPicker() {
+  const buckets = (state.manifest.buckets || ["year", "quarter", "month"])
+    .filter((b) => (state.trends[b] || []).length);
+  const row = $("#bucket-pills");
+  row.innerHTML = "";
+  for (const b of buckets) {
+    const pill = el("button", "pill", BUCKET_LABELS[b] || b);
+    pill.type = "button";
+    pill.dataset.bucket = b;
+    pill.addEventListener("click", () => selectBucket(b));
+    row.append(pill);
+  }
+  // default to year if available, else the first offered bucket
+  state.bucket = buckets.includes("year") ? "year" : buckets[0];
+}
+
+function selectBucket(bucket) {
+  state.bucket = bucket;
+  for (const p of $("#bucket-pills").children)
+    p.setAttribute("aria-pressed", String(p.dataset.bucket === bucket));
+  $("#period-label").textContent = BUCKET_LABELS[bucket] || "Period";
+  buildTrendPicker();
+}
+
 function buildTrendPicker() {
-  const groups = [...new Set(state.trends.map((t) => t.group))].sort();
+  for (const p of $("#bucket-pills").children)
+    p.setAttribute("aria-pressed", String(p.dataset.bucket === state.bucket));
+  $("#period-label").textContent = BUCKET_LABELS[state.bucket] || "Period";
+
+  const groups = [...new Set(currentTrends().map((t) => t.group))].sort();
   const row = $("#group-pills");
-  groups.forEach((g, i) => {
+  row.innerHTML = "";
+  groups.forEach((g) => {
     const pill = el("button", "pill", g);
     pill.type = "button";
-    pill.setAttribute("aria-pressed", i === 0 ? "true" : "false");
     pill.addEventListener("click", () => selectGroup(g));
     row.append(pill);
   });
-  if (groups.length) selectGroup(groups[0]);
+  // keep the current group if it still exists, else pick the first
+  const group = groups.includes(state.group) ? state.group : groups[0];
+  if (group) selectGroup(group);
 }
 
 function selectGroup(group) {
@@ -82,7 +120,7 @@ function selectGroup(group) {
   for (const p of $("#group-pills").children)
     p.setAttribute("aria-pressed", String(p.textContent === group));
 
-  const periods = state.trends
+  const periods = currentTrends()
     .filter((t) => t.group === group)
     .map((t) => t.period)
     .sort();
@@ -105,7 +143,7 @@ function selectPeriod(period) {
 }
 
 function renderTrend() {
-  const t = state.trends.find((x) => x.group === state.group && x.period === state.period);
+  const t = currentTrends().find((x) => x.group === state.group && x.period === state.period);
   const panel = $("#trend-panel");
   panel.innerHTML = "";
   if (!t) return;
@@ -161,7 +199,12 @@ function buildFilters() {
   const m = state.manifest;
   fillSelect("#f-family", m.families);
   fillJournals();
-  fillSelect("#f-period", [...m.periods].reverse());
+  // periods: years (all-of-year) first, then individual months, newest first
+  const years = (m.years || []).slice().reverse();
+  const months = (m.periods || []).slice().reverse();
+  const periodSel = $("#f-period");
+  for (const y of years) periodSel.append(new Option(`${y} (whole year)`, y));
+  for (const mo of months) periodSel.append(new Option(mo, mo));
   fillSelect("#f-topic", m.topics);
 
   $("#f-family").addEventListener("change", () => { fillJournals(); reset(); });
@@ -200,7 +243,8 @@ function filteredPapers() {
   let out = state.papers.filter((p) => {
     if (fam && p.family !== fam) return false;
     if (jour && p.journal !== jour) return false;
-    if (per && p.period !== per) return false;
+    // `per` may be a year ("2025") or a month ("2025-06")
+    if (per && p.period !== per && !p.period.startsWith(per + "-")) return false;
     if (topic && !(p.topics || []).includes(topic)) return false;
     if (q) {
       const hay = (p.title + " " + (p.abstract || "") + " " + (p.authors || []).join(" ")).toLowerCase();

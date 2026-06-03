@@ -23,6 +23,7 @@ from bio_trend.registry import JournalRegistry
 from bio_trend.taxonomy import Taxonomy
 from bio_trend.trends import (
     BUCKET_MONTH,
+    BUCKETS,
     DEFAULT_MIN_COUNT,
     DEFAULT_MIN_PREV,
     DEFAULT_TOP_N,
@@ -114,8 +115,15 @@ def export_site(
     min_prev: int = DEFAULT_MIN_PREV,
     min_count: int = DEFAULT_MIN_COUNT,
     abstract_chars: int = DEFAULT_ABSTRACT_CHARS,
+    max_shard_months: int | None = None,
 ) -> dict:
-    """Write the site's JSON data files and return the manifest."""
+    """Write the site's JSON data files and return the manifest.
+
+    ``max_shard_months`` caps the *browsable* paper shards to the most recent N
+    months (globally), keeping the static site light when a large historical
+    backfill is present. Trends are always computed over the full history,
+    regardless of this cap. ``None`` (default) emits a shard for every month.
+    """
     import pandas as pd
 
     taxonomy = taxonomy or Taxonomy.load()
@@ -124,13 +132,19 @@ def export_site(
     (out_dir / "papers").mkdir(parents=True, exist_ok=True)
     data_dir = Path(data_dir)
 
-    trends = compute_all_trends(
-        taxonomy, data_dir, group_by=group_by, bucket=bucket,
-        top_n=top_n, min_prev=min_prev, min_count=min_count,
-    )
+    # Trends at every granularity (year / quarter / month) so the site can toggle.
+    trends_by_bucket = {
+        b: [
+            trend_to_dict(t, include_counts=True)
+            for t in compute_all_trends(
+                taxonomy, data_dir, group_by=group_by, bucket=b,
+                top_n=top_n, min_prev=min_prev, min_count=min_count,
+            )
+        ]
+        for b in BUCKETS
+    }
     (out_dir / "trends.json").write_text(
-        json.dumps([trend_to_dict(t, include_counts=True) for t in trends], ensure_ascii=False),
-        encoding="utf-8",
+        json.dumps(trends_by_bucket, ensure_ascii=False), encoding="utf-8"
     )
 
     key_to_label = registry.key_to_label
@@ -138,6 +152,9 @@ def export_site(
     shards: list[dict] = []
     seen_topics: set[str] = set()
 
+    # Collect every (journal, month) topics file, then optionally keep only the
+    # most recent N months as browsable shards (trends already used all of it).
+    found: list[tuple[str, str, str, str, Path]] = []  # (key, label, family, month, path)
     for key_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()) if data_dir.exists() else []:
         key = key_dir.name
         label = key_to_label.get(key)
@@ -146,25 +163,34 @@ def export_site(
         family = key_to_family.get(key, label)
         for topics_path in sorted(key_dir.glob(TOPICS_GLOB)):
             month = month_of(topics_path)
-            if month is None:
-                continue
-            df = pd.read_csv(topics_path)
-            rel = f"papers/{key}_{month}.json"
-            cite_path = Path(str(topics_path) + ".citations.json")
-            side_cites = json.loads(cite_path.read_text(encoding="utf-8")) if cite_path.exists() else {}
-            prev_cites = _recover_citations_from_shard(out_dir / rel)
-            citations = {**prev_cites, **side_cites} or None
-            records = [
-                build_paper_record(row, label, family, month, abstract_chars, citations)
-                for row in df.to_dict("records")
-            ]
-            for record in records:
-                seen_topics.update(record["topics"])
-            (out_dir / rel).write_text(json.dumps(records, ensure_ascii=False), encoding="utf-8")
-            shards.append({
-                "journal": key, "label": label, "family": family,
-                "period": month, "count": len(records), "file": rel,
-            })
+            if month is not None:
+                found.append((key, label, family, month, topics_path))
+
+    keep_months: set[str] | None = None
+    if max_shard_months:
+        all_months = sorted({m for _, _, _, m, _ in found})
+        keep_months = set(all_months[-max_shard_months:])
+
+    for key, label, family, month, topics_path in found:
+        if keep_months is not None and month not in keep_months:
+            continue
+        df = pd.read_csv(topics_path)
+        rel = f"papers/{key}_{month}.json"
+        cite_path = Path(str(topics_path) + ".citations.json")
+        side_cites = json.loads(cite_path.read_text(encoding="utf-8")) if cite_path.exists() else {}
+        prev_cites = _recover_citations_from_shard(out_dir / rel)
+        citations = {**prev_cites, **side_cites} or None
+        records = [
+            build_paper_record(row, label, family, month, abstract_chars, citations)
+            for row in df.to_dict("records")
+        ]
+        for record in records:
+            seen_topics.update(record["topics"])
+        (out_dir / rel).write_text(json.dumps(records, ensure_ascii=False), encoding="utf-8")
+        shards.append({
+            "journal": key, "label": label, "family": family,
+            "period": month, "count": len(records), "file": rel,
+        })
 
     manifest = {
         "journals": [
@@ -173,6 +199,8 @@ def export_site(
         "families": sorted({j.family for j in registry.journals}),
         "topics": sorted(seen_topics),
         "periods": sorted({s["period"] for s in shards}),
+        "years": sorted({s["period"][:4] for s in shards}),
+        "buckets": list(BUCKETS),
         "shards": shards,
     }
     (out_dir / "manifest.json").write_text(

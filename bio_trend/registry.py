@@ -49,6 +49,8 @@ class Journal:
     family: str
     feeds: tuple[Feed, ...]
     frequency: str = "monthly"  # continuous | weekly | biweekly | monthly — drives poll cadence
+    openalex: str | None = None  # OpenAlex source id (e.g. "S137773608")
+    issn: str | None = None  # ISSN-L, used for Crossref historical backfill
 
     @property
     def name(self) -> str:
@@ -86,6 +88,8 @@ class JournalRegistry:
                     family=entry.get("family", label),
                     feeds=feeds,
                     frequency=entry.get("frequency", "monthly"),
+                    openalex=entry.get("openalex"),
+                    issn=entry.get("issn"),
                 )
             )
         return cls(journals=journals)

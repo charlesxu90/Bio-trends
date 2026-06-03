@@ -87,6 +87,32 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_backfill(args: argparse.Namespace) -> int:
+    import os
+
+    from bio_trend.backfill import backfill_all
+    from bio_trend.registry import JournalRegistry
+
+    registry = JournalRegistry.load(Path(args.config))
+    only = {k.strip() for k in args.journal.split(",")} if args.journal else None
+    if only:
+        unknown = only - set(registry.keys)
+        if unknown:
+            _eprint(f"error: unknown journal key(s): {sorted(unknown)}")
+            return 2
+    try:
+        years = [int(y.strip()) for y in args.years.split(",") if y.strip()]
+    except ValueError:
+        _eprint(f"error: --years must be comma-separated integers, got {args.years!r}")
+        return 2
+
+    mailto = args.mailto or os.environ.get("OPENALEX_MAILTO", "")
+    totals = backfill_all(registry, years, args.data_dir, only=only, mailto=mailto, log=_eprint)
+    grand = sum(totals.values())
+    _eprint(f"backfill: +{grand} article(s) across {len(totals)} journal(s) for years {years} -> {args.data_dir}")
+    return 0
+
+
 def cmd_candidates(args: argparse.Namespace) -> int:
     import pandas as pd
 
@@ -241,7 +267,7 @@ def cmd_export_site(args: argparse.Namespace) -> int:
         args.out_dir, taxonomy=taxonomy, data_dir=data_dir,
         group_by=args.group_by, bucket=args.bucket,
         top_n=args.top_n, min_prev=args.min_prev, min_count=args.min_count,
-        abstract_chars=args.abstract_chars,
+        abstract_chars=args.abstract_chars, max_shard_months=args.shard_months or None,
     )
     papers = sum(s["count"] for s in manifest["shards"])
     _eprint(f"exported {len(manifest['shards'])} shards / {papers} papers -> {args.out_dir}")
@@ -255,7 +281,8 @@ def cmd_refresh(args: argparse.Namespace) -> int:
     summary = refresh(
         config_dir=Path(args.config), data_dir=args.data_dir, site_dir=args.site_dir,
         do_ingest=not args.no_ingest, only=only, force=args.force,
-        group_by=args.group_by, bucket=args.bucket, log=_eprint,
+        group_by=args.group_by, bucket=args.bucket,
+        max_shard_months=args.shard_months or None, log=_eprint,
     )
     _eprint(f"refresh complete: {summary}")
     return 0
@@ -264,7 +291,7 @@ def cmd_refresh(args: argparse.Namespace) -> int:
 # ---- parser -----------------------------------------------------------------
 def _add_trend_opts(p: argparse.ArgumentParser) -> None:
     p.add_argument("--group-by", choices=["journal", "family"], default="journal")
-    p.add_argument("--bucket", choices=["month", "quarter"], default="month")
+    p.add_argument("--bucket", choices=["month", "quarter", "year"], default="month")
     p.add_argument("--top-n", type=int, default=5)
     p.add_argument("--min-prev", type=int, default=1)
     p.add_argument("--min-count", type=int, default=3)
@@ -287,6 +314,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_ing.add_argument("--force", action="store_true", help="poll even journals not yet due per their frequency")
     p_ing.add_argument("--data-dir", default="data")
     p_ing.set_defaults(func=cmd_ingest)
+
+    p_bf = sub.add_parser("backfill", help="fetch historical articles from OpenAlex into the store")
+    p_bf.add_argument("--years", default=None, required=True, help="comma-separated years, e.g. 2024,2025")
+    p_bf.add_argument("--journal", default=None, help="comma-separated journal keys (default: all)")
+    p_bf.add_argument("--mailto", default=None, help="contact email for OpenAlex polite pool (or $OPENALEX_MAILTO)")
+    p_bf.add_argument("--data-dir", default="data")
+    p_bf.set_defaults(func=cmd_backfill)
 
     p_cand = sub.add_parser("candidates", help="extract candidate keywords for curation")
     p_cand.add_argument("csv", help="papers CSV (needs a 'title' column)")
@@ -327,6 +361,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp.add_argument("--data-dir", default="data")
     p_exp.add_argument("--out-dir", default="docs/data")
     p_exp.add_argument("--abstract-chars", type=int, default=300)
+    p_exp.add_argument("--shard-months", type=int, default=0,
+                       help="cap browsable paper shards to the most recent N months (0 = all); trends always use full history")
     _add_trend_opts(p_exp)
     p_exp.set_defaults(func=cmd_export_site)
 
@@ -337,7 +373,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_ref.add_argument("--data-dir", default="data")
     p_ref.add_argument("--site-dir", default="docs/data")
     p_ref.add_argument("--group-by", choices=["journal", "family"], default="journal")
-    p_ref.add_argument("--bucket", choices=["month", "quarter"], default="month")
+    p_ref.add_argument("--bucket", choices=["month", "quarter", "year"], default="month")
+    p_ref.add_argument("--shard-months", type=int, default=0,
+                       help="cap browsable paper shards to the most recent N months (0 = all)")
     p_ref.set_defaults(func=cmd_refresh)
 
     return parser

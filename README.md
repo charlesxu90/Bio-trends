@@ -25,6 +25,12 @@ Feed catalog: **[Journal-RSS.md](Journal-RSS.md)**.
 The only non-deterministic step is **topic curation** (deciding which keywords map
 to which topic); everything else is pure, reproducible Python.
 
+The biology taxonomy (`config/taxonomy.json`, 32 topics) is **derived from the
+literature**: scispaCy NER over the ~59k-title corpus surfaces candidate keywords
+(`bio-trend candidates`), the `/curate-topics` skill decides each
+(existing / new / noise / other), and `bio-trend curate` folds them in — the same
+extraction→curation loop as AI-trend.
+
 ## How it works
 
 ```
@@ -87,9 +93,24 @@ URL), **`/curate-topics`** (biology taxonomy curation), **`/track-journals`**
 conda create -y -p ./env python=3.10
 PYTHONNOUSERSITE=1 ./env/bin/pip install -e .
 # optional extras:
-#   '.[curate]'    scispaCy NER for candidate keyword extraction
-#   '.[citations]' requests, for Semantic Scholar / OpenAlex citation counts
-#   '.[dev]'       pytest + coverage
+#   '.[citations]' / '.[backfill]'  requests (citation counts / Crossref backfill)
+#   '.[dev]'                        pytest + coverage
+#   '.[curate]'                     scispaCy NER for keyword extraction; also install the model:
+PYTHONNOUSERSITE=1 ./env/bin/pip install -e '.[curate]'
+PYTHONNOUSERSITE=1 ./env/bin/pip install \
+  "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_core_sci_lg-0.5.1.tar.gz"
+```
+
+### Re-deriving the taxonomy from the corpus
+
+```bash
+# 1. extract candidate keywords from all titles (scispaCy NER)
+PYTHONNOUSERSITE=1 ./env/bin/bio-trend candidates <all-titles.csv> \
+  --model en_core_sci_lg --threshold 40 -o /tmp/candidates.json
+# 2. run the /curate-topics skill to decide each candidate -> /tmp/decision.json
+# 3. apply, then re-assign + re-trends + re-export
+PYTHONNOUSERSITE=1 ./env/bin/bio-trend curate /tmp/decision.json
+PYTHONNOUSERSITE=1 ./env/bin/bio-trend refresh --no-ingest
 ```
 
 ### Quick start

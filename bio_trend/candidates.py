@@ -60,6 +60,24 @@ def extract_entities(text: str, nlp: "Language") -> list[str]:
     return [ent.text for ent in nlp(text).ents]
 
 
+# Components not needed for NER — disabling them makes corpus-scale extraction
+# dramatically faster.
+_NER_DISABLE = ["tagger", "attribute_ruler", "lemmatizer", "parser"]
+
+
+def extract_entities_batched(titles: list[str], nlp: "Language", *, batch_size: int = 1000) -> set[str]:
+    """Named entities across many titles via ``nlp.pipe`` (scales to large corpora).
+
+    Equivalent in result to running NER per title; avoids spaCy's single-doc
+    ``max_length`` guard that a 60k-title blob would trip.
+    """
+    disable = [p for p in _NER_DISABLE if p in nlp.pipe_names]
+    entities: set[str] = set()
+    for doc in nlp.pipe(titles, batch_size=batch_size, disable=disable):
+        entities.update(ent.text for ent in doc.ents)
+    return entities
+
+
 def count_occurrences(titles: list[str], keyword: str) -> int:
     return sum(1 for title in titles if keyword in title)
 
@@ -91,22 +109,29 @@ def candidate_keywords(
     if nlp is None:
         nlp = load_model(model_path)
 
-    blob = ". ".join(titles)
-    entities = set(extract_entities(blob, nlp))
+    from collections import Counter, defaultdict
 
     known = taxonomy.known_keywords()
     blocked = taxonomy.useless_kw
-    fresh = [kw for kw in entities if kw not in known and kw not in blocked]
+
+    # Single pass over the corpus: document-frequency of each entity (how many
+    # titles it is tagged in) + a few example titles. This is the count used for
+    # curation judgement, and scales to a 60k-title corpus (the old per-entity
+    # substring count was O(entities x titles)).
+    doc_freq: Counter[str] = Counter()
+    examples_by_kw: dict[str, list[str]] = defaultdict(list)
+    disable = [p for p in _NER_DISABLE if p in nlp.pipe_names]
+    for title, doc in zip(titles, nlp.pipe(titles, batch_size=1000, disable=disable)):
+        for kw in {ent.text for ent in doc.ents}:
+            doc_freq[kw] += 1
+            if len(examples_by_kw[kw]) < examples:
+                examples_by_kw[kw].append(title)
 
     candidates = [
-        Candidate(
-            keyword=kw,
-            count=count_occurrences(titles, kw),
-            examples=_examples_for(kw, titles, examples),
-        )
-        for kw in fresh
+        Candidate(keyword=kw, count=count, examples=examples_by_kw[kw])
+        for kw, count in doc_freq.items()
+        if count > threshold and kw not in known and kw not in blocked
     ]
-    candidates = [c for c in candidates if c.count > threshold]
     candidates.sort(key=lambda c: c.count, reverse=True)
     return candidates
 

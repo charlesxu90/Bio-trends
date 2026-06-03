@@ -9,7 +9,16 @@
     "gwas",
     "pangenome",
     "structural variant",
-    "copy number"
+    "copy number",
+    "variants",
+    "genomes",
+    "mutations",
+    "genomic",
+    "variant",
+    "genetics",
+    "somatic",
+    "mutation",
+    "genetic architecture"
   ],
   "genome editing": [
     "crispr",
@@ -31,7 +40,10 @@
     "gene expression",
     "differential expression",
     "alternative splicing",
-    "spatial transcriptomics"
+    "spatial transcriptomics",
+    "transcription",
+    "transcriptional",
+    "transcription factors"
   ],
   "single-cell": [
     "single-cell",
@@ -41,7 +53,13 @@
     "single-nucleus",
     "cell atlas",
     "cell type",
-    "cellular heterogeneity"
+    "cellular heterogeneity",
+    "atlas",
+    "heterogeneity",
+    "lineage",
+    "clonal",
+    "single-cell resolution",
+    "single cells"
   ],
   "epigenetics": [
     "epigenetics",
@@ -52,7 +70,9 @@
     "chromatin accessibility",
     "atac-seq",
     "chip-seq",
-    "nucleosome"
+    "nucleosome",
+    "methylation",
+    "enhancers"
   ],
   "rna biology": [
     "non-coding rna",
@@ -64,7 +84,9 @@
     "rna modification",
     "rna structure",
     "splicing",
-    "ribosome"
+    "ribosome",
+    "translation",
+    "rna"
   ],
   "proteomics": [
     "proteomics",
@@ -85,7 +107,10 @@
     "x-ray crystallography",
     "alphafold",
     "protein folding",
-    "structure prediction"
+    "structure prediction",
+    "cryo-em structure",
+    "folding",
+    "cryo-em structures"
   ],
   "cell signaling": [
     "signaling pathway",
@@ -95,7 +120,9 @@
     "phosphorylation",
     "receptor",
     "second messenger",
-    "gpcr"
+    "gpcr",
+    "signaling",
+    "ubiquitination"
   ],
   "metabolism": [
     "metabolism",
@@ -106,7 +133,17 @@
     "glucose",
     "obesity",
     "diabetes",
-    "energy homeostasis"
+    "energy homeostasis",
+    "mitochondrial",
+    "ferroptosis",
+    "autophagy",
+    "metabolite",
+    "type 2 diabetes",
+    "metabolites",
+    "mtorc1",
+    "metabolic reprogramming",
+    "mitophagy",
+    "lipid metabolism"
   ],
   "immunology": [
     "immunology",
@@ -119,7 +156,28 @@
     "cytokine",
     "macrophage",
     "autoimmune",
-    "vaccine"
+    "vaccine",
+    "immunotherapy",
+    "macrophages",
+    "vaccination",
+    "cancer immunotherapy",
+    "neutrophil",
+    "inflammatory",
+    "vaccines",
+    "cd8+ t cells",
+    "blockade",
+    "pd-1",
+    "neutrophils",
+    "cd8",
+    "immune response",
+    "immune cells",
+    "immune evasion",
+    "immune responses",
+    "dendritic cells",
+    "neutralizing antibodies",
+    "immune system",
+    "antibodies",
+    "pd-l1"
   ],
   "cancer biology": [
     "cancer",
@@ -130,7 +188,24 @@
     "carcinoma",
     "leukemia",
     "tumor microenvironment",
-    "oncology"
+    "oncology",
+    "breast cancer",
+    "colorectal cancer",
+    "pancreatic cancer",
+    "glioblastoma",
+    "antitumor",
+    "melanoma",
+    "hepatocellular carcinoma",
+    "oncogenic",
+    "chemotherapy",
+    "anti-tumor immunity",
+    "prostate cancer",
+    "lung cancer",
+    "cancer cells",
+    "solid tumors",
+    "tumorigenesis",
+    "ovarian cancer",
+    "triple-negative breast cancer"
   ],
   "neuroscience": [
     "neuroscience",
@@ -143,7 +218,38 @@
     "neurodegeneration",
     "alzheimer",
     "parkinson",
-    "behavior"
+    "behavior",
+    "neurons",
+    "alzheimer’s disease",
+    "plasticity",
+    "neuronal",
+    "hippocampal",
+    "memory",
+    "neural",
+    "microglia",
+    "behavioral",
+    "dopamine",
+    "tau",
+    "parkinson’s disease",
+    "retinal",
+    "cortical",
+    "visual cortex",
+    "hippocampus",
+    "astrocytes",
+    "microglial",
+    "multiple sclerosis",
+    "sleep",
+    "interneurons",
+    "perception",
+    "depression",
+    "prefrontal cortex",
+    "autism",
+    "astrocyte",
+    "fear",
+    "reward",
+    "α-synuclein",
+    "dementia",
+    "neuroinflammation"
   ],
   "stem cells": [
     "stem cell",
@@ -152,7 +258,9 @@
     "embryonic stem",
     "regeneration",
     "differentiation",
-    "organoid"
+    "organoid",
+    "organoids",
+    "reprogramming"
   ],
   "developmental biology": [
     "developmental biology",
@@ -162,7 +270,8 @@
     "cell fate",
     "patterning",
     "germ layer",
-    "gastrulation"
+    "gastrulation",
+    "embryos"
   ],
   "microbiology": [
     "microbiology",
@@ -172,7 +281,14 @@
     "antibiotic resistance",
     "biofilm",
     "pathogen",
-    "quorum sensing"
+    "quorum sensing",
+    "escherichia coli",
+    "fungal",
+    "antibiotic",
+    "fungi",
+    "phage",
+    "microbes",
+    "virulence"
   ],
   "microbiome": [
     "microbiome",
@@ -180,7 +296,11 @@
     "gut microbiome",
     "metagenomics",
     "commensal",
-    "dysbiosis"
+    "dysbiosis",
+    "microbial",
+    "intestinal",
+    "gut",
+    "gut microbiota"
   ],
   "virology": [
     "virology",
@@ -191,7 +311,9 @@
     "influenza",
     "hiv",
     "capsid",
-    "viral replication"
+    "viral replication",
+    "hiv-1",
+    "viruses"
   ],
   "evolution": [
     "evolution",
@@ -201,7 +323,17 @@
     "natural selection",
     "population genetics",
     "adaptation",
-    "speciation"
+    "speciation",
+    "mammalian",
+    "fitness",
+    "primate",
+    "insect",
+    "mammals",
+    "avian",
+    "extinction",
+    "vertebrate",
+    "bats",
+    "diversification"
   ],
   "ecology": [
     "ecology",
@@ -210,7 +342,20 @@
     "species",
     "habitat",
     "climate change",
-    "conservation"
+    "conservation",
+    "ocean",
+    "carbon",
+    "co2",
+    "soil",
+    "emissions",
+    "marine",
+    "warming",
+    "methane",
+    "sea",
+    "terrestrial",
+    "drought",
+    "forest",
+    "atmospheric"
   ],
   "plant biology": [
     "plant biology",
@@ -220,7 +365,13 @@
     "root",
     "leaf",
     "plant immunity",
-    "phytohormone"
+    "phytohormone",
+    "plant",
+    "plants",
+    "rice",
+    "wheat",
+    "maize",
+    "grain"
   ],
   "synthetic biology": [
     "synthetic biology",
@@ -246,7 +397,12 @@
     "foundation model",
     "language model",
     "generative model",
-    "artificial intelligence"
+    "artificial intelligence",
+    "neural networks",
+    "inference",
+    "generative",
+    "representations",
+    "representation"
   ],
   "drug discovery": [
     "drug discovery",
@@ -256,7 +412,16 @@
     "inhibitor",
     "pharmacology",
     "clinical trial",
-    "biomarker"
+    "biomarker",
+    "biomarkers",
+    "meta-analysis",
+    "therapy",
+    "trial",
+    "drugs",
+    "inhibitors",
+    "randomized controlled trial",
+    "phase 1 trial",
+    "therapeutics"
   ],
   "aging": [
     "aging",
@@ -264,6 +429,35 @@
     "senescence",
     "longevity",
     "age-related",
-    "cellular senescence"
+    "cellular senescence",
+    "lifespan",
+    "aged"
+  ],
+  "infectious disease": [
+    "malaria",
+    "pandemic",
+    "mycobacterium tuberculosis",
+    "sepsis",
+    "long covid",
+    "mpox",
+    "salmonella"
+  ],
+  "bioimaging": [
+    "imaging"
+  ],
+  "circadian rhythm": [
+    "circadian"
+  ],
+  "cardiovascular disease": [
+    "heart failure",
+    "stroke",
+    "atherosclerosis"
+  ],
+  "biomolecular condensates": [
+    "phase separation",
+    "condensates"
+  ],
+  "gene therapy": [
+    "gene therapy"
   ]
 }

@@ -99,6 +99,16 @@ Pattern: `https://www.cell.com/<slug>/current.rss` (latest issue;
 | Cell Press | Current Biology | current-biology | current | biweekly | https://www.cell.com/current-biology/current.rss | high | ✓ |
 | Cell Press | Cancer Cell | cancer-cell | current | monthly | https://www.cell.com/cancer-cell/current.rss | high | ✓ |
 
+## Other journals
+
+Open-access / society broad-scope biology journals.
+
+| Family | Journal | Key | Feed type | Frequency | RSS URL | Bio focus | Status |
+|--------|---------|-----|-----------|-----------|---------|-----------|--------|
+| Oxford | Nucleic Acids Research | nar | current | continuous | https://academic.oup.com/rss/site_5127/3091.xml | high | ✓ |
+| Oxford | Nucleic Acids Research | nar | advance | continuous | https://academic.oup.com/rss/site_5127/advanceAccess_3091.xml | high | ✓ |
+| eLife | eLife | elife | current | continuous | https://elifesciences.org/rss/recent.xml | high | ✓ |
+
 <!--
 Maintenance:
   - Add a feed: add a row here AND a matching entry in config/journals.json

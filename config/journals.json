@@ -246,6 +246,27 @@
       ]
     },
     {
+      "key": "nar",
+      "label": "Nucleic Acids Research",
+      "family": "Oxford",
+      "frequency": "continuous",
+      "impact_factor": 16.6,
+      "openalex": "S134668137",
+      "issn": "0305-1048",
+      "feeds": [
+        {
+          "url": "https://academic.oup.com/rss/site_5127/3091.xml",
+          "type": "current",
+          "bio_focus": "high"
+        },
+        {
+          "url": "https://academic.oup.com/rss/site_5127/advanceAccess_3091.xml",
+          "type": "advance",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
       "key": "scitranslmed",
       "label": "Science Translational Medicine",
       "family": "Science",
@@ -433,6 +454,22 @@
         {
           "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling",
           "type": "etoc",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "elife",
+      "label": "eLife",
+      "family": "eLife",
+      "frequency": "continuous",
+      "impact_factor": 6.4,
+      "openalex": "S1336409049",
+      "issn": "2050-084X",
+      "feeds": [
+        {
+          "url": "https://elifesciences.org/rss/recent.xml",
+          "type": "current",
           "bio_focus": "high"
         }
       ]

@@ -389,9 +389,22 @@ function paperCard(p) {
   li.append(top);
 
   // Authors on a single line (CSS clips overflow); always render so the row is
-  // reserved even when there are no authors. Nothing is shown below this line.
+  // reserved even when there are no authors.
   const authors = p.authors && p.authors.length ? p.authors.join(", ") : "";
   li.append(el("p", "paper__authors", authors));
+
+  // Topic tags — clickable to filter the list by that topic.
+  if (p.topics && p.topics.length) {
+    const tags = el("div", "tags");
+    for (const t of p.topics) {
+      const tag = el("button", "tag", t);
+      tag.type = "button";
+      tag.title = `Filter by ${t}`;
+      tag.addEventListener("click", () => { $("#f-topic").value = t; onFilterChange(); });
+      tags.append(tag);
+    }
+    li.append(tags);
+  }
   return li;
 }
 

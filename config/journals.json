@@ -1,0 +1,196 @@
+{
+  "journals": [
+    {
+      "key": "nature",
+      "label": "Nature",
+      "family": "Nature",
+      "frequency": "weekly",
+      "feeds": [
+        {"url": "https://www.nature.com/subjects/biological-sciences.rss", "type": "subject", "bio_focus": "high"},
+        {"url": "https://www.nature.com/nature.rss", "type": "journal", "bio_focus": "mixed"}
+      ]
+    },
+    {
+      "key": "nmeth",
+      "label": "Nature Methods",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/nmeth.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "ng",
+      "label": "Nature Genetics",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/ng.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "nm",
+      "label": "Nature Medicine",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/nm.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "nbt",
+      "label": "Nature Biotechnology",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/nbt.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "ncb",
+      "label": "Nature Cell Biology",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/ncb.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "nsmb",
+      "label": "Nature Structural & Molecular Biology",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/nsmb.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "neuro",
+      "label": "Nature Neuroscience",
+      "family": "Nature",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.nature.com/neuro.rss", "type": "journal", "bio_focus": "high"}]
+    },
+    {
+      "key": "ncomms",
+      "label": "Nature Communications",
+      "family": "Nature",
+      "frequency": "continuous",
+      "feeds": [{"url": "https://www.nature.com/ncomms.rss", "type": "journal", "bio_focus": "mixed"}]
+    },
+    {
+      "key": "science",
+      "label": "Science",
+      "family": "Science",
+      "frequency": "weekly",
+      "feeds": [{"url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science", "type": "etoc", "bio_focus": "mixed"}]
+    },
+    {
+      "key": "sciadv",
+      "label": "Science Advances",
+      "family": "Science",
+      "frequency": "continuous",
+      "feeds": [{"url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv", "type": "etoc", "bio_focus": "mixed"}]
+    },
+    {
+      "key": "scitranslmed",
+      "label": "Science Translational Medicine",
+      "family": "Science",
+      "frequency": "weekly",
+      "feeds": [{"url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=stm", "type": "etoc", "bio_focus": "high"}]
+    },
+    {
+      "key": "scisignal",
+      "label": "Science Signaling",
+      "family": "Science",
+      "frequency": "weekly",
+      "feeds": [{"url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling", "type": "etoc", "bio_focus": "high"}]
+    },
+    {
+      "key": "sciimmunol",
+      "label": "Science Immunology",
+      "family": "Science",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciimmunol", "type": "etoc", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell",
+      "label": "Cell",
+      "family": "Cell Press",
+      "frequency": "biweekly",
+      "feeds": [{"url": "https://www.cell.com/cell/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-reports",
+      "label": "Cell Reports",
+      "family": "Cell Press",
+      "frequency": "continuous",
+      "feeds": [{"url": "https://www.cell.com/cell-reports/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "molecular-cell",
+      "label": "Molecular Cell",
+      "family": "Cell Press",
+      "frequency": "biweekly",
+      "feeds": [{"url": "https://www.cell.com/molecular-cell/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-stem-cell",
+      "label": "Cell Stem Cell",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cell-stem-cell/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-metabolism",
+      "label": "Cell Metabolism",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cell-metabolism/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-host-microbe",
+      "label": "Cell Host & Microbe",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cell-host-microbe/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-systems",
+      "label": "Cell Systems",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cell-systems/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cell-genomics",
+      "label": "Cell Genomics",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cell-genomics/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "developmental-cell",
+      "label": "Developmental Cell",
+      "family": "Cell Press",
+      "frequency": "biweekly",
+      "feeds": [{"url": "https://www.cell.com/developmental-cell/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "immunity",
+      "label": "Immunity",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/immunity/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "neuron",
+      "label": "Neuron",
+      "family": "Cell Press",
+      "frequency": "biweekly",
+      "feeds": [{"url": "https://www.cell.com/neuron/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "current-biology",
+      "label": "Current Biology",
+      "family": "Cell Press",
+      "frequency": "biweekly",
+      "feeds": [{"url": "https://www.cell.com/current-biology/current.rss", "type": "current", "bio_focus": "high"}]
+    },
+    {
+      "key": "cancer-cell",
+      "label": "Cancer Cell",
+      "family": "Cell Press",
+      "frequency": "monthly",
+      "feeds": [{"url": "https://www.cell.com/cancer-cell/current.rss", "type": "current", "bio_focus": "high"}]
+    }
+  ]
+}

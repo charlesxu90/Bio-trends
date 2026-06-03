@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio Trends in Journals</title>
+  <meta name="description" content="Top, emerging, and fading research topics across Nature, Science, and Cell journals — tracked from RSS, month over month." />
+  <link rel="preload" href="data/manifest.json" as="fetch" crossorigin />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap site-head__inner">
+      <a class="brand" href="#top">
+        <span class="brand__mark" aria-hidden="true">🧬</span>
+        <span class="brand__text">Bio&nbsp;Trends<span class="brand__dim">/journals</span></span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#trends">Topic Trends</a>
+        <a href="#browse">Browse Articles</a>
+        <a class="nav__ext" href="https://github.com/" rel="noopener">Source ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="wrap hero__inner">
+        <div class="hero__text">
+          <p class="eyebrow">Nature · Science · Cell &nbsp;—&nbsp; tracked from RSS</p>
+          <h1 id="hero-h" class="hero__title">
+            What <span class="hero__hl">biology</span> is<br /><em>actually</em> publishing
+          </h1>
+          <p class="hero__lede">
+            Recent articles from the flagship biology journals and their sister titles,
+            auto-labelled by research topic and tracked month over month. See which areas
+            are <strong>top</strong>, <strong>emerging</strong>, or <strong>fading</strong> —
+            then read the papers behind every trend.
+          </p>
+        </div>
+        <aside class="hero__panel" aria-label="Coverage at a glance">
+          <div class="hero__stats" id="hero-stats" aria-live="polite"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="trends" aria-labelledby="trends-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="trends-h" class="section__title"><span class="section__num">01</span> Topic Trends</h2>
+          <p class="section__hint">Pick a journal and month. Click any topic to jump to its papers.</p>
+        </div>
+        <div class="picker" role="group" aria-label="Choose journal and period">
+          <div class="picker__group">
+            <span class="picker__label">Journal</span>
+            <div class="picker__row" id="group-pills"></div>
+          </div>
+          <div class="picker__group">
+            <span class="picker__label">Month</span>
+            <div class="picker__row picker__row--periods" id="period-pills"></div>
+          </div>
+        </div>
+        <div id="trend-panel" class="trend-panel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="browse" aria-labelledby="browse-h">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="browse-h" class="section__title"><span class="section__num">02</span> Browse Articles</h2>
+          <p class="section__hint">Filter by family, journal, month, and topic, or search titles, abstracts, and authors.</p>
+        </div>
+        <form class="filters" id="filters" autocomplete="off" aria-label="Article filters">
+          <label class="field">
+            <span class="field__label">Family</span>
+            <select id="f-family" class="field__input"><option value="">All families</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Journal</span>
+            <select id="f-journal" class="field__input"><option value="">All journals</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Month</span>
+            <select id="f-period" class="field__input"><option value="">All months</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Topic</span>
+            <select id="f-topic" class="field__input"><option value="">All topics</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Sort</span>
+            <select id="f-sort" class="field__input">
+              <option value="recent">Most recent</option>
+              <option value="citations">Most cited</option>
+            </select>
+          </label>
+          <label class="field field--grow">
+            <span class="field__label">Search</span>
+            <input id="f-search" class="field__input" type="search" placeholder="title, abstract, author…" />
+          </label>
+        </form>
+        <p class="result-meta" id="result-meta" aria-live="polite"></p>
+        <ol class="papers" id="papers"></ol>
+        <div class="more" id="more-wrap" hidden>
+          <button class="btn" id="more-btn" type="button">Show more</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap site-foot__inner">
+      <p>Topic labels are assigned automatically against a curated biology taxonomy; trends are computed from article counts month over month. Source articles come from journal RSS feeds.</p>
+      <p class="site-foot__meta">Bio-trend · sibling of AI-trend</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>

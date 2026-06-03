@@ -1,0 +1,269 @@
+{
+  "genomics": [
+    "genomics",
+    "genome",
+    "whole-genome",
+    "whole genome",
+    "genome-wide",
+    "genome wide",
+    "gwas",
+    "pangenome",
+    "structural variant",
+    "copy number"
+  ],
+  "genome editing": [
+    "crispr",
+    "cas9",
+    "cas12",
+    "cas13",
+    "base editing",
+    "prime editing",
+    "genome editing",
+    "gene editing",
+    "guide rna",
+    "zinc finger"
+  ],
+  "transcriptomics": [
+    "transcriptomics",
+    "transcriptome",
+    "rna-seq",
+    "rna seq",
+    "gene expression",
+    "differential expression",
+    "alternative splicing",
+    "spatial transcriptomics"
+  ],
+  "single-cell": [
+    "single-cell",
+    "single cell",
+    "scrna-seq",
+    "scrna seq",
+    "single-nucleus",
+    "cell atlas",
+    "cell type",
+    "cellular heterogeneity"
+  ],
+  "epigenetics": [
+    "epigenetics",
+    "epigenetic",
+    "dna methylation",
+    "histone",
+    "chromatin",
+    "chromatin accessibility",
+    "atac-seq",
+    "chip-seq",
+    "nucleosome"
+  ],
+  "rna biology": [
+    "non-coding rna",
+    "noncoding rna",
+    "microrna",
+    "long non-coding",
+    "lncrna",
+    "mrna",
+    "rna modification",
+    "rna structure",
+    "splicing",
+    "ribosome"
+  ],
+  "proteomics": [
+    "proteomics",
+    "proteome",
+    "mass spectrometry",
+    "post-translational",
+    "protein-protein interaction",
+    "phosphoproteomics",
+    "protein abundance"
+  ],
+  "structural biology": [
+    "structural biology",
+    "protein structure",
+    "cryo-em",
+    "cryo electron",
+    "cryoem",
+    "crystal structure",
+    "x-ray crystallography",
+    "alphafold",
+    "protein folding",
+    "structure prediction"
+  ],
+  "cell signaling": [
+    "signaling pathway",
+    "signal transduction",
+    "signalling",
+    "kinase",
+    "phosphorylation",
+    "receptor",
+    "second messenger",
+    "gpcr"
+  ],
+  "metabolism": [
+    "metabolism",
+    "metabolic",
+    "metabolomics",
+    "mitochondria",
+    "lipid",
+    "glucose",
+    "obesity",
+    "diabetes",
+    "energy homeostasis"
+  ],
+  "immunology": [
+    "immunology",
+    "immune",
+    "t cell",
+    "b cell",
+    "antibody",
+    "antigen",
+    "inflammation",
+    "cytokine",
+    "macrophage",
+    "autoimmune",
+    "vaccine"
+  ],
+  "cancer biology": [
+    "cancer",
+    "tumor",
+    "tumour",
+    "oncogene",
+    "metastasis",
+    "carcinoma",
+    "leukemia",
+    "tumor microenvironment",
+    "oncology"
+  ],
+  "neuroscience": [
+    "neuroscience",
+    "neuron",
+    "neural circuit",
+    "synapse",
+    "synaptic",
+    "brain",
+    "cortex",
+    "neurodegeneration",
+    "alzheimer",
+    "parkinson",
+    "behavior"
+  ],
+  "stem cells": [
+    "stem cell",
+    "pluripotent",
+    "ipsc",
+    "embryonic stem",
+    "regeneration",
+    "differentiation",
+    "organoid"
+  ],
+  "developmental biology": [
+    "developmental biology",
+    "development",
+    "embryo",
+    "morphogenesis",
+    "cell fate",
+    "patterning",
+    "germ layer",
+    "gastrulation"
+  ],
+  "microbiology": [
+    "microbiology",
+    "bacteria",
+    "bacterial",
+    "microbe",
+    "antibiotic resistance",
+    "biofilm",
+    "pathogen",
+    "quorum sensing"
+  ],
+  "microbiome": [
+    "microbiome",
+    "microbiota",
+    "gut microbiome",
+    "metagenomics",
+    "commensal",
+    "dysbiosis"
+  ],
+  "virology": [
+    "virology",
+    "virus",
+    "viral",
+    "sars-cov-2",
+    "covid-19",
+    "influenza",
+    "hiv",
+    "capsid",
+    "viral replication"
+  ],
+  "evolution": [
+    "evolution",
+    "evolutionary",
+    "phylogenetic",
+    "phylogeny",
+    "natural selection",
+    "population genetics",
+    "adaptation",
+    "speciation"
+  ],
+  "ecology": [
+    "ecology",
+    "ecosystem",
+    "biodiversity",
+    "species",
+    "habitat",
+    "climate change",
+    "conservation"
+  ],
+  "plant biology": [
+    "plant biology",
+    "arabidopsis",
+    "photosynthesis",
+    "crop",
+    "root",
+    "leaf",
+    "plant immunity",
+    "phytohormone"
+  ],
+  "synthetic biology": [
+    "synthetic biology",
+    "genetic circuit",
+    "biosensor",
+    "engineered cell",
+    "cell-free",
+    "metabolic engineering",
+    "directed evolution"
+  ],
+  "bioinformatics": [
+    "bioinformatics",
+    "computational biology",
+    "sequence alignment",
+    "variant calling",
+    "pipeline",
+    "annotation"
+  ],
+  "machine learning in biology": [
+    "machine learning",
+    "deep learning",
+    "neural network",
+    "foundation model",
+    "language model",
+    "generative model",
+    "artificial intelligence"
+  ],
+  "drug discovery": [
+    "drug discovery",
+    "small molecule",
+    "therapeutic",
+    "drug target",
+    "inhibitor",
+    "pharmacology",
+    "clinical trial",
+    "biomarker"
+  ],
+  "aging": [
+    "aging",
+    "ageing",
+    "senescence",
+    "longevity",
+    "age-related",
+    "cellular senescence"
+  ]
+}

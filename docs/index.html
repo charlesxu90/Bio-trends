@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bio Trends in Journals</title>
-  <meta name="description" content="Top, emerging, and fading research topics across Nature, Science, and Cell journals — tracked from RSS, month over month." />
+  <meta name="description" content="Top, emerging, and fading research topics across Nature, Science, and Cell journals — by year, quarter, or month, from RSS plus historical backfill." />
   <link rel="preload" href="data/manifest.json" as="fetch" crossorigin />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -27,15 +27,16 @@
     <section class="hero" aria-labelledby="hero-h">
       <div class="wrap hero__inner">
         <div class="hero__text">
-          <p class="eyebrow">Nature · Science · Cell &nbsp;—&nbsp; tracked from RSS</p>
+          <p class="eyebrow">Nature · Science · Cell &nbsp;—&nbsp; 2024–2026 &nbsp;·&nbsp; RSS + backfill</p>
           <h1 id="hero-h" class="hero__title">
             What <span class="hero__hl">biology</span> is<br /><em>actually</em> publishing
           </h1>
           <p class="hero__lede">
-            Recent articles from the flagship biology journals and their sister titles,
-            auto-labelled by research topic and tracked month over month. See which areas
-            are <strong>top</strong>, <strong>emerging</strong>, or <strong>fading</strong> —
-            then read the papers behind every trend.
+            Articles from the flagship biology journals and their sister titles,
+            auto-labelled by research topic and tracked <strong>year over year</strong>
+            (or by quarter and month). See which areas are <strong>top</strong>,
+            <strong>emerging</strong>, or <strong>fading</strong> — then read the papers
+            behind every trend.
           </p>
         </div>
         <aside class="hero__panel" aria-label="Coverage at a glance">
@@ -48,7 +49,7 @@
       <div class="wrap">
         <div class="section__head">
           <h2 id="trends-h" class="section__title"><span class="section__num">01</span> Topic Trends</h2>
-          <p class="section__hint">Pick a journal and month. Click any topic to jump to its papers.</p>
+          <p class="section__hint">Choose a granularity (year, quarter, or month), a journal, and a period. Click any topic to jump to its papers.</p>
         </div>
         <div class="picker" role="group" aria-label="Choose granularity, journal and period">
           <div class="picker__group">
@@ -72,7 +73,7 @@
       <div class="wrap">
         <div class="section__head">
           <h2 id="browse-h" class="section__title"><span class="section__num">02</span> Browse Articles</h2>
-          <p class="section__hint">Filter by family, journal, month, and topic, or search titles, abstracts, and authors.</p>
+          <p class="section__hint">Filter by family, journal, period, and topic, or search titles, abstracts, and authors. Trends span 2024–2026; the browsable list shows the most recent months.</p>
         </div>
         <form class="filters" id="filters" autocomplete="off" aria-label="Article filters">
           <label class="field">
@@ -114,7 +115,7 @@
 
   <footer class="site-foot">
     <div class="wrap site-foot__inner">
-      <p>Topic labels are assigned automatically against a curated biology taxonomy; trends are computed from article counts month over month. Source articles come from journal RSS feeds.</p>
+      <p>Topic labels are assigned automatically against a curated biology taxonomy; trends are computed from article counts period over period (year, quarter, or month). Articles come from journal RSS feeds, with 2024–2025 backfilled from Crossref.</p>
       <p class="site-foot__meta">Bio-trend · sibling of AI-trend</p>
     </div>
   </footer>

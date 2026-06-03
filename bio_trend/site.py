@@ -23,6 +23,7 @@ from bio_trend.registry import JournalRegistry
 from bio_trend.taxonomy import Taxonomy
 from bio_trend.trends import (
     BUCKET_MONTH,
+    BUCKET_YEAR,
     BUCKETS,
     DEFAULT_MIN_COUNT,
     DEFAULT_MIN_PREV,
@@ -171,6 +172,12 @@ def export_site(
         all_months = sorted({m for _, _, _, m, _ in found})
         keep_months = set(all_months[-max_shard_months:])
 
+    # Full-corpus totals (every month, not just browsable shards) for the hero.
+    total_articles = 0
+    for _, _, _, _, path in found:
+        with open(path, encoding="utf-8") as fh:
+            total_articles += max(0, sum(1 for _ in fh) - 1)  # minus header
+
     for key, label, family, month, topics_path in found:
         if keep_months is not None and month not in keep_months:
             continue
@@ -201,6 +208,10 @@ def export_site(
         "periods": sorted({s["period"] for s in shards}),
         "years": sorted({s["period"][:4] for s in shards}),
         "buckets": list(BUCKETS),
+        # full-corpus coverage (all years analysed for trends, not just browsable shards)
+        "total_articles": total_articles,
+        "taxonomy_topics": len(taxonomy.topics),
+        "trend_years": sorted({t["period"] for t in trends_by_bucket[BUCKET_YEAR]}),
         "shards": shards,
     }
     (out_dir / "manifest.json").write_text(

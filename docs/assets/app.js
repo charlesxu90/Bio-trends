@@ -52,12 +52,14 @@ async function init() {
 // ---- hero -------------------------------------------------------------------
 function buildHeroStats() {
   const m = state.manifest;
-  const total = m.shards.reduce((s, x) => s + x.count, 0);
+  const total = m.total_articles ?? m.shards.reduce((s, x) => s + x.count, 0);
+  const years = m.trend_years || [];
+  const yearsLabel = years.length > 1 ? `years (${years[0]}–${years[years.length - 1]})` : "years";
   const stats = [
     [m.journals.length, "journals"],
     [total.toLocaleString(), "articles"],
-    [m.topics.length, "topics"],
-    [m.periods.length, "months"],
+    [m.taxonomy_topics ?? m.topics.length, "topics"],
+    [years.length || m.periods.length, yearsLabel],
   ];
   const box = $("#hero-stats");
   for (const [num, label] of stats) {

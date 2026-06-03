@@ -48,7 +48,30 @@ async function init() {
   buildBucketPicker();
   buildTrendPicker();
   buildFilters();
+  initSideNav();
   await applyBrowse();
+}
+
+// Right-side fast nav: highlight the section currently in view.
+function initSideNav() {
+  const links = [...document.querySelectorAll(".sidenav a")];
+  const byTarget = Object.fromEntries(links.map((a) => [a.dataset.target, a]));
+  const sections = [
+    ["top", document.querySelector(".hero")],
+    ["trends", document.getElementById("trends")],
+    ["browse", document.getElementById("browse")],
+  ].filter(([, node]) => node);
+  const obs = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        const id = sections.find(([, node]) => node === e.target)?.[0];
+        if (id && byTarget[id]) links.forEach((a) => a.classList.toggle("active", a === byTarget[id]));
+      }
+    },
+    { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+  );
+  sections.forEach(([, node]) => obs.observe(node));
 }
 
 function byRank(a, b) {
@@ -115,7 +138,7 @@ function buildTrendPicker() {
   const row = $("#group-pills");
   row.innerHTML = "";
   groups.forEach((g) => {
-    const pill = el("button", "pill", g);
+    const pill = el("button", "pill pill--journal", g);
     pill.type = "button";
     pill.addEventListener("click", () => selectGroup(g));
     row.append(pill);

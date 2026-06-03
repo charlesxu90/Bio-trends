@@ -42,10 +42,11 @@ the outputs — safe to run anytime.
 **Historical backfill.** RSS only carries the current issue, so to see a full year
 of trends use `bio-trend backfill --years 2024,2025`. It pulls historical articles
 (title, authors, DOI, date — abstracts when available) from **Crossref** by ISSN
-into the same monthly store, deduped by DOI against RSS rows. Because a backfill can
-be tens of thousands of papers, `export-site`/`refresh` accept `--shard-months N` to
-cap the *browsable* paper list to the most recent N months while **trends still use
-the full history**.
+into the same monthly store, deduped by DOI against RSS rows. The site shards
+browsable papers **per (journal, year)** and the page lazy-loads only the years you
+view, so the full multi-year corpus is browsable without a heavy initial load
+(`export-site`/`refresh` accept `--shard-years N` to cap browsable years; trends
+always use the full history).
 
 **Polling cadence.** Each journal declares a publication **frequency** in
 [`Journal-RSS.md`](Journal-RSS.md) / `config/journals.json`

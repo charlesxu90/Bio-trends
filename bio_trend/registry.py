@@ -51,6 +51,7 @@ class Journal:
     frequency: str = "monthly"  # continuous | weekly | biweekly | monthly — drives poll cadence
     openalex: str | None = None  # OpenAlex source id (e.g. "S137773608")
     issn: str | None = None  # ISSN-L, used for Crossref historical backfill
+    impact_factor: float | None = None  # approx JIF; journals.json is ordered by it
 
     @property
     def name(self) -> str:
@@ -90,6 +91,7 @@ class JournalRegistry:
                     frequency=entry.get("frequency", "monthly"),
                     openalex=entry.get("openalex"),
                     issn=entry.get("issn"),
+                    impact_factor=entry.get("impact_factor"),
                 )
             )
         return cls(journals=journals)

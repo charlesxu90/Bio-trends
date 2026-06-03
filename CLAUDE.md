@@ -44,19 +44,21 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
 - **`trends.py`** — top/emerging/fading per *(group, period)* where group is a
   journal (default) or family, and period is **year / quarter / month**. The site
   exports all three granularities and defaults to year.
-- **`site.py`** — exports `docs/data/{manifest,trends}.json` + per-journal-month
-  paper shards for the static GitHub Pages browser in `docs/`. `trends.json` is keyed
-  by bucket (`{year, quarter, month}`). `max_shard_months` (`--shard-months`) caps the
-  browsable shards to recent months while trends keep full history.
+- **`site.py`** — exports `docs/data/{manifest,trends}.json` + **per-(journal,year)**
+  paper shards (`papers/<key>_<YYYY>.json`) for the static GitHub Pages browser in
+  `docs/`, which lazy-loads only the years viewed. `trends.json` is keyed by bucket
+  (`{year, quarter, month}`). Shards omit zero-topic papers (`topiced_only`) and cap
+  authors; `--shard-years N` caps browsable years (trends keep full history).
 - **`citations.py`** — optional; DOI-first citation lookup, cached in sidecars.
 - **`candidates.py` / `curate_io.py`** — the taxonomy-curation seam (scispaCy NER +
   decision apply). The reasoning is done by the `/curate-topics` skill.
 
 ## Config is the source of truth
 
-- `config/journals.json` — tracked journals + feeds (mirrors `Journal-RSS.md`); each
-  also carries `frequency` (poll cadence), `openalex` (source id) and `issn` (for
-  Crossref backfill).
+- `config/journals.json` — tracked journals + feeds (mirrors `Journal-RSS.md`);
+  **ordered by `impact_factor`** (the site preserves this order in pickers). Each also
+  carries `frequency` (poll cadence), `openalex` (source id) and `issn` (Crossref
+  backfill).
 - `config/taxonomy.json` — biology topic → keywords (order significant).
 - `config/useless_keywords.json` — noise blocklist.
 

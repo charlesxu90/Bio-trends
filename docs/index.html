@@ -17,8 +17,8 @@
       </a>
       <nav class="nav" aria-label="Sections">
         <a href="#trends">Topic Trends</a>
-        <a href="#browse">Browse Articles</a>
-        <a class="nav__ext" href="https://github.com/" rel="noopener">Source ↗</a>
+        <a href="#browse">Rising Stars</a>
+        <a class="nav__ext" href="https://github.com/charlesxu90/Bio-trends" rel="noopener">Source ↗</a>
       </nav>
     </div>
   </header>
@@ -72,14 +72,10 @@
     <section class="section section--alt" id="browse" aria-labelledby="browse-h">
       <div class="wrap">
         <div class="section__head">
-          <h2 id="browse-h" class="section__title"><span class="section__num">02</span> Browse Articles</h2>
-          <p class="section__hint">Filter by family, journal, period, and topic, or search titles, abstracts, and authors. Trends span 2024–2026; the browsable list shows the most recent months.</p>
+          <h2 id="browse-h" class="section__title"><span class="section__num">02</span> Rising Stars</h2>
+          <p class="section__hint">Papers by journal, period, and topic — search titles and authors, sort by recency or citations. Click a topic in the trends above to see its papers for that period across all journals. Journals are ordered by impact factor.</p>
         </div>
         <form class="filters" id="filters" autocomplete="off" aria-label="Article filters">
-          <label class="field">
-            <span class="field__label">Family</span>
-            <select id="f-family" class="field__input"><option value="">All families</option></select>
-          </label>
           <label class="field">
             <span class="field__label">Journal</span>
             <select id="f-journal" class="field__input"><option value="">All journals</option></select>
@@ -101,7 +97,7 @@
           </label>
           <label class="field field--grow">
             <span class="field__label">Search</span>
-            <input id="f-search" class="field__input" type="search" placeholder="title, abstract, author…" />
+            <input id="f-search" class="field__input" type="search" placeholder="title, author…" />
           </label>
         </form>
         <p class="result-meta" id="result-meta" aria-live="polite"></p>

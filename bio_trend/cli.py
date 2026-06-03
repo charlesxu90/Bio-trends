@@ -267,7 +267,7 @@ def cmd_export_site(args: argparse.Namespace) -> int:
         args.out_dir, taxonomy=taxonomy, data_dir=data_dir,
         group_by=args.group_by, bucket=args.bucket,
         top_n=args.top_n, min_prev=args.min_prev, min_count=args.min_count,
-        abstract_chars=args.abstract_chars, max_shard_months=args.shard_months or None,
+        abstract_chars=args.abstract_chars, shard_years=args.shard_years or None,
     )
     papers = sum(s["count"] for s in manifest["shards"])
     _eprint(f"exported {len(manifest['shards'])} shards / {papers} papers -> {args.out_dir}")
@@ -282,7 +282,7 @@ def cmd_refresh(args: argparse.Namespace) -> int:
         config_dir=Path(args.config), data_dir=args.data_dir, site_dir=args.site_dir,
         do_ingest=not args.no_ingest, only=only, force=args.force,
         group_by=args.group_by, bucket=args.bucket,
-        max_shard_months=args.shard_months or None, log=_eprint,
+        shard_years=args.shard_years or None, log=_eprint,
     )
     _eprint(f"refresh complete: {summary}")
     return 0
@@ -361,8 +361,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp.add_argument("--data-dir", default="data")
     p_exp.add_argument("--out-dir", default="docs/data")
     p_exp.add_argument("--abstract-chars", type=int, default=300)
-    p_exp.add_argument("--shard-months", type=int, default=0,
-                       help="cap browsable paper shards to the most recent N months (0 = all); trends always use full history")
+    p_exp.add_argument("--shard-years", type=int, default=0,
+                       help="cap browsable paper shards to the most recent N years (0 = all); trends always use full history")
     _add_trend_opts(p_exp)
     p_exp.set_defaults(func=cmd_export_site)
 
@@ -374,8 +374,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_ref.add_argument("--site-dir", default="docs/data")
     p_ref.add_argument("--group-by", choices=["journal", "family"], default="journal")
     p_ref.add_argument("--bucket", choices=["month", "quarter", "year"], default="month")
-    p_ref.add_argument("--shard-months", type=int, default=0,
-                       help="cap browsable paper shards to the most recent N months (0 = all)")
+    p_ref.add_argument("--shard-years", type=int, default=0,
+                       help="cap browsable paper shards to the most recent N years (0 = all)")
     p_ref.set_defaults(func=cmd_refresh)
 
     return parser

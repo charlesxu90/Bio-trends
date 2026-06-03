@@ -1,9 +1,26 @@
 {
   "journals": [
     {
+      "key": "nm",
+      "label": "Nature Medicine",
+      "family": "Nature",
+      "impact_factor": 50.0,
+      "frequency": "monthly",
+      "openalex": "S203256638",
+      "issn": "1078-8956",
+      "feeds": [
+        {
+          "url": "https://www.nature.com/nm.rss",
+          "type": "journal",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
       "key": "nature",
       "label": "Nature",
       "family": "Nature",
+      "impact_factor": 48.5,
       "frequency": "weekly",
       "openalex": "S137773608",
       "issn": "0028-0836",
@@ -21,9 +38,74 @@
       ]
     },
     {
+      "key": "science",
+      "label": "Science",
+      "family": "Science",
+      "impact_factor": 45.8,
+      "frequency": "weekly",
+      "openalex": "S3880285",
+      "issn": "0036-8075",
+      "feeds": [
+        {
+          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science",
+          "type": "etoc",
+          "bio_focus": "mixed"
+        }
+      ]
+    },
+    {
+      "key": "cancer-cell",
+      "label": "Cancer Cell",
+      "family": "Cell Press",
+      "impact_factor": 44.5,
+      "frequency": "monthly",
+      "openalex": "S25671836",
+      "issn": "1535-6108",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/cancer-cell/current.rss",
+          "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "cell",
+      "label": "Cell",
+      "family": "Cell Press",
+      "impact_factor": 42.5,
+      "frequency": "biweekly",
+      "openalex": "S110447773",
+      "issn": "0092-8674",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/cell/current.rss",
+          "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "nbt",
+      "label": "Nature Biotechnology",
+      "family": "Nature",
+      "impact_factor": 41.7,
+      "frequency": "monthly",
+      "openalex": "S106963461",
+      "issn": "1087-0156",
+      "feeds": [
+        {
+          "url": "https://www.nature.com/nbt.rss",
+          "type": "journal",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
       "key": "nmeth",
       "label": "Nature Methods",
       "family": "Nature",
+      "impact_factor": 32.1,
       "frequency": "monthly",
       "openalex": "S127827428",
       "issn": "1548-7091",
@@ -39,6 +121,7 @@
       "key": "ng",
       "label": "Nature Genetics",
       "family": "Nature",
+      "impact_factor": 28.0,
       "frequency": "monthly",
       "openalex": "S137905309",
       "issn": "1061-4036",
@@ -51,234 +134,10 @@
       ]
     },
     {
-      "key": "nm",
-      "label": "Nature Medicine",
-      "family": "Nature",
-      "frequency": "monthly",
-      "openalex": "S203256638",
-      "issn": "1078-8956",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/nm.rss",
-          "type": "journal",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "nbt",
-      "label": "Nature Biotechnology",
-      "family": "Nature",
-      "frequency": "monthly",
-      "openalex": "S106963461",
-      "issn": "1087-0156",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/nbt.rss",
-          "type": "journal",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "ncb",
-      "label": "Nature Cell Biology",
-      "family": "Nature",
-      "frequency": "monthly",
-      "openalex": "S151741590",
-      "issn": "1465-7392",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/ncb.rss",
-          "type": "journal",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "nsmb",
-      "label": "Nature Structural & Molecular Biology",
-      "family": "Nature",
-      "frequency": "monthly",
-      "openalex": "S139253143",
-      "issn": "1545-9985",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/nsmb.rss",
-          "type": "journal",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "neuro",
-      "label": "Nature Neuroscience",
-      "family": "Nature",
-      "frequency": "monthly",
-      "openalex": "S2298632",
-      "issn": "1097-6256",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/neuro.rss",
-          "type": "journal",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "ncomms",
-      "label": "Nature Communications",
-      "family": "Nature",
-      "frequency": "continuous",
-      "openalex": "S64187185",
-      "issn": "2041-1723",
-      "feeds": [
-        {
-          "url": "https://www.nature.com/ncomms.rss",
-          "type": "journal",
-          "bio_focus": "mixed"
-        }
-      ]
-    },
-    {
-      "key": "science",
-      "label": "Science",
-      "family": "Science",
-      "frequency": "weekly",
-      "openalex": "S3880285",
-      "issn": "0036-8075",
-      "feeds": [
-        {
-          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science",
-          "type": "etoc",
-          "bio_focus": "mixed"
-        }
-      ]
-    },
-    {
-      "key": "sciadv",
-      "label": "Science Advances",
-      "family": "Science",
-      "frequency": "continuous",
-      "openalex": "S2737427234",
-      "issn": "2375-2548",
-      "feeds": [
-        {
-          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv",
-          "type": "etoc",
-          "bio_focus": "mixed"
-        }
-      ]
-    },
-    {
-      "key": "scitranslmed",
-      "label": "Science Translational Medicine",
-      "family": "Science",
-      "frequency": "weekly",
-      "openalex": "S24207032",
-      "issn": "1946-6234",
-      "feeds": [
-        {
-          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=stm",
-          "type": "etoc",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "scisignal",
-      "label": "Science Signaling",
-      "family": "Science",
-      "frequency": "weekly",
-      "openalex": "S155937366",
-      "issn": "1937-9145",
-      "feeds": [
-        {
-          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling",
-          "type": "etoc",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "sciimmunol",
-      "label": "Science Immunology",
-      "family": "Science",
-      "frequency": "monthly",
-      "openalex": "S2764653179",
-      "issn": "2470-9468",
-      "feeds": [
-        {
-          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciimmunol",
-          "type": "etoc",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "cell",
-      "label": "Cell",
-      "family": "Cell Press",
-      "frequency": "biweekly",
-      "openalex": "S110447773",
-      "issn": "0092-8674",
-      "feeds": [
-        {
-          "url": "https://www.cell.com/cell/current.rss",
-          "type": "current",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "cell-reports",
-      "label": "Cell Reports",
-      "family": "Cell Press",
-      "frequency": "continuous",
-      "openalex": "S169236886",
-      "issn": "2211-1247",
-      "feeds": [
-        {
-          "url": "https://www.cell.com/cell-reports/current.rss",
-          "type": "current",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "molecular-cell",
-      "label": "Molecular Cell",
-      "family": "Cell Press",
-      "frequency": "biweekly",
-      "openalex": "S156208185",
-      "issn": "1097-2765",
-      "feeds": [
-        {
-          "url": "https://www.cell.com/molecular-cell/current.rss",
-          "type": "current",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "cell-stem-cell",
-      "label": "Cell Stem Cell",
-      "family": "Cell Press",
-      "frequency": "monthly",
-      "openalex": "S128124174",
-      "issn": "1875-9777",
-      "feeds": [
-        {
-          "url": "https://www.cell.com/cell-stem-cell/current.rss",
-          "type": "current",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
       "key": "cell-metabolism",
       "label": "Cell Metabolism",
       "family": "Cell Press",
+      "impact_factor": 24.0,
       "frequency": "monthly",
       "openalex": "S177533077",
       "issn": "1550-4131",
@@ -291,9 +150,58 @@
       ]
     },
     {
+      "key": "sciimmunol",
+      "label": "Science Immunology",
+      "family": "Science",
+      "impact_factor": 24.0,
+      "frequency": "monthly",
+      "openalex": "S2764653179",
+      "issn": "2470-9468",
+      "feeds": [
+        {
+          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciimmunol",
+          "type": "etoc",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "immunity",
+      "label": "Immunity",
+      "family": "Cell Press",
+      "impact_factor": 22.0,
+      "frequency": "monthly",
+      "openalex": "S199671312",
+      "issn": "1074-7613",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/immunity/current.rss",
+          "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "neuro",
+      "label": "Nature Neuroscience",
+      "family": "Nature",
+      "impact_factor": 21.0,
+      "frequency": "monthly",
+      "openalex": "S2298632",
+      "issn": "1097-6256",
+      "feeds": [
+        {
+          "url": "https://www.nature.com/neuro.rss",
+          "type": "journal",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
       "key": "cell-host-microbe",
       "label": "Cell Host & Microbe",
       "family": "Cell Press",
+      "impact_factor": 20.0,
       "frequency": "monthly",
       "openalex": "S207313999",
       "issn": "1931-3128",
@@ -306,17 +214,130 @@
       ]
     },
     {
-      "key": "cell-systems",
-      "label": "Cell Systems",
-      "family": "Cell Press",
+      "key": "ncb",
+      "label": "Nature Cell Biology",
+      "family": "Nature",
+      "impact_factor": 19.1,
       "frequency": "monthly",
-      "openalex": "S2764739556",
-      "issn": "2405-4712",
+      "openalex": "S151741590",
+      "issn": "1465-7392",
       "feeds": [
         {
-          "url": "https://www.cell.com/cell-systems/current.rss",
+          "url": "https://www.nature.com/ncb.rss",
+          "type": "journal",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "cell-stem-cell",
+      "label": "Cell Stem Cell",
+      "family": "Cell Press",
+      "impact_factor": 19.0,
+      "frequency": "monthly",
+      "openalex": "S128124174",
+      "issn": "1875-9777",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/cell-stem-cell/current.rss",
           "type": "current",
           "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "scitranslmed",
+      "label": "Science Translational Medicine",
+      "family": "Science",
+      "impact_factor": 15.8,
+      "frequency": "weekly",
+      "openalex": "S24207032",
+      "issn": "1946-6234",
+      "feeds": [
+        {
+          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=stm",
+          "type": "etoc",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "ncomms",
+      "label": "Nature Communications",
+      "family": "Nature",
+      "impact_factor": 15.7,
+      "frequency": "continuous",
+      "openalex": "S64187185",
+      "issn": "2041-1723",
+      "feeds": [
+        {
+          "url": "https://www.nature.com/ncomms.rss",
+          "type": "journal",
+          "bio_focus": "mixed"
+        }
+      ]
+    },
+    {
+      "key": "molecular-cell",
+      "label": "Molecular Cell",
+      "family": "Cell Press",
+      "impact_factor": 14.7,
+      "frequency": "biweekly",
+      "openalex": "S156208185",
+      "issn": "1097-2765",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/molecular-cell/current.rss",
+          "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "neuron",
+      "label": "Neuron",
+      "family": "Cell Press",
+      "impact_factor": 14.6,
+      "frequency": "biweekly",
+      "openalex": "S45757444",
+      "issn": "0896-6273",
+      "feeds": [
+        {
+          "url": "https://www.cell.com/neuron/current.rss",
+          "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "nsmb",
+      "label": "Nature Structural & Molecular Biology",
+      "family": "Nature",
+      "impact_factor": 13.0,
+      "frequency": "monthly",
+      "openalex": "S139253143",
+      "issn": "1545-9985",
+      "feeds": [
+        {
+          "url": "https://www.nature.com/nsmb.rss",
+          "type": "journal",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "sciadv",
+      "label": "Science Advances",
+      "family": "Science",
+      "impact_factor": 12.5,
+      "frequency": "continuous",
+      "openalex": "S2737427234",
+      "issn": "2375-2548",
+      "feeds": [
+        {
+          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv",
+          "type": "etoc",
+          "bio_focus": "mixed"
         }
       ]
     },
@@ -324,6 +345,7 @@
       "key": "cell-genomics",
       "label": "Cell Genomics",
       "family": "Cell Press",
+      "impact_factor": 11.0,
       "frequency": "monthly",
       "openalex": "S4210194377",
       "issn": "2666-979X",
@@ -339,6 +361,7 @@
       "key": "developmental-cell",
       "label": "Developmental Cell",
       "family": "Cell Press",
+      "impact_factor": 10.0,
       "frequency": "biweekly",
       "openalex": "S83804233",
       "issn": "1534-5807",
@@ -351,30 +374,16 @@
       ]
     },
     {
-      "key": "immunity",
-      "label": "Immunity",
+      "key": "cell-systems",
+      "label": "Cell Systems",
       "family": "Cell Press",
+      "impact_factor": 9.0,
       "frequency": "monthly",
-      "openalex": "S199671312",
-      "issn": "1074-7613",
+      "openalex": "S2764739556",
+      "issn": "2405-4712",
       "feeds": [
         {
-          "url": "https://www.cell.com/immunity/current.rss",
-          "type": "current",
-          "bio_focus": "high"
-        }
-      ]
-    },
-    {
-      "key": "neuron",
-      "label": "Neuron",
-      "family": "Cell Press",
-      "frequency": "biweekly",
-      "openalex": "S45757444",
-      "issn": "0896-6273",
-      "feeds": [
-        {
-          "url": "https://www.cell.com/neuron/current.rss",
+          "url": "https://www.cell.com/cell-systems/current.rss",
           "type": "current",
           "bio_focus": "high"
         }
@@ -384,6 +393,7 @@
       "key": "current-biology",
       "label": "Current Biology",
       "family": "Cell Press",
+      "impact_factor": 7.5,
       "frequency": "biweekly",
       "openalex": "S128425624",
       "issn": "0960-9822",
@@ -396,16 +406,33 @@
       ]
     },
     {
-      "key": "cancer-cell",
-      "label": "Cancer Cell",
+      "key": "cell-reports",
+      "label": "Cell Reports",
       "family": "Cell Press",
-      "frequency": "monthly",
-      "openalex": "S25671836",
-      "issn": "1535-6108",
+      "impact_factor": 7.1,
+      "frequency": "continuous",
+      "openalex": "S169236886",
+      "issn": "2211-1247",
       "feeds": [
         {
-          "url": "https://www.cell.com/cancer-cell/current.rss",
+          "url": "https://www.cell.com/cell-reports/current.rss",
           "type": "current",
+          "bio_focus": "high"
+        }
+      ]
+    },
+    {
+      "key": "scisignal",
+      "label": "Science Signaling",
+      "family": "Science",
+      "impact_factor": 6.4,
+      "frequency": "weekly",
+      "openalex": "S155937366",
+      "issn": "1937-9145",
+      "feeds": [
+        {
+          "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling",
+          "type": "etoc",
           "bio_focus": "high"
         }
       ]

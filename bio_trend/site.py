@@ -40,6 +40,7 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 
 DEFAULT_SITE_DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
 DEFAULT_ABSTRACT_CHARS = 300
+MAX_SHARD_AUTHORS = 10  # truncate long author lists in browse shards
 
 
 def parse_authors(raw: object) -> list[str]:
@@ -116,14 +117,19 @@ def export_site(
     min_prev: int = DEFAULT_MIN_PREV,
     min_count: int = DEFAULT_MIN_COUNT,
     abstract_chars: int = DEFAULT_ABSTRACT_CHARS,
-    max_shard_months: int | None = None,
+    shard_years: int | None = None,
+    max_authors: int = MAX_SHARD_AUTHORS,
+    topiced_only: bool = True,
 ) -> dict:
     """Write the site's JSON data files and return the manifest.
 
-    ``max_shard_months`` caps the *browsable* paper shards to the most recent N
-    months (globally), keeping the static site light when a large historical
-    backfill is present. Trends are always computed over the full history,
-    regardless of this cap. ``None`` (default) emits a shard for every month.
+    Browsable papers are sharded **per (journal, year)** — ``papers/<key>_<YYYY>.json``
+    — so the site lazy-loads only the years a user actually views. ``shard_years``
+    caps shards to the most recent N years (``None`` = all). Trends are always
+    computed over the full history regardless of this cap; ``max_authors`` truncates
+    long author lists to keep shard files lean. ``topiced_only`` (default) omits
+    papers with no biology topic from the browse shards — they never match a topic
+    filter and would only bloat the payload (trends still see them via the CSVs).
     """
     import pandas as pd
 
@@ -148,13 +154,14 @@ def export_site(
         json.dumps(trends_by_bucket, ensure_ascii=False), encoding="utf-8"
     )
 
+    from collections import defaultdict
+
     key_to_label = registry.key_to_label
     key_to_family = registry.key_to_family
     shards: list[dict] = []
     seen_topics: set[str] = set()
 
-    # Collect every (journal, month) topics file, then optionally keep only the
-    # most recent N months as browsable shards (trends already used all of it).
+    # Collect every (journal, month) topics file.
     found: list[tuple[str, str, str, str, Path]] = []  # (key, label, family, month, path)
     for key_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()) if data_dir.exists() else []:
         key = key_dir.name
@@ -167,46 +174,62 @@ def export_site(
             if month is not None:
                 found.append((key, label, family, month, topics_path))
 
-    keep_months: set[str] | None = None
-    if max_shard_months:
-        all_months = sorted({m for _, _, _, m, _ in found})
-        keep_months = set(all_months[-max_shard_months:])
-
-    # Full-corpus totals (every month, not just browsable shards) for the hero.
+    # Full-corpus totals (every month) for the hero stats.
     total_articles = 0
     for _, _, _, _, path in found:
         with open(path, encoding="utf-8") as fh:
             total_articles += max(0, sum(1 for _ in fh) - 1)  # minus header
 
-    for key, label, family, month, topics_path in found:
-        if keep_months is not None and month not in keep_months:
+    months_present = sorted({m for _, _, _, m, _ in found})
+    years_present = sorted({m[:4] for _, _, _, m, _ in found})
+    keep_years = set(years_present[-shard_years:]) if shard_years else set(years_present)
+
+    # Group the monthly files into one browsable shard per (journal, year).
+    by_jy: dict[tuple[str, str, str, str], list[tuple[str, Path]]] = defaultdict(list)
+    for key, label, family, month, path in found:
+        by_jy[(key, label, family, month[:4])].append((month, path))
+
+    for (key, label, family, year), items in sorted(by_jy.items()):
+        if year not in keep_years:
             continue
-        df = pd.read_csv(topics_path)
-        rel = f"papers/{key}_{month}.json"
-        cite_path = Path(str(topics_path) + ".citations.json")
-        side_cites = json.loads(cite_path.read_text(encoding="utf-8")) if cite_path.exists() else {}
-        prev_cites = _recover_citations_from_shard(out_dir / rel)
-        citations = {**prev_cites, **side_cites} or None
-        records = [
-            build_paper_record(row, label, family, month, abstract_chars, citations)
-            for row in df.to_dict("records")
-        ]
-        for record in records:
-            seen_topics.update(record["topics"])
-        (out_dir / rel).write_text(json.dumps(records, ensure_ascii=False), encoding="utf-8")
+        rel = f"papers/{key}_{year}.json"
+        # citations: merge every month's sidecar, plus any already in the prior shard
+        citations: dict = dict(_recover_citations_from_shard(out_dir / rel))
+        for _, path in items:
+            cite_path = Path(str(path) + ".citations.json")
+            if cite_path.exists():
+                citations.update(json.loads(cite_path.read_text(encoding="utf-8")))
+        cites = citations or None
+
+        year_records: list[dict] = []
+        for month, path in sorted(items):
+            df = pd.read_csv(path)
+            for row in df.to_dict("records"):
+                rec = build_paper_record(row, label, family, month, abstract_chars, cites)
+                if topiced_only and not rec["topics"]:
+                    continue  # papers with no biology topic never match a topic browse
+                if len(rec["authors"]) > max_authors:
+                    rec["authors"] = rec["authors"][:max_authors]
+                seen_topics.update(rec["topics"])
+                year_records.append(rec)
+        (out_dir / rel).write_text(json.dumps(year_records, ensure_ascii=False), encoding="utf-8")
         shards.append({
             "journal": key, "label": label, "family": family,
-            "period": month, "count": len(records), "file": rel,
+            "year": year, "count": len(year_records), "file": rel,
         })
 
+    browsable_years = sorted(keep_years)
     manifest = {
+        # ordered by impact factor (see config/journals.json); the site preserves this order
         "journals": [
-            {"key": j.key, "label": j.label, "family": j.family} for j in registry.journals
+            {"key": j.key, "label": j.label, "family": j.family, "impact_factor": j.impact_factor}
+            for j in registry.journals
         ],
         "families": sorted({j.family for j in registry.journals}),
         "topics": sorted(seen_topics),
-        "periods": sorted({s["period"] for s in shards}),
-        "years": sorted({s["period"][:4] for s in shards}),
+        # months available within browsable years (drives the month dropdown)
+        "periods": [m for m in months_present if m[:4] in keep_years],
+        "years": browsable_years,
         "buckets": list(BUCKETS),
         # full-corpus coverage (all years analysed for trends, not just browsable shards)
         "total_articles": total_articles,

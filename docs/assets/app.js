@@ -1,18 +1,20 @@
 /* Bio-trend static browser. Vanilla JS, no build step.
-   Loads data/manifest.json + data/trends.json, lazy-loads paper shards. */
+   Loads data/manifest.json + data/trends.json; lazy-loads per (journal, year)
+   paper shards on demand so any year is browsable without preloading the corpus. */
 
 const DATA = "data/";
 const PAGE = 20;
-
 const BUCKET_LABELS = { year: "Year", quarter: "Quarter", month: "Month" };
 
 const state = {
   manifest: null,
-  trends: {},        // { bucket: [ {group, period, top, emerging, fading, counts}, ... ] }
-  papers: [],        // all paper records, flattened across shards
-  bucket: "year",    // selected granularity (default: year)
-  group: null,
-  period: null,
+  trends: {},            // { bucket: [ {group, period, top, emerging, fading, counts}, ... ] }
+  bucket: "year",        // selected trend granularity (default: year)
+  group: null,           // selected journal in the trends view
+  period: null,          // selected trend period (e.g. "2025", "2025-Q2", "2025-06")
+  journalRank: {},       // journal label -> impact-factor rank (0 = highest)
+  shardCache: {},        // shard file -> records[]
+  loaded: [],            // records currently loaded for the active period/journal
   shown: PAGE,
 };
 
@@ -41,12 +43,18 @@ async function init() {
     $("#trend-panel").innerHTML = `<p class="loading">Could not load data (${err.message}). Run <code>bio-trend refresh</code> first.</p>`;
     return;
   }
+  state.manifest.journals.forEach((j, i) => { state.journalRank[j.label] = i; });
   buildHeroStats();
   buildBucketPicker();
   buildTrendPicker();
   buildFilters();
-  await loadAllPapers();
-  renderPapers();
+  await applyBrowse();
+}
+
+function byRank(a, b) {
+  const ra = state.journalRank[a] ?? 999;
+  const rb = state.journalRank[b] ?? 999;
+  return ra === rb ? a.localeCompare(b) : ra - rb;
 }
 
 // ---- hero -------------------------------------------------------------------
@@ -59,7 +67,7 @@ function buildHeroStats() {
     [m.journals.length, "journals"],
     [total.toLocaleString(), "articles"],
     [m.taxonomy_topics ?? m.topics.length, "topics"],
-    [years.length || m.periods.length, yearsLabel],
+    [years.length || m.years.length, yearsLabel],
   ];
   const box = $("#hero-stats");
   for (const [num, label] of stats) {
@@ -86,7 +94,6 @@ function buildBucketPicker() {
     pill.addEventListener("click", () => selectBucket(b));
     row.append(pill);
   }
-  // default to year if available, else the first offered bucket
   state.bucket = buckets.includes("year") ? "year" : buckets[0];
 }
 
@@ -103,7 +110,8 @@ function buildTrendPicker() {
     p.setAttribute("aria-pressed", String(p.dataset.bucket === state.bucket));
   $("#period-label").textContent = BUCKET_LABELS[state.bucket] || "Period";
 
-  const groups = [...new Set(currentTrends().map((t) => t.group))].sort();
+  // journals ordered by impact factor (manifest order), not alphabetical
+  const groups = [...new Set(currentTrends().map((t) => t.group))].sort(byRank);
   const row = $("#group-pills");
   row.innerHTML = "";
   groups.forEach((g) => {
@@ -112,7 +120,6 @@ function buildTrendPicker() {
     pill.addEventListener("click", () => selectGroup(g));
     row.append(pill);
   });
-  // keep the current group if it still exists, else pick the first
   const group = groups.includes(state.group) ? state.group : groups[0];
   if (group) selectGroup(group);
 }
@@ -162,7 +169,7 @@ function trendCard(kind, title, topics, counts, max) {
   const card = el("div", `trend-card trend-card--${kind}`);
   card.append(el("h3", "trend-card__title", title));
   if (!topics.length) {
-    card.append(el("p", "trend-empty", "Needs a prior month to compare."));
+    card.append(el("p", "trend-empty", "Needs a prior period to compare."));
     return card;
   }
   const list = el("ul", "trend-list");
@@ -181,90 +188,130 @@ function trendCard(kind, title, topics, counts, max) {
   return card;
 }
 
-function jumpToTopic(topic) {
+// Click a topic in the trends -> show all papers in that topic, for the trend's
+// current period, across all journals (no journal constraint).
+async function jumpToTopic(topic) {
   $("#f-topic").value = topic;
+  $("#f-journal").value = "";
+  setPeriodValue(state.period);
   state.shown = PAGE;
-  renderPapers();
   $("#browse").scrollIntoView({ behavior: "smooth" });
+  await applyBrowse();
 }
 
-// ---- papers -----------------------------------------------------------------
-async function loadAllPapers() {
-  $("#result-meta").textContent = "Loading articles…";
-  const shards = await Promise.all(
-    state.manifest.shards.map((s) => getJSON(s.file).catch(() => [])),
-  );
-  state.papers = shards.flat();
-}
-
+// ---- browse (lazy-loaded) ---------------------------------------------------
 function buildFilters() {
   const m = state.manifest;
-  fillSelect("#f-family", m.families);
-  fillJournals();
-  // periods: years (all-of-year) first, then individual months, newest first
+  // journals in impact-factor order
+  for (const j of m.journals) $("#f-journal").append(new Option(j.label, j.label));
+  // period: years first (default latest), then months
   const years = (m.years || []).slice().reverse();
   const months = (m.periods || []).slice().reverse();
-  const periodSel = $("#f-period");
-  for (const y of years) periodSel.append(new Option(`${y} (whole year)`, y));
-  for (const mo of months) periodSel.append(new Option(mo, mo));
+  const sel = $("#f-period");
+  for (const y of years) sel.append(new Option(`${y} (whole year)`, y));
+  for (const mo of months) sel.append(new Option(mo, mo));
+  if (years.length) sel.value = years[0]; // default: most recent year
   fillSelect("#f-topic", m.topics);
 
-  $("#f-family").addEventListener("change", () => { fillJournals(); reset(); });
   for (const id of ["#f-journal", "#f-period", "#f-topic", "#f-sort"])
-    $(id).addEventListener("change", reset);
-  $("#f-search").addEventListener("input", debounce(reset, 180));
-  $("#more-btn").addEventListener("click", () => { state.shown += PAGE; renderPapers(); });
+    $(id).addEventListener("change", onFilterChange);
+  $("#f-search").addEventListener("input", debounce(onFilterChange, 200));
+  $("#more-btn").addEventListener("click", () => { state.shown += PAGE; renderList(); });
 }
 
-function fillJournals() {
-  const fam = $("#f-family").value;
-  const journals = state.manifest.journals
-    .filter((j) => !fam || j.family === fam)
-    .map((j) => j.label);
-  fillSelect("#f-journal", journals, true);
-}
-
-function fillSelect(sel, values, keepFirst) {
+function fillSelect(sel, values) {
   const node = $(sel);
-  const first = keepFirst || node.options.length ? node.options[0] : null;
+  const first = node.options[0];
   node.innerHTML = "";
-  if (first) node.append(first.cloneNode(true));
+  if (first) node.append(first);
   for (const v of values) node.append(new Option(v, v));
 }
 
-function reset() { state.shown = PAGE; renderPapers(); }
+async function onFilterChange() {
+  state.shown = PAGE;
+  await applyBrowse();
+}
 
-function filteredPapers() {
-  const fam = $("#f-family").value;
-  const jour = $("#f-journal").value;
-  const per = $("#f-period").value;
+// Ensure a period value (possibly a quarter like "2025-Q2" not in the dropdown)
+// is selectable, then select it.
+function setPeriodValue(value) {
+  const sel = $("#f-period");
+  if (!value) { sel.value = ""; return; }
+  if (![...sel.options].some((o) => o.value === value)) {
+    sel.append(new Option(value, value));
+  }
+  sel.value = value;
+}
+
+function periodYears(value) {
+  if (!value) return state.manifest.years.slice(); // all browsable years
+  return [value.slice(0, 4)];
+}
+
+function periodMatch(month, value) {
+  if (!value) return true;
+  if (/^\d{4}$/.test(value)) return month.slice(0, 4) === value;
+  const q = value.match(/^(\d{4})-Q([1-4])$/);
+  if (q) {
+    const mo = parseInt(month.slice(5, 7), 10);
+    const start = (parseInt(q[2], 10) - 1) * 3 + 1;
+    return month.slice(0, 4) === q[1] && mo >= start && mo <= start + 2;
+  }
+  return month === value; // exact YYYY-MM
+}
+
+function requiredShardFiles() {
+  const years = new Set(periodYears($("#f-period").value));
+  const journal = $("#f-journal").value;
+  return state.manifest.shards
+    .filter((s) => years.has(s.year) && (!journal || s.label === journal))
+    .map((s) => s.file);
+}
+
+async function ensureLoaded() {
+  const files = requiredShardFiles();
+  const missing = files.filter((f) => !(f in state.shardCache));
+  if (missing.length) {
+    const fetched = await Promise.all(
+      missing.map((f) => getJSON(f).then((r) => [f, r]).catch(() => [f, []])),
+    );
+    for (const [f, r] of fetched) state.shardCache[f] = r;
+  }
+  state.loaded = files.flatMap((f) => state.shardCache[f] || []);
+}
+
+async function applyBrowse() {
+  $("#result-meta").textContent = "Loading articles…";
+  $("#papers").innerHTML = "";
+  await ensureLoaded();
+  renderList();
+}
+
+function currentResults() {
+  const journal = $("#f-journal").value;
+  const period = $("#f-period").value;
   const topic = $("#f-topic").value;
   const q = $("#f-search").value.trim().toLowerCase();
   const sort = $("#f-sort").value;
 
-  let out = state.papers.filter((p) => {
-    if (fam && p.family !== fam) return false;
-    if (jour && p.journal !== jour) return false;
-    // `per` may be a year ("2025") or a month ("2025-06")
-    if (per && p.period !== per && !p.period.startsWith(per + "-")) return false;
+  let out = state.loaded.filter((p) => {
+    if (journal && p.journal !== journal) return false;
+    if (!periodMatch(p.period, period)) return false;
     if (topic && !(p.topics || []).includes(topic)) return false;
     if (q) {
-      const hay = (p.title + " " + (p.abstract || "") + " " + (p.authors || []).join(" ")).toLowerCase();
+      const hay = (p.title + " " + (p.authors || []).join(" ") + " " + (p.abstract || "")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
 
-  if (sort === "citations") {
-    out.sort((a, b) => (b.citations ?? -1) - (a.citations ?? -1));
-  } else {
-    out.sort((a, b) => (b.published || "").localeCompare(a.published || ""));
-  }
+  if (sort === "citations") out.sort((a, b) => (b.citations ?? -1) - (a.citations ?? -1));
+  else out.sort((a, b) => (b.published || "").localeCompare(a.published || ""));
   return out;
 }
 
-function renderPapers() {
-  const all = filteredPapers();
+function renderList() {
+  const all = currentResults();
   const list = $("#papers");
   list.innerHTML = "";
   const slice = all.slice(0, state.shown);
@@ -293,8 +340,7 @@ function paperCard(p) {
   li.append(head);
 
   const meta = el("p", "paper__meta");
-  const j = el("span", "paper__journal", p.journal);
-  meta.append(j);
+  meta.append(el("span", "paper__journal", p.journal));
   const bits = [];
   if (p.published) bits.push(p.published);
   if (p.authors && p.authors.length) bits.push(formatAuthors(p.authors));

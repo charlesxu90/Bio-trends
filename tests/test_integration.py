@@ -67,19 +67,21 @@ def test_refresh_then_export_site(tmp_path, monkeypatch):
     manifest = json.loads((site_dir / "manifest.json").read_text())
     assert manifest["families"] == ["Cell Press"]
     assert "genome editing" in manifest["topics"] and "immunology" in manifest["topics"]
-    shard = json.loads((site_dir / "papers" / "cell_2026-05.json").read_text())
+    # browsable papers are sharded per (journal, year)
+    shard = json.loads((site_dir / "papers" / "cell_2026.json").read_text())
     assert {r["title"] for r in shard} == {"CRISPR base editing", "T cell receptor map"}
+    assert {s["year"] for s in manifest["shards"]} == {"2026"}
 
 
-def test_export_site_caps_shards_but_trends_use_all(tmp_path):
+def test_export_site_year_shards_and_shard_years_cap(tmp_path):
     config_dir = tmp_path / "config"
     data_dir = tmp_path / "data"
     _make_config(config_dir)
     cell = data_dir / "cell"
     cell.mkdir(parents=True)
-    # three months of data
-    for month in ("2025-11", "2025-12", "2026-01"):
-        pd.DataFrame([{"title": "CRISPR", "abstract": "crispr", "journal": "Cell",
+    # data across two years (and two months in 2026)
+    for month in ("2025-11", "2026-01", "2026-02"):
+        pd.DataFrame([{"title": f"CRISPR {month}", "abstract": "crispr", "journal": "Cell",
                        "family": "Cell Press", "published_date": f"{month}-05", "doi": f"10.1/{month}",
                        "link": "", "authors": "", "topic": "genome editing"}]).to_csv(
             cell / f"{month}.csv_topics.csv", index=False
@@ -88,15 +90,15 @@ def test_export_site_caps_shards_but_trends_use_all(tmp_path):
     taxonomy = Taxonomy.load(config_dir)
     registry = JournalRegistry.load(config_dir)
     manifest = export_site(tmp_path / "site", taxonomy=taxonomy, registry=registry,
-                           data_dir=data_dir, max_shard_months=1)
+                           data_dir=data_dir, shard_years=1)
 
-    # only the most recent month is emitted as a browsable shard
-    assert len(manifest["shards"]) == 1
-    assert manifest["shards"][0]["period"] == "2026-01"
-    # but yearly trends still cover both 2025 and 2026
+    # only the most recent year is emitted as a browsable shard...
+    assert {s["year"] for s in manifest["shards"]} == {"2026"}
+    shard = json.loads((tmp_path / "site" / "papers" / "cell_2026.json").read_text())
+    assert len(shard) == 2  # both 2026 months merged into the year shard
+    # ...but yearly trends still cover 2025 and 2026
     trends = json.loads((tmp_path / "site" / "trends.json").read_text())
-    years = {t["period"] for t in trends["year"]}
-    assert {"2025", "2026"} <= years
+    assert {"2025", "2026"} <= {t["period"] for t in trends["year"]}
 
 
 def test_export_site_reads_citation_sidecar(tmp_path):
@@ -116,5 +118,5 @@ def test_export_site_reads_citation_sidecar(tmp_path):
     registry = JournalRegistry.load(config_dir)
     export_site(tmp_path / "site", taxonomy=taxonomy, registry=registry, data_dir=data_dir)
 
-    shard = json.loads((tmp_path / "site" / "papers" / "cell_2026-05.json").read_text())
+    shard = json.loads((tmp_path / "site" / "papers" / "cell_2026.json").read_text())
     assert shard[0]["citations"] == 7

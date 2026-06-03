@@ -19,7 +19,12 @@ Feed catalog: **[Journal-RSS.md](Journal-RSS.md)**.
   computed from article counts and period-over-period change.
 - **Browse articles** — filter by family / journal / month / topic, search titles,
   abstracts, and authors; sort by recency or citations.
-- **Citations** — optional Semantic Scholar / OpenAlex counts, looked up by DOI.
+- **Citations & rising papers** — Crossref `is-referenced-by-count` by DOI, tracked
+  over time: each paper is snapshotted on first ingest and then up to twice more,
+  monthly, within three months of publication (≤3 snapshots). The gain across
+  snapshots is the **rising** signal — sort Rising Stars by "Rising (citation gain)".
+  History lives in `citations/<journal>/<year>.json` (committed). Follows the Zotero
+  *Citation Counts Manager* approach.
 - **Static site** — a fast GitHub Pages browser, rebuilt from the data.
 
 The only non-deterministic step is **topic curation** (deciding which keywords map
@@ -79,7 +84,7 @@ PYTHONNOUSERSITE=1 ./env/bin/bio-trend <command>
 | `trends [--bucket year\|quarter\|month] [--group-by journal\|family]` | Compute top/emerging/fading |
 | `candidates <csv>` | Extract candidate keywords (scispaCy) for taxonomy curation |
 | `curate <decision.json>` | Apply a curation decision to the taxonomy |
-| `citations <csv> --topics t1,t2` | Fetch citation counts (DOI-first, cached) |
+| `citations [--journal KEY] [--years ...]` | Track Crossref citation counts per paper (snapshot on addition + monthly for 3 months) |
 | `export-site` | Rebuild the GitHub Pages data (`docs/data/`) |
 | `refresh [--no-ingest]` | Full pipeline: ingest → assign → trends → export-site |
 

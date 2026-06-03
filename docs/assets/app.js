@@ -350,6 +350,7 @@ function currentResults() {
   });
 
   if (sort === "citations") out.sort((a, b) => (b.citations ?? -1) - (a.citations ?? -1));
+  else if (sort === "rising") out.sort((a, b) => (b.rising ?? 0) - (a.rising ?? 0) || (b.citations ?? -1) - (a.citations ?? -1));
   else out.sort((a, b) => (b.published || "").localeCompare(a.published || ""));
   return out;
 }
@@ -372,10 +373,10 @@ function paperCard(p) {
   const li = el("li", "paper");
   const url = articleUrl(p);
 
-  // Row 1: journal · date (· cites)
-  const venue = p.citations != null
-    ? `${p.journal} · ${p.period} · ${p.citations.toLocaleString()} cites`
-    : `${p.journal} · ${p.period}`;
+  // Row 1: journal · date · cites · rising gain
+  let venue = `${p.journal} · ${p.period}`;
+  if (p.citations != null) venue += ` · ${p.citations.toLocaleString()} cites`;
+  if (p.rising) venue += ` · ▲ +${p.rising}`;
   li.append(el("p", "paper__venue", venue));
 
   // Row 2: title, full width, clamped to two lines (CSS adds the ellipsis)

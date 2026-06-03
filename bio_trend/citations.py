@@ -1,174 +1,184 @@
-"""Citation counts from Semantic Scholar / OpenAlex, hardened and cached.
+"""Citation counts from Crossref, tracked over time per paper.
 
-Adapted from AI-trend's ``citations.py``. The key improvement for Bio-trend: RSS
-feed entries carry **DOIs**, so we look citations up by DOI directly (exact, no
-fuzzy title matching) whenever a DOI is present, and only fall back to
-title-verified search otherwise.
+Follows the Zotero *Citation Counts Manager* reference: Crossref's
+``is-referenced-by-count`` keyed by DOI is the primary, key-less source. Every
+Bio-trend article carries a DOI and Crossref is reachable where OpenAlex/S2 are
+rate-limited, so Crossref is the default.
 
-The cache is keyed by article **title** (so :mod:`bio_trend.site` can join it onto
-paper records) and is resumable: titles already cached are skipped. ``0`` (zero
-citations) is distinct from ``None`` (verified no-match); a failed request is left
-uncached so it retries next run.
+Tracking policy (to surface *rising* papers): a paper's count is snapshotted
+**on first sight (addition)** and then **at most twice more, monthly, while within
+three months of its publication date** — three snapshots maximum. Citations of
+older papers move slowly, so one snapshot is enough; recent papers accrue a short
+velocity series, and the gain across snapshots is the "rising" signal.
 
-Optional extra: ``pip install -e '.[citations]'`` (needs ``requests``).
+Storage: ``citations/<journal_key>/<year>.json`` — committed (not under the
+gitignored ``data/``) so history persists across checkouts/CI:
+
+    { "<doi>": [["YYYY-MM-DD", count], ...] }   # oldest → newest, ≤ 3 entries
+
+Efficiency: counts come from one paginated Crossref query per *(journal, year)*
+(ISSN + date filter, selecting only DOI + count) — not one call per paper.
 """
 
 from __future__ import annotations
 
+import datetime
 import json
-import os
-import re
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     import requests
 
-S2_SEARCH = "https://api.semanticscholar.org/graph/v1/paper/search"
-S2_BY_DOI = "https://api.semanticscholar.org/graph/v1/paper/DOI:{doi}"
-DEFAULT_THROTTLE = 1.1
-DEFAULT_RETRIES = 4
+CROSSREF_WORKS = "https://api.crossref.org/works"
+CROSSREF_WORK = "https://api.crossref.org/works/{doi}"
+ROWS = 200
+DEFAULT_THROTTLE = 0.5
+DEFAULT_RETRIES = 5
 DEFAULT_BACKOFF = 2.0
+MAX_SNAPSHOTS = 3          # at most three updates per paper
+TRACK_MONTHS = 3          # only keep updating within 3 months of publication
 
-FETCH_FAILED = object()  # request itself failed (429/network) — do NOT cache
-MAX_CONSECUTIVE_FAILURES = 10
-TITLE_MATCH_JACCARD = 0.85
+FETCH_FAILED = object()   # request itself failed (429/network) — do not cache
 
-
-def _headers() -> dict[str, str]:
-    headers = {"User-Agent": "bio-trend/0.1"}
-    key = os.environ.get("S2_API_KEY", "").strip()
-    if key:
-        headers["x-api-key"] = key
-    return headers
+CITATIONS_DIR = Path(__file__).resolve().parent.parent / "citations"
 
 
-def _normalize_title(title: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", str(title).lower()).strip()
+# ---- history helpers --------------------------------------------------------
+def counts_path(journal_key: str, year: str, base: Path | str = CITATIONS_DIR) -> Path:
+    return Path(base) / journal_key / f"{year}.json"
 
 
-def titles_match(query: str, candidate: str) -> bool:
-    """True if two titles refer to the same paper (exact-normalised or high Jaccard)."""
-    nq, nc = _normalize_title(query), _normalize_title(candidate)
-    if not nq or not nc:
-        return False
-    if nq == nc:
+def load_history(path: Path | str) -> dict[str, list]:
+    path = Path(path)
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+
+
+def save_history(path: Path | str, history: dict[str, list]) -> None:
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(history, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+
+
+def latest_count(snapshots: list) -> int | None:
+    return snapshots[-1][1] if snapshots else None
+
+
+def citation_delta(snapshots: list) -> int:
+    """Gain between the first and latest snapshot (the rising signal); 0 if <2."""
+    if not snapshots or len(snapshots) < 2:
+        return 0
+    return snapshots[-1][1] - snapshots[0][1]
+
+
+def _months_between(pub_date: str, today: datetime.date) -> int | None:
+    if not isinstance(pub_date, str) or len(pub_date) < 7 or pub_date[4] != "-":
+        return None
+    y, m = int(pub_date[:4]), int(pub_date[5:7])
+    return (today.year - y) * 12 + (today.month - m)
+
+
+def is_due(snapshots: list, pub_date: str, today: datetime.date) -> bool:
+    """Whether a paper should be (re)snapshotted now.
+
+    * No snapshot yet -> due (addition).
+    * Otherwise only while < MAX_SNAPSHOTS, within TRACK_MONTHS of publication, and
+      not already snapshotted this calendar month.
+    """
+    if not snapshots:
         return True
-    tq, tc = set(nq.split()), set(nc.split())
-    union = tq | tc
-    return bool(union) and len(tq & tc) / len(union) >= TITLE_MATCH_JACCARD
+    if len(snapshots) >= MAX_SNAPSHOTS:
+        return False
+    months = _months_between(pub_date, today)
+    if months is None or months > TRACK_MONTHS:
+        return False
+    return snapshots[-1][0][:7] < today.strftime("%Y-%m")
 
 
-def _get(session, url, params, *, retries, backoff, sleep):
-    for attempt in range(retries + 1):
-        try:
-            resp = session.get(url, params=params, timeout=30, headers=_headers())
-            if resp.status_code == 429:
-                if attempt < retries:
-                    sleep(backoff * (2 ** attempt))
-                    continue
-                return None
-            if resp.status_code == 404:
-                return {}  # DOI lookup: not found (distinct from request failure)
-            resp.raise_for_status()
-            return resp.json()
-        except Exception:
-            if attempt < retries:
-                sleep(backoff * (2 ** attempt))
-                continue
-            return None
-    return None
+def record_snapshot(snapshots: list, date_iso: str, count: int) -> list:
+    """Append a snapshot (immutably), keeping the last MAX_SNAPSHOTS."""
+    return [*snapshots, [date_iso, count]][-MAX_SNAPSHOTS:]
 
 
-def search_by_doi(
+# ---- Crossref fetch ---------------------------------------------------------
+def _session(mailto: str = "", session: "requests.Session | None" = None) -> "requests.Session":
+    import requests
+
+    sess = session or requests.Session()
+    sess.headers.setdefault("User-Agent", f"bio-trend/0.1 (mailto:{mailto})" if mailto else "bio-trend/0.1")
+    return sess
+
+
+def count_by_doi(
     doi: str, session: "requests.Session", *,
     retries: int = DEFAULT_RETRIES, backoff: float = DEFAULT_BACKOFF, sleep=time.sleep,
 ) -> int | None | object:
-    """Citation count for an exact DOI. Returns int, None (not found), or FETCH_FAILED."""
-    data = _get(session, S2_BY_DOI.format(doi=doi), {"fields": "citationCount"},
-                retries=retries, backoff=backoff, sleep=sleep)
-    if data is None:
-        return FETCH_FAILED
-    if not data:  # 404
-        return None
-    return data.get("citationCount")
+    """Crossref ``is-referenced-by-count`` for a single DOI (reference behaviour)."""
+    for attempt in range(retries + 1):
+        try:
+            resp = session.get(CROSSREF_WORK.format(doi=doi), timeout=30)
+            if resp.status_code == 404:
+                return None
+            if resp.status_code == 429:
+                if attempt < retries:
+                    sleep(backoff * (2 ** attempt)); continue
+                return FETCH_FAILED
+            resp.raise_for_status()
+            return resp.json().get("message", {}).get("is-referenced-by-count")
+        except Exception:
+            if attempt < retries:
+                sleep(backoff * (2 ** attempt)); continue
+            return FETCH_FAILED
+    return FETCH_FAILED
 
 
-def search_by_title(
-    title: str, session: "requests.Session", *, limit: int = 5,
+def fetch_counts_for_source(
+    issn: str, *, from_date: str, to_date: str, mailto: str = "",
+    session: "requests.Session | None" = None, throttle: float = DEFAULT_THROTTLE,
     retries: int = DEFAULT_RETRIES, backoff: float = DEFAULT_BACKOFF, sleep=time.sleep,
-) -> int | None | object:
-    """Title-verified citation count. Returns int, None (no match), or FETCH_FAILED."""
-    data = _get(session, S2_SEARCH,
-                {"query": title.replace("-", " "), "fields": "title,citationCount", "limit": limit},
-                retries=retries, backoff=backoff, sleep=sleep)
-    if data is None:
-        return FETCH_FAILED
-    for result in data.get("data") or []:
-        if titles_match(title, result.get("title", "")):
-            return result.get("citationCount")
-    return None
-
-
-def load_cache(path: Path | str) -> dict[str, int | None]:
-    path = Path(path)
-    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-
-
-def save_cache(path: Path | str, cache: dict) -> None:
-    Path(path).write_text(json.dumps(cache, ensure_ascii=False, indent=0), encoding="utf-8")
-
-
-def items_for_topics(df, topics) -> list[tuple[str, str]]:
-    """``(title, doi)`` pairs for papers whose ``topic`` matches any of ``topics``."""
-    topic_set = set(topics)
-    out: list[tuple[str, str]] = []
-    dois = df["doi"].fillna("") if "doi" in df.columns else [""] * len(df)
-    for title, doi, cell in zip(df["title"], dois, df["topic"].fillna("")):
-        labels = {t for t in str(cell).split(";") if t}
-        if labels & topic_set:
-            out.append((str(title), str(doi)))
-    return out
-
-
-def fetch_citations(
-    items: list[tuple[str, str]],
-    cache_path: Path | str,
-    session: "requests.Session",
-    *,
-    throttle: float = DEFAULT_THROTTLE,
-    sleep=time.sleep,
-    log=lambda *_: None,
-) -> dict[str, int | None]:
-    """Fetch citations for ``(title, doi)`` items (DOI-first), resumable via cache."""
-    cache = load_cache(cache_path)
-    pending = [(t, d) for t, d in items if t not in cache]
-    log(f"citations: {len(pending)} to fetch ({len(items) - len(pending)} cached)")
-    consecutive_failures = 0
-    for i, (title, doi) in enumerate(pending, 1):
-        result = search_by_doi(doi, session, sleep=sleep) if doi else FETCH_FAILED
-        if result is FETCH_FAILED and not doi:
-            result = search_by_title(title, session, sleep=sleep)
-        elif result is FETCH_FAILED and doi:
-            # DOI request failed outright; try a title search before giving up
-            result = search_by_title(title, session, sleep=sleep)
-
-        if result is FETCH_FAILED:
-            consecutive_failures += 1
-            if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
-                log(f"citations: aborting after {consecutive_failures} consecutive failures "
-                    f"(rate-limited?); {i - 1}/{len(pending)} attempted — re-run to resume")
+    log: Callable[[str], None] = lambda *_: None,
+) -> dict[str, int]:
+    """``{doi: is-referenced-by-count}`` for a journal (ISSN) in a date range."""
+    sess = _session(mailto, session)
+    filt = f"issn:{issn},from-pub-date:{from_date},until-pub-date:{to_date},type:journal-article"
+    counts: dict[str, int] = {}
+    cursor = "*"
+    while cursor:
+        params = {"filter": filt, "rows": ROWS, "cursor": cursor,
+                  "select": "DOI,is-referenced-by-count"}
+        if mailto:
+            params["mailto"] = mailto
+        data = None
+        for attempt in range(retries + 1):
+            try:
+                resp = sess.get(CROSSREF_WORKS, params=params, timeout=60)
+                if resp.status_code == 429:
+                    if attempt < retries:
+                        sleep(backoff * (2 ** attempt)); continue
+                    raise RuntimeError("Crossref rate-limited (429) after retries")
+                resp.raise_for_status()
+                data = resp.json()
                 break
-            if i < len(pending):
-                sleep(throttle)
-            continue
-        consecutive_failures = 0
-        cache[title] = result  # int | None (verified no-match)
-        if i % 25 == 0 or i == len(pending):
-            save_cache(cache_path, cache)
-            log(f"citations: {i}/{len(pending)}")
-        if i < len(pending):
-            sleep(throttle)
-    save_cache(cache_path, cache)
-    return cache
+            except Exception:
+                if attempt < retries:
+                    sleep(backoff * (2 ** attempt)); continue
+                raise
+        message = data.get("message", {})
+        items = message.get("items", [])
+        for it in items:
+            doi = (it.get("DOI") or "").strip().lower()
+            n = it.get("is-referenced-by-count")
+            if doi and isinstance(n, int):
+                counts[doi] = n
+        cursor = message.get("next-cursor")
+        log(f"  {issn}: {len(counts)} counts so far…")
+        if not items:
+            break
+        sleep(throttle)
+    return counts

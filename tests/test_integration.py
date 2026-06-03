@@ -101,9 +101,10 @@ def test_export_site_year_shards_and_shard_years_cap(tmp_path):
     assert {"2025", "2026"} <= {t["period"] for t in trends["year"]}
 
 
-def test_export_site_reads_citation_sidecar(tmp_path):
+def test_export_site_attaches_tracked_citations(tmp_path):
     config_dir = tmp_path / "config"
     data_dir = tmp_path / "data"
+    citations_dir = tmp_path / "citations"
     _make_config(config_dir)
     cell = data_dir / "cell"
     cell.mkdir(parents=True)
@@ -112,11 +113,17 @@ def test_export_site_reads_citation_sidecar(tmp_path):
                    "link": "", "authors": "", "topic": "genome editing"}]).to_csv(
         cell / "2026-05.csv_topics.csv", index=False
     )
-    (cell / "2026-05.csv_topics.csv.citations.json").write_text(json.dumps({"CRISPR": 7}))
+    # tracked history (two snapshots -> count 7, rising +5), keyed by DOI per journal-year
+    (citations_dir / "cell").mkdir(parents=True)
+    (citations_dir / "cell" / "2026.json").write_text(json.dumps(
+        {"10.1016/j.cell.2026.05.001": [["2026-05-02", 2], ["2026-06-02", 7]]}
+    ))
 
     taxonomy = Taxonomy.load(config_dir)
     registry = JournalRegistry.load(config_dir)
-    export_site(tmp_path / "site", taxonomy=taxonomy, registry=registry, data_dir=data_dir)
+    export_site(tmp_path / "site", taxonomy=taxonomy, registry=registry,
+                data_dir=data_dir, citations_dir=citations_dir)
 
     shard = json.loads((tmp_path / "site" / "papers" / "cell_2026.json").read_text())
     assert shard[0]["citations"] == 7
+    assert shard[0]["rising"] == 5

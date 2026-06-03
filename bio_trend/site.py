@@ -18,6 +18,7 @@ import json
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from bio_trend.citations import CITATIONS_DIR, citation_delta, counts_path, latest_count, load_history
 from bio_trend.ingest import DEFAULT_DATA_DIR
 from bio_trend.registry import JournalRegistry
 from bio_trend.taxonomy import Taxonomy
@@ -64,45 +65,32 @@ def build_paper_record(
     family: str,
     period: str,
     abstract_chars: int = DEFAULT_ABSTRACT_CHARS,
-    citations: dict | None = None,
+    counts_by_doi: dict | None = None,
+    deltas_by_doi: dict | None = None,
 ) -> dict:
     topics = [t for t in str(row.get("topic", "")).split(";") if t and t != "nan"]
     abstract = _text(row.get("abstract"))
     if len(abstract) > abstract_chars:
         abstract = abstract[:abstract_chars].rstrip() + "…"
-    title = _text(row.get("title"))
+    doi = _text(row.get("doi"))
     record = {
-        "title": title,
+        "title": _text(row.get("title")),
         "authors": parse_authors(row.get("authors")),
         "topics": topics,
         "journal": journal,
         "family": family,
         "period": period,
         "published": _text(row.get("published_date")),
-        "doi": _text(row.get("doi")),
+        "doi": doi,
         "link": _text(row.get("link")),
         "abstract": abstract,
     }
-    if citations is not None:
-        cited = citations.get(title)
-        if cited is not None:
-            record["citations"] = cited
+    key = doi.lower()
+    if counts_by_doi and key in counts_by_doi and counts_by_doi[key] is not None:
+        record["citations"] = counts_by_doi[key]
+    if deltas_by_doi and deltas_by_doi.get(key, 0) > 0:
+        record["rising"] = deltas_by_doi[key]  # citation gain across tracked snapshots
     return record
-
-
-def _recover_citations_from_shard(shard_path: Path) -> dict:
-    """Recover ``{title: citations}`` from a prior shard (sidecars are gitignored)."""
-    if not shard_path.exists():
-        return {}
-    try:
-        records = json.loads(shard_path.read_text(encoding="utf-8"))
-    except (ValueError, OSError):
-        return {}
-    return {
-        r["title"]: r["citations"]
-        for r in records
-        if r.get("title") and r.get("citations") is not None
-    }
 
 
 def export_site(
@@ -120,6 +108,7 @@ def export_site(
     shard_years: int | None = None,
     max_authors: int = MAX_SHARD_AUTHORS,
     topiced_only: bool = True,
+    citations_dir: Path | str = CITATIONS_DIR,
 ) -> dict:
     """Write the site's JSON data files and return the manifest.
 
@@ -193,19 +182,17 @@ def export_site(
         if year not in keep_years:
             continue
         rel = f"papers/{key}_{year}.json"
-        # citations: merge every month's sidecar, plus any already in the prior shard
-        citations: dict = dict(_recover_citations_from_shard(out_dir / rel))
-        for _, path in items:
-            cite_path = Path(str(path) + ".citations.json")
-            if cite_path.exists():
-                citations.update(json.loads(cite_path.read_text(encoding="utf-8")))
-        cites = citations or None
+        # citation counts + rising delta, tracked per DOI (committed citations/ store)
+        history = load_history(counts_path(key, year, citations_dir))
+        counts_by_doi = {doi: latest_count(s) for doi, s in history.items()}
+        deltas_by_doi = {doi: citation_delta(s) for doi, s in history.items()}
 
         year_records: list[dict] = []
         for month, path in sorted(items):
             df = pd.read_csv(path)
             for row in df.to_dict("records"):
-                rec = build_paper_record(row, label, family, month, abstract_chars, cites)
+                rec = build_paper_record(row, label, family, month, abstract_chars,
+                                         counts_by_doi, deltas_by_doi)
                 if topiced_only and not rec["topics"]:
                     continue  # papers with no biology topic never match a topic browse
                 if len(rec["authors"]) > max_authors:

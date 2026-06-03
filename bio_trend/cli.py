@@ -227,30 +227,73 @@ def cmd_trends(args: argparse.Namespace) -> int:
 
 
 def cmd_citations(args: argparse.Namespace) -> int:
+    import datetime
+    import os
+    from collections import defaultdict
+
     import pandas as pd
     import requests
 
-    from bio_trend.citations import fetch_citations, items_for_topics
+    from bio_trend import citations as C
+    from bio_trend.registry import JournalRegistry
 
-    csv = Path(args.topics_csv)
-    if not csv.exists():
-        _eprint(f"error: topics CSV not found: {csv}")
-        return 2
-    df = pd.read_csv(csv)
+    registry = JournalRegistry.load(Path(args.config))
+    only = {k.strip() for k in args.journal.split(",")} if args.journal else None
+    year_filter = {y.strip() for y in args.years.split(",")} if args.years else None
+    today = datetime.date.fromisoformat(args.today) if args.today else datetime.date.today()
+    mailto = args.mailto or os.environ.get("OPENALEX_MAILTO", "")
+    data_dir = Path(args.data_dir)
+    session = requests.Session()
+    total_new = 0
 
-    if args.topics:
-        topic_set = {t.strip() for t in args.topics.split(",") if t.strip()}
-    else:
-        _eprint("error: pass --topics (comma-separated) to scope citations")
-        return 2
+    for journal in registry.journals:
+        if only and journal.key not in only:
+            continue
+        if not journal.issn:
+            continue
+        key_dir = data_dir / journal.key
+        if not key_dir.exists():
+            continue
 
-    items = items_for_topics(df, topic_set)
-    if args.limit:
-        items = items[: args.limit]
-    _eprint(f"citations: {len(items)} papers in topics {sorted(topic_set)[:6]}...")
-    cache_path = str(csv) + ".citations.json"
-    fetch_citations(items, cache_path, requests.Session(), throttle=args.throttle, log=_eprint)
-    _eprint(f"citations cached -> {cache_path} (re-run export-site to surface them)")
+        # gather {year: {doi: published_date}} from the monthly source CSVs
+        years: dict[str, dict[str, str]] = defaultdict(dict)
+        for csv in sorted(key_dir.glob("*.csv")):
+            if csv.name.endswith("_topics.csv") or len(csv.stem) != 7:
+                continue
+            year = csv.stem[:4]
+            df = pd.read_csv(csv, usecols=lambda c: c in ("doi", "published_date"))
+            for doi, pub in zip(df.get("doi", []), df.get("published_date", [])):
+                doi = str(doi).strip().lower()
+                if doi and doi != "nan":
+                    years[year][doi] = str(pub or "")
+
+        for year, doi_pub in sorted(years.items()):
+            if year_filter and year not in year_filter:
+                continue
+            path = C.counts_path(journal.key, year)
+            history = C.load_history(path)
+            due = [d for d, pub in doi_pub.items() if C.is_due(history.get(d, []), pub, today)]
+            if not due:
+                continue
+            _eprint(f"citations: {journal.key} {year} — {len(due)} due; querying Crossref…")
+            try:
+                counts = C.fetch_counts_for_source(
+                    journal.issn, from_date=f"{year}-01-01", to_date=f"{year}-12-31",
+                    mailto=mailto, session=session, throttle=args.throttle,
+                )
+            except Exception as exc:
+                _eprint(f"citations: {journal.key} {year} failed ({type(exc).__name__}: {exc})")
+                continue
+            n_new = 0
+            for doi in due:
+                if doi in counts:
+                    history[doi] = C.record_snapshot(history.get(doi, []), today.isoformat(), counts[doi])
+                    n_new += 1
+            C.save_history(path, history)
+            total_new += n_new
+            _eprint(f"citations: {journal.key} {year} +{n_new} snapshot(s) -> {path}")
+
+    _eprint(f"citations: {total_new} snapshot(s) recorded; re-run export-site to surface them")
     return 0
 
 
@@ -350,11 +393,13 @@ def build_parser() -> argparse.ArgumentParser:
     _add_trend_opts(p_trd)
     p_trd.set_defaults(func=cmd_trends)
 
-    p_cit = sub.add_parser("citations", help="fetch citation counts (DOI-first, cached)")
-    p_cit.add_argument("topics_csv", help="a *_topics.csv file")
-    p_cit.add_argument("--topics", default=None, help="comma-separated topics to scope (required)")
-    p_cit.add_argument("--limit", type=int, default=None, help="cap number of papers")
-    p_cit.add_argument("--throttle", type=float, default=1.1, help="seconds between API calls")
+    p_cit = sub.add_parser("citations", help="track Crossref citation counts per paper (on addition + monthly for 3 months)")
+    p_cit.add_argument("--journal", default=None, help="comma-separated journal keys (default: all)")
+    p_cit.add_argument("--years", default=None, help="comma-separated years (default: all present)")
+    p_cit.add_argument("--mailto", default=None, help="contact email for Crossref polite pool (or $OPENALEX_MAILTO)")
+    p_cit.add_argument("--data-dir", default="data")
+    p_cit.add_argument("--throttle", type=float, default=0.5, help="seconds between Crossref pages")
+    p_cit.add_argument("--today", default=None, help="override today's date (YYYY-MM-DD), for scheduling/testing")
     p_cit.set_defaults(func=cmd_citations)
 
     p_exp = sub.add_parser("export-site", help="build static-site JSON for GitHub Pages")

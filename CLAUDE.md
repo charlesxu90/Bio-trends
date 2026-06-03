@@ -49,7 +49,12 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
   `docs/`, which lazy-loads only the years viewed. `trends.json` is keyed by bucket
   (`{year, quarter, month}`). Shards omit zero-topic papers (`topiced_only`) and cap
   authors; `--shard-years N` caps browsable years (trends keep full history).
-- **`citations.py`** — optional; DOI-first citation lookup, cached in sidecars.
+- **`citations.py`** — Crossref `is-referenced-by-count` by DOI (Zotero Citation
+  Counts Manager approach), **tracked over time**: snapshot on addition + up to two
+  monthly updates within 3 months of publication (≤3), so the gain = "rising" signal.
+  Efficient bulk fetch: one paginated Crossref query per (journal, year). History is
+  committed at `citations/<key>/<year>.json` (`{doi: [[date, count], …]}`), surfaced
+  on cards as `· N cites · ▲ +Δ` and via the Rising sort. CLI: `bio-trend citations`.
 - **`candidates.py` / `curate_io.py`** — the taxonomy-curation seam (scispaCy NER +
   decision apply). `candidates.py` does a single-pass `nlp.pipe` over titles
   (document-frequency + examples), scaling to the ~59k-title corpus. The reasoning is

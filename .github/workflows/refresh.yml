@@ -37,8 +37,14 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.check }}
         run: bio-trend check-feeds --check || echo "::warning::some feeds unreachable; continuing"
 
-      - name: Refresh (ingest -> assign -> trends -> export-site)
-        run: bio-trend refresh
+      - name: Ingest (poll RSS feeds)
+        run: bio-trend ingest
+
+      - name: Track citations (snapshot on addition + monthly for 3 months)
+        run: bio-trend citations || echo "::warning::citations step failed; continuing"
+
+      - name: Build (assign -> trends -> export-site)
+        run: bio-trend refresh --no-ingest
 
       - name: Open PR
         uses: peter-evans/create-pull-request@v6
@@ -48,9 +54,10 @@ jobs:
           commit-message: "chore: monthly Bio-trend data refresh"
           title: "chore: monthly Bio-trend data refresh"
           body: |
-            Automated monthly refresh: polled journal RSS feeds, re-assigned topics,
-            recomputed trends, and rebuilt the static site.
+            Automated monthly refresh: polled RSS feeds, tracked citation counts,
+            re-assigned topics, recomputed trends, and rebuilt the static site.
           add-paths: |
             config/**
             docs/**
+            citations/**
             Journal-RSS.md

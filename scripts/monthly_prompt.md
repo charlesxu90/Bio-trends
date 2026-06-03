@@ -11,8 +11,12 @@ Follow these steps:
    `config/journals.json`, find its RSS URL, add a row to `Journal-RSS.md` and an
    entry to `config/journals.json`, and re-run `check-feeds --check` on it.
 
-3. **Refresh** — run `bio-trend refresh`. This polls all feeds, accumulates new
-   articles, re-assigns topics, recomputes trends, and rebuilds `docs/data/`.
+3. **Ingest + track citations + refresh**:
+   - `bio-trend ingest` — poll feeds, accumulate new articles.
+   - `bio-trend citations` — snapshot Crossref citation counts for due papers (new
+     ones, and recent papers within 3 months of publication; ≤3 snapshots each).
+   - `bio-trend refresh --no-ingest` — re-assign topics, recompute trends, rebuild
+     `docs/data/` (surfacing the citation counts + rising deltas).
 
 4. **(Optional) curate topics** — if you ingested a lot of new articles, follow the
    `curate-topics` skill on a recent CSV to fold genuinely new biology themes into

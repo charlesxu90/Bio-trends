@@ -29,7 +29,9 @@ def test_build_paper_record_shape_and_truncation():
     assert rec["abstract"].endswith("…") and len(rec["abstract"]) <= 52
 
 
-def test_build_paper_record_attaches_citations_by_title():
-    row = {"title": "A", "abstract": "", "topic": "", "authors": ""}
-    rec = build_paper_record(row, "Cell", "Cell Press", "2026-05", citations={"A": 42})
+def test_build_paper_record_attaches_citations_and_rising_by_doi():
+    row = {"title": "A", "abstract": "", "topic": "", "authors": "", "doi": "10.1/a"}
+    rec = build_paper_record(row, "Cell", "Cell Press", "2026-05",
+                             counts_by_doi={"10.1/a": 42}, deltas_by_doi={"10.1/a": 5})
     assert rec["citations"] == 42
+    assert rec["rising"] == 5  # positive citation gain across snapshots

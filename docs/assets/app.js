@@ -372,7 +372,13 @@ function paperCard(p) {
   const li = el("li", "paper");
   const url = articleUrl(p);
 
-  const top = el("div", "paper__top");
+  // Row 1: journal · date (· cites)
+  const venue = p.citations != null
+    ? `${p.journal} · ${p.period} · ${p.citations.toLocaleString()} cites`
+    : `${p.journal} · ${p.period}`;
+  li.append(el("p", "paper__venue", venue));
+
+  // Row 2: title, full width, clamped to two lines (CSS adds the ellipsis)
   const h = el("h3", "paper__title");
   if (url) {
     const a = el("a", null, p.title);
@@ -381,12 +387,7 @@ function paperCard(p) {
   } else {
     h.textContent = p.title;
   }
-  top.append(h);
-  const venue = p.citations != null
-    ? `${p.journal} · ${p.period} · ${p.citations.toLocaleString()} cites`
-    : `${p.journal} · ${p.period}`;
-  top.append(el("span", "paper__venue", venue));
-  li.append(top);
+  li.append(h);
 
   // Authors on a single line (CSS clips overflow); always render so the row is
   // reserved even when there are no authors.

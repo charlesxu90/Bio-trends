@@ -394,14 +394,19 @@ function paperCard(p) {
   const authors = p.authors && p.authors.length ? p.authors.join(", ") : "";
   li.append(el("p", "paper__authors", authors));
 
-  // Topic tags — clickable to filter the list by that topic.
+  // Topic tags — clickable to filter the list by that topic across all journals
+  // (clear the journal filter so the result set matches the chosen topic).
   if (p.topics && p.topics.length) {
     const tags = el("div", "tags");
     for (const t of p.topics) {
       const tag = el("button", "tag", t);
       tag.type = "button";
-      tag.title = `Filter by ${t}`;
-      tag.addEventListener("click", () => { $("#f-topic").value = t; onFilterChange(); });
+      tag.title = `Show all ${t} papers`;
+      tag.addEventListener("click", () => {
+        $("#f-topic").value = t;
+        $("#f-journal").value = "";
+        onFilterChange();
+      });
       tags.append(tag);
     }
     li.append(tags);

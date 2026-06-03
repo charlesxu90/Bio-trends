@@ -178,37 +178,58 @@ function renderTrend() {
   const t = currentTrends().find((x) => x.group === state.group && x.period === state.period);
   const panel = $("#trend-panel");
   panel.innerHTML = "";
-  if (!t) return;
-  const counts = t.counts || {};
-  const max = Math.max(1, ...t.top.map((k) => counts[k] || 0));
-  panel.append(
-    trendCard("top", "Top topics", t.top, counts, max),
-    trendCard("emerging", "Emerging", t.emerging, counts, max),
-    trendCard("fading", "Fading", t.fading, counts, max),
+  if (!t) { panel.append(el("p", "empty", "No trend data.")); return; }
+
+  const cols = el("div", "cols");
+  cols.append(
+    trendCol("top", "Top", t.top),
+    trendCol("emerging", "Emerging" + (t.previous_period ? "" : " —"), t.emerging),
+    trendCol("fading", "Fading", t.fading),
   );
+  const baseline = t.previous_period ? ` vs ${t.previous_period}` : " (no prior period)";
+  const left = el("div");
+  left.append(cols, el("p", "result-meta", `${t.group} · ${t.period}${baseline}`));
+  panel.append(left, renderChart(t.counts || {}));
 }
 
-function trendCard(kind, title, topics, counts, max) {
-  const card = el("div", `trend-card trend-card--${kind}`);
-  card.append(el("h3", "trend-card__title", title));
-  if (!topics.length) {
-    card.append(el("p", "trend-empty", "Needs a prior period to compare."));
-    return card;
+function trendCol(kind, heading, topics) {
+  const col = el("div", `col col--${kind}`);
+  col.append(el("h3", "col__h", heading));
+  if (!topics.length) { col.append(el("p", "empty", "—")); return col; }
+  const ol = el("ol", "rank");
+  for (const name of topics) {
+    const chip = el("button", "chip");
+    chip.type = "button";
+    chip.title = `Browse ${name} papers`;
+    chip.addEventListener("click", () => jumpToTopic(name));
+    chip.append(el("span", "chip__rank"), el("span", "chip__name", name));
+    const li = el("li");
+    li.append(chip);
+    ol.append(li);
   }
-  const list = el("ul", "trend-list");
-  for (const topic of topics) {
-    const c = counts[topic] || 0;
-    const row = el("li", "trend-row");
-    const name = el("button", "trend-row__name", topic);
-    name.type = "button";
-    name.addEventListener("click", () => jumpToTopic(topic));
-    const bar = el("span", "trend-row__bar");
-    bar.style.width = `${Math.max(8, (c / max) * 90)}px`;
-    row.append(name, bar, el("span", "trend-row__val", String(c)));
-    list.append(row);
+  col.append(ol);
+  return col;
+}
+
+function renderChart(counts) {
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  const chart = el("div", "chart");
+  chart.append(el("p", "chart__h", "Most papers"));
+  if (!entries.length) { chart.append(el("p", "empty", "No counts.")); return chart; }
+  const max = entries[0][1];
+  for (const [name, val] of entries) {
+    const bar = el("button", "bar");
+    bar.type = "button";
+    bar.title = `Browse ${name}`;
+    bar.addEventListener("click", () => jumpToTopic(name));
+    const track = el("div", "bar__track");
+    const fill = el("div", "bar__fill");
+    fill.style.width = `${Math.max(2, (val / max) * 100)}%`;
+    track.append(fill);
+    bar.append(el("span", "bar__name", name), track, el("span", "bar__val", String(val)));
+    chart.append(bar);
   }
-  card.append(list);
-  return card;
+  return chart;
 }
 
 // Click a topic in the trends -> show all papers in that topic, for the trend's
@@ -345,44 +366,57 @@ function renderList() {
   $("#more-wrap").hidden = state.shown >= all.length;
 }
 
+const scholarUrl = (p) => `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
+const articleUrl = (p) => p.link || (p.doi ? `https://doi.org/${p.doi}` : null);
+
+function _linkEl(href, text) {
+  const a = el("a", "paper__link", text);
+  a.href = href; a.target = "_blank"; a.rel = "noopener";
+  return a;
+}
+
 function paperCard(p) {
   const li = el("li", "paper");
-  const head = el("div", "paper__head");
+  const url = articleUrl(p);
+
+  const top = el("div", "paper__top");
   const h = el("h3", "paper__title");
-  if (p.link || p.doi) {
+  if (url) {
     const a = el("a", null, p.title);
-    a.href = p.link || `https://doi.org/${p.doi}`;
-    a.target = "_blank";
-    a.rel = "noopener";
+    a.href = url; a.target = "_blank"; a.rel = "noopener";
     h.append(a);
   } else {
     h.textContent = p.title;
   }
-  head.append(h);
-  if (p.citations != null) head.append(el("span", "paper__cite", `${p.citations} cites`));
-  li.append(head);
+  top.append(h);
+  const venue = p.citations != null
+    ? `${p.journal} · ${p.period} · ${p.citations.toLocaleString()} cites`
+    : `${p.journal} · ${p.period}`;
+  top.append(el("span", "paper__venue", venue));
+  li.append(top);
 
-  const meta = el("p", "paper__meta");
-  meta.append(el("span", "paper__journal", p.journal));
-  const bits = [];
-  if (p.published) bits.push(p.published);
-  if (p.authors && p.authors.length) bits.push(formatAuthors(p.authors));
-  if (bits.length) meta.append(document.createTextNode(" · " + bits.join(" · ")));
-  li.append(meta);
-
+  if (p.authors && p.authors.length) li.append(el("p", "paper__authors", formatAuthors(p.authors)));
   if (p.abstract) li.append(el("p", "paper__abstract", p.abstract));
 
-  if (p.topics && p.topics.length) {
-    const tags = el("div", "paper__topics");
-    for (const t of p.topics) tags.append(el("span", "tag", t));
-    li.append(tags);
+  const tags = el("div", "tags");
+  for (const t of p.topics || []) {
+    const tag = el("button", "tag", t);
+    tag.type = "button";
+    tag.title = `Filter by ${t}`;
+    tag.addEventListener("click", () => { $("#f-topic").value = t; onFilterChange(); });
+    tags.append(tag);
   }
+  const links = el("span", "paper__links");
+  if (url) links.append(_linkEl(url, p.doi && !p.link ? "DOI ↗" : "Article ↗"));
+  links.append(_linkEl(scholarUrl(p), "Scholar ↗"));
+  tags.append(links);
+  li.append(tags);
   return li;
 }
 
 function formatAuthors(authors) {
-  if (authors.length <= 3) return authors.join(", ");
-  return authors.slice(0, 3).join(", ") + ` +${authors.length - 3}`;
+  if (authors.length <= 6) return authors.join(", ");
+  return authors.slice(0, 6).join(", ") + ", et al.";
 }
 
 function debounce(fn, ms) {

@@ -1,4 +1,7 @@
-# Bio Trends in Journals
+<h1>
+  <img src="docs/assets/logo.png" alt="Bio Trends logo" height="40" align="absmiddle" />
+  Bio Trends in Journals
+</h1>
 
 Track what biology is *actually* publishing. **Bio-trend** ingests recent articles
 from the flagship biology journals and their sister titles via **RSS**, auto-labels

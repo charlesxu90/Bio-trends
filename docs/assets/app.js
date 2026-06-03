@@ -232,11 +232,11 @@ function renderChart(counts) {
   return chart;
 }
 
-// Click a topic in the trends -> show all papers in that topic, for the trend's
-// current period, across all journals (no journal constraint).
+// Click a topic in the trends -> drill into the Rising Stars list for the SAME
+// journal + period the trend is showing, filtered to that topic (matches AI-trend).
 async function jumpToTopic(topic) {
+  $("#f-journal").value = state.group || "";   // the journal selected in the trends
   $("#f-topic").value = topic;
-  $("#f-journal").value = "";
   setPeriodValue(state.period);
   state.shown = PAGE;
   $("#browse").scrollIntoView({ behavior: "smooth" });
@@ -394,19 +394,14 @@ function paperCard(p) {
   const authors = p.authors && p.authors.length ? p.authors.join(", ") : "";
   li.append(el("p", "paper__authors", authors));
 
-  // Topic tags — clickable to filter the list by that topic across all journals
-  // (clear the journal filter so the result set matches the chosen topic).
+  // Topic tags — refine the current list by that topic (keep the journal/period).
   if (p.topics && p.topics.length) {
     const tags = el("div", "tags");
     for (const t of p.topics) {
       const tag = el("button", "tag", t);
       tag.type = "button";
-      tag.title = `Show all ${t} papers`;
-      tag.addEventListener("click", () => {
-        $("#f-topic").value = t;
-        $("#f-journal").value = "";
-        onFilterChange();
-      });
+      tag.title = `Filter by ${t}`;
+      tag.addEventListener("click", () => { $("#f-topic").value = t; onFilterChange(); });
       tags.append(tag);
     }
     li.append(tags);

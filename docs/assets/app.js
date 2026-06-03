@@ -366,14 +366,7 @@ function renderList() {
   $("#more-wrap").hidden = state.shown >= all.length;
 }
 
-const scholarUrl = (p) => `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title)}`;
 const articleUrl = (p) => p.link || (p.doi ? `https://doi.org/${p.doi}` : null);
-
-function _linkEl(href, text) {
-  const a = el("a", "paper__link", text);
-  a.href = href; a.target = "_blank"; a.rel = "noopener";
-  return a;
-}
 
 function paperCard(p) {
   const li = el("li", "paper");
@@ -395,28 +388,11 @@ function paperCard(p) {
   top.append(el("span", "paper__venue", venue));
   li.append(top);
 
-  if (p.authors && p.authors.length) li.append(el("p", "paper__authors", formatAuthors(p.authors)));
-  if (p.abstract) li.append(el("p", "paper__abstract", p.abstract));
-
-  const tags = el("div", "tags");
-  for (const t of p.topics || []) {
-    const tag = el("button", "tag", t);
-    tag.type = "button";
-    tag.title = `Filter by ${t}`;
-    tag.addEventListener("click", () => { $("#f-topic").value = t; onFilterChange(); });
-    tags.append(tag);
-  }
-  const links = el("span", "paper__links");
-  if (url) links.append(_linkEl(url, p.doi && !p.link ? "DOI ↗" : "Article ↗"));
-  links.append(_linkEl(scholarUrl(p), "Scholar ↗"));
-  tags.append(links);
-  li.append(tags);
+  // Authors on a single line (CSS clips overflow); always render so the row is
+  // reserved even when there are no authors. Nothing is shown below this line.
+  const authors = p.authors && p.authors.length ? p.authors.join(", ") : "";
+  li.append(el("p", "paper__authors", authors));
   return li;
-}
-
-function formatAuthors(authors) {
-  if (authors.length <= 6) return authors.join(", ");
-  return authors.slice(0, 6).join(", ") + ", et al.";
 }
 
 function debounce(fn, ms) {

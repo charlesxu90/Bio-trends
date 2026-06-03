@@ -172,14 +172,8 @@ select.field__input { cursor: pointer; appearance: none; -webkit-appearance: non
 .paper__title a { text-decoration: none; background-image: linear-gradient(var(--accent), var(--accent)); background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur) var(--ease); }
 .paper__title a:hover { background-size: 100% 2px; }
 .paper__venue { font-family: var(--mono); font-size: 0.76rem; color: var(--brand-ink); white-space: nowrap; }
-.paper__authors { color: var(--muted); font-size: 0.8rem; margin: 0.25rem 0 0.4rem; }
-.paper__abstract { font-size: 0.84rem; line-height: 1.45; color: #343026; margin: 0 0 0.55rem; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-.tag { font-family: var(--mono); font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--paper-2); border: 1px solid var(--line-soft); cursor: pointer; color: inherit; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
-.tag:hover { background: var(--ink); color: var(--paper); }
-.paper__links { margin-left: auto; display: inline-flex; gap: 0.7rem; align-items: center; }
-.paper__link { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; color: var(--cool-ink); text-decoration: none; white-space: nowrap; }
-.paper__link:hover { color: var(--accent); text-decoration: underline; }
+/* single line; always reserves one line of height (empty when no authors) */
+.paper__authors { color: var(--muted); font-size: 0.8rem; margin: 0.3rem 0 0; min-height: 1.2em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .more { text-align: center; margin-top: 1.6rem; }
 .btn { font: inherit; font-weight: 700; cursor: pointer; padding: 0.7rem 1.6rem; border-radius: 999px; border: 1px solid var(--ink); background: transparent; color: var(--ink); transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }

@@ -1,5 +1,5 @@
 <h1>
-  <img src="docs/assets/logo.png" alt="Bio Trends logo" height="40" align="absmiddle" />
+  <img src="docs/assets/logo.png" alt="Bio Trends logo" height="48" align="absmiddle" />
   Bio Trends in Journals
 </h1>
 

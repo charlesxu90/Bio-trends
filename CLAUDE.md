@@ -49,12 +49,19 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
   `docs/`, which lazy-loads only the years viewed. `trends.json` is keyed by bucket
   (`{year, quarter, month}`). Shards omit zero-topic papers (`topiced_only`) and cap
   authors; `--shard-years N` caps browsable years (trends keep full history).
-- **`citations.py`** — Crossref `is-referenced-by-count` by DOI (Zotero Citation
-  Counts Manager approach), **tracked over time**: snapshot on addition + up to two
-  monthly updates within 3 months of publication (≤3), so the gain = "rising" signal.
-  Efficient bulk fetch: one paginated Crossref query per (journal, year). History is
-  committed at `citations/<key>/<year>.json` (`{doi: [[date, count], …]}`), surfaced
-  on cards as `· N cites · ▲ +Δ` and via the Rising sort. CLI: `bio-trend citations`.
+- **`citations.py`** — citation counts by DOI (Zotero Citation Counts Manager
+  approach), **tracked over time**: snapshot on addition + up to two monthly updates
+  within 3 months of publication (≤3), so the gain = "rising" signal. Crossref
+  (`is-referenced-by-count`, key-less, one paginated query per journal-year) is the
+  default. **Optional Semantic Scholar + OpenAlex sources** run **in parallel**
+  (`fetch_counts_multi`, one thread/session each) and merge per-DOI by **max** for
+  fuller coverage — S2 via its batch endpoint (≤500 DOIs/call, ~1 req/s), OpenAlex
+  via the free single-work endpoint (its bulk list endpoint is metered). Keys come
+  from `$S2_API_KEY` / `$OPENALEX_API_KEY` (or `--s2-key`/`--openalex-key`); toggle
+  with `--no-crossref`/`--no-s2`/`--no-openalex`. Never store keys in the repo (see
+  `.env.example`; `.env` is gitignored). History is committed at
+  `citations/<key>/<year>.json` (`{doi: [[date, count], …]}`), surfaced on cards as
+  `· N cites · ▲ +Δ` and via the Rising sort. CLI: `bio-trend citations`.
 - **`candidates.py` / `curate_io.py`** — the taxonomy-curation seam (scispaCy NER +
   decision apply). `candidates.py` does a single-pass `nlp.pipe` over titles
   (document-frequency + examples), scaling to the ~59k-title corpus. The reasoning is

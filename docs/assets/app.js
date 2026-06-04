@@ -155,7 +155,8 @@ function selectGroup(group) {
   const periods = currentTrends()
     .filter((t) => t.group === group)
     .map((t) => t.period)
-    .sort();
+    .sort()
+    .reverse(); // recent → old, left to right
   const row = $("#period-pills");
   row.innerHTML = "";
   periods.forEach((per) => {
@@ -164,7 +165,7 @@ function selectGroup(group) {
     pill.addEventListener("click", () => selectPeriod(per));
     row.append(pill);
   });
-  if (periods.length) selectPeriod(periods[periods.length - 1]);
+  if (periods.length) selectPeriod(periods[0]); // default: most recent
 }
 
 function selectPeriod(period) {
@@ -373,11 +374,14 @@ function paperCard(p) {
   const li = el("li", "paper");
   const url = articleUrl(p);
 
-  // Row 1: journal · date · cites · rising gain
-  let venue = `${p.journal} · ${p.period}`;
-  if (p.citations != null) venue += ` · ${p.citations.toLocaleString()} cites`;
-  if (p.rising) venue += ` · ▲ +${p.rising}`;
-  li.append(el("p", "paper__venue", venue));
+  // Row 1: citations (upper-left) | journal · date (upper-right)
+  const head = el("div", "paper__head");
+  let cites = "";
+  if (p.citations != null) cites = `${p.citations.toLocaleString()} cites`;
+  if (p.rising) cites += ` · ▲ +${p.rising}`;
+  head.append(el("span", "paper__cites", cites));
+  head.append(el("span", "paper__venue", `${p.journal} · ${p.period}`));
+  li.append(head);
 
   // Row 2: title, full width, clamped to two lines (CSS adds the ellipsis)
   const h = el("h3", "paper__title");

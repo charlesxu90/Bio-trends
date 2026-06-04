@@ -171,7 +171,9 @@ select.field__input { cursor: pointer; appearance: none; -webkit-appearance: non
 .paper { background: var(--card); border: 1px solid var(--line-soft); border-radius: 10px; padding: 0.7rem 0.85rem; transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 .paper:hover { border-color: var(--line); box-shadow: 0 12px 30px -22px rgba(0,0,0,0.55); }
 /* row 1: venue */
-.paper__venue { font-family: var(--mono); font-size: 0.76rem; color: var(--brand-ink); margin: 0 0 0.3rem; }
+.paper__head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; margin: 0 0 0.3rem; }
+.paper__cites { font-family: var(--mono); font-size: 0.76rem; color: var(--accent); white-space: nowrap; }
+.paper__venue { font-family: var(--mono); font-size: 0.76rem; color: var(--brand-ink); text-align: right; }
 /* row 2: full-width title, max two lines + ellipsis */
 .paper__title {
   font-size: 0.98rem; font-weight: 700; letter-spacing: -0.01em; margin: 0; line-height: 1.3;

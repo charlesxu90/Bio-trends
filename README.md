@@ -33,7 +33,7 @@ Feed catalog: **[Journal-RSS.md](Journal-RSS.md)**.
 The only non-deterministic step is **topic curation** (deciding which keywords map
 to which topic); everything else is pure, reproducible Python.
 
-The biology taxonomy (`config/taxonomy.json`, 32 topics) is **derived from the
+The biology taxonomy (`config/taxonomy.json`, 33 topics) is **derived from the
 literature**: scispaCy NER over the ~59k-title corpus surfaces candidate keywords
 (`bio-trend candidates`), the `/curate-topics` skill decides each
 (existing / new / noise / other), and `bio-trend curate` folds them in — the same

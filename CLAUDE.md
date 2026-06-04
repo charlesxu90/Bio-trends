@@ -58,8 +58,9 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
 - **`candidates.py` / `curate_io.py`** — the taxonomy-curation seam (scispaCy NER +
   decision apply). `candidates.py` does a single-pass `nlp.pipe` over titles
   (document-frequency + examples), scaling to the ~59k-title corpus. The reasoning is
-  the `/curate-topics` skill. The current 32-topic taxonomy was **derived this way**
-  from the 2024–2025 corpus (not hand-written). Needs the `[curate]` extra +
+  the `/curate-topics` skill. The 33-topic taxonomy was largely **derived this way**
+  from the 2024–2025 corpus (not hand-written); `protein design` and `AI for biology`
+  are curated focus topics added for tracking. Needs the `[curate]` extra +
   `en_core_sci_lg` model (S3 install); pins: numpy 1.23.5, setuptools<81.
 
 ## Config is the source of truth

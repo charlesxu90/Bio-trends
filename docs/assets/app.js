@@ -6,6 +6,10 @@ const DATA = "data/";
 const PAGE = 20;
 const BUCKET_LABELS = { year: "Year", quarter: "Quarter", month: "Month" };
 
+// A pinned topic kept permanently visible at the bottom of Topic Trends, with its
+// own paper-count series — for a research focus the user tracks frequently.
+const HIGHLIGHT_TOPIC = "AI for biology";
+
 const state = {
   manifest: null,
   trends: {},            // { bucket: [ {group, period, top, emerging, fading, counts}, ... ] }
@@ -179,6 +183,7 @@ function renderTrend() {
   const t = currentTrends().find((x) => x.group === state.group && x.period === state.period);
   const panel = $("#trend-panel");
   panel.innerHTML = "";
+  renderHighlight();
   if (!t) { panel.append(el("p", "empty", "No trend data.")); return; }
 
   const cols = el("div", "cols");
@@ -191,6 +196,61 @@ function renderTrend() {
   const left = el("div");
   left.append(cols, el("p", "result-meta", `${t.group} · ${t.period}${baseline}`));
   panel.append(left, renderChart(t.counts || {}));
+}
+
+// Pinned topic strip: current count for the selected journal+period, plus a
+// per-period series across the current bucket so the trajectory is always visible.
+function renderHighlight() {
+  const host = $("#topic-highlight");
+  host.innerHTML = "";
+  const rows = currentTrends().filter((x) => x.group === state.group);
+  if (!rows.length) { host.hidden = true; return; }
+  host.hidden = false;
+
+  const series = rows
+    .map((x) => ({ period: x.period, n: (x.counts && x.counts[HIGHLIGHT_TOPIC]) || 0 }))
+    .sort((a, b) => a.period.localeCompare(b.period)); // chronological: old → recent
+  const current = series.find((s) => s.period === state.period);
+  const currentN = current ? current.n : 0;
+  const max = series.reduce((m, s) => Math.max(m, s.n), 0);
+
+  // Lead: pin label, clickable topic name, scope, big current count.
+  const lead = el("div", "highlight__lead");
+  const name = el("button", "highlight__name", HIGHLIGHT_TOPIC);
+  name.type = "button";
+  name.title = `Browse ${HIGHLIGHT_TOPIC} papers`;
+  name.addEventListener("click", () => jumpToTopic(HIGHLIGHT_TOPIC));
+  const big = el("p", "highlight__count");
+  big.append(
+    el("span", "highlight__num", currentN.toLocaleString()),
+    el("span", "highlight__unit", currentN === 1 ? "paper" : "papers"),
+  );
+  lead.append(
+    el("p", "highlight__pin", "★ Pinned topic"),
+    name,
+    el("p", "highlight__scope", `${state.group} · ${state.period}`),
+    big,
+  );
+
+  // Series: one bar per period of the current bucket (selected journal).
+  const chart = el("div", "highlight__series");
+  chart.append(el("p", "highlight__series-h", `By ${(BUCKET_LABELS[state.bucket] || "period").toLowerCase()}`));
+  const bars = el("div", "highlight__bars");
+  for (const s of series) {
+    const bar = el("button", "hbar" + (s.period === state.period ? " hbar--active" : ""));
+    bar.type = "button";
+    bar.title = `${s.n} ${HIGHLIGHT_TOPIC} paper${s.n === 1 ? "" : "s"} in ${s.period}`;
+    bar.addEventListener("click", () => selectPeriod(s.period));
+    const track = el("div", "hbar__track");
+    const fill = el("div", "hbar__fill");
+    fill.style.height = `${max ? Math.max(3, (s.n / max) * 100) : 0}%`;
+    track.append(fill);
+    bar.append(el("span", "hbar__val", String(s.n)), track, el("span", "hbar__lbl", s.period));
+    bars.append(bar);
+  }
+  chart.append(bars);
+
+  host.append(lead, chart);
 }
 
 function trendCol(kind, heading, topics) {

@@ -1,9 +1,17 @@
-"""Citation counts from Crossref, tracked over time per paper.
+"""Citation counts from Crossref (+ optional Semantic Scholar & OpenAlex), tracked
+over time per paper.
 
 Follows the Zotero *Citation Counts Manager* reference: Crossref's
 ``is-referenced-by-count`` keyed by DOI is the primary, key-less source. Every
 Bio-trend article carries a DOI and Crossref is reachable where OpenAlex/S2 are
 rate-limited, so Crossref is the default.
+
+**Multi-source (optional).** When a Semantic Scholar and/or OpenAlex API key is
+supplied, those providers are queried **in parallel** with Crossref for each
+*(journal, year)* and the per-DOI counts are **merged by maximum** — the most
+complete signal across providers, while keeping one integer per snapshot so the
+velocity series stays comparable across runs. Keys come from the environment
+(``S2_API_KEY`` / ``OPENALEX_API_KEY``); they are never stored in the repo.
 
 Tracking policy (to surface *rising* papers): a paper's count is snapshotted
 **on first sight (addition)** and then **at most twice more, monthly, while within
@@ -33,7 +41,12 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 
 CROSSREF_WORKS = "https://api.crossref.org/works"
 CROSSREF_WORK = "https://api.crossref.org/works/{doi}"
+S2_BATCH_URL = "https://api.semanticscholar.org/graph/v1/paper/batch"
+OPENALEX_WORK = "https://api.openalex.org/works/doi:{doi}"
 ROWS = 200
+S2_BATCH = 500             # Semantic Scholar batch endpoint accepts ≤500 ids/call
+S2_THROTTLE = 1.1          # S2 keys allow ~1 request/second, cumulative
+OPENALEX_THROTTLE = 0.15   # free single-work endpoint; be polite
 DEFAULT_THROTTLE = 0.5
 DEFAULT_RETRIES = 5
 DEFAULT_BACKOFF = 2.0
@@ -182,3 +195,161 @@ def fetch_counts_for_source(
             break
         sleep(throttle)
     return counts
+
+
+# ---- Semantic Scholar & OpenAlex (optional, keyed) --------------------------
+def _chunked(items: list, size: int):
+    for i in range(0, len(items), size):
+        yield items[i:i + size]
+
+
+def fetch_counts_s2(
+    dois, api_key: str, *, session: "requests.Session | None" = None,
+    batch: int = S2_BATCH, throttle: float = S2_THROTTLE,
+    retries: int = DEFAULT_RETRIES, backoff: float = DEFAULT_BACKOFF, sleep=time.sleep,
+    log: Callable[[str], None] = lambda *_: None,
+) -> dict[str, int]:
+    """``{doi: citationCount}`` from Semantic Scholar's batch endpoint.
+
+    One POST per ``batch`` DOIs (≤500); the S2 key allows ~1 request/second, so we
+    sleep ``throttle`` between calls. DOIs unknown to S2 come back ``null`` and are
+    skipped. Results are keyed by the DOI S2 echoes back (lowercased).
+    """
+    sess = session or _session()
+    headers = {"x-api-key": api_key} if api_key else {}
+    chunks = list(_chunked([d for d in dois if d], batch))
+    counts: dict[str, int] = {}
+    for idx, chunk in enumerate(chunks):
+        data = None
+        for attempt in range(retries + 1):
+            try:
+                resp = sess.post(
+                    S2_BATCH_URL, params={"fields": "citationCount,externalIds"},
+                    json={"ids": [f"DOI:{d}" for d in chunk]}, headers=headers, timeout=60,
+                )
+                if resp.status_code == 429:
+                    if attempt < retries:
+                        sleep(backoff * (2 ** attempt)); continue
+                    raise RuntimeError("Semantic Scholar rate-limited (429) after retries")
+                resp.raise_for_status()
+                data = resp.json()
+                break
+            except Exception:
+                if attempt < retries:
+                    sleep(backoff * (2 ** attempt)); continue
+                raise
+        for item in data or []:
+            if not item:
+                continue  # S2 returns null for ids it does not know
+            n = item.get("citationCount")
+            doi = ((item.get("externalIds") or {}).get("DOI") or "").strip().lower()
+            if doi and isinstance(n, int):
+                counts[doi] = n
+        log(f"  s2: {len(counts)} counts so far…")
+        if idx < len(chunks) - 1:
+            sleep(throttle)
+    return counts
+
+
+def fetch_counts_openalex(
+    dois, *, api_key: str = "", mailto: str = "", session: "requests.Session | None" = None,
+    throttle: float = OPENALEX_THROTTLE, retries: int = DEFAULT_RETRIES,
+    backoff: float = DEFAULT_BACKOFF, sleep=time.sleep,
+    log: Callable[[str], None] = lambda *_: None,
+) -> dict[str, int]:
+    """``{doi: cited_by_count}`` from OpenAlex's free single-work endpoint, one DOI
+    per request.
+
+    OpenAlex's bulk list/filter endpoint is metered and needs a funded key, whereas
+    the single-work lookup is free — so we use the latter and run OpenAlex on its own
+    thread alongside the other providers. If OpenAlex starts refusing with 429
+    (budget exhausted), we stop early and return whatever was collected rather than
+    failing the run.
+    """
+    sess = session or _session(mailto)
+    clean = [d for d in dois if d]
+    counts: dict[str, int] = {}
+    for i, doi in enumerate(clean):
+        params = {"select": "doi,cited_by_count"}
+        if api_key:
+            params["api_key"] = api_key
+        if mailto:
+            params["mailto"] = mailto
+        data: dict | None = None
+        for attempt in range(retries + 1):
+            try:
+                resp = sess.get(OPENALEX_WORK.format(doi=doi), params=params, timeout=30)
+                if resp.status_code == 404:
+                    data = {}; break
+                if resp.status_code == 429:
+                    if attempt < retries:
+                        sleep(backoff * (2 ** attempt)); continue
+                    log(f"  openalex: 429 (budget?) — returning {len(counts)} partial")
+                    return counts
+                resp.raise_for_status()
+                data = resp.json(); break
+            except Exception:
+                if attempt < retries:
+                    sleep(backoff * (2 ** attempt)); continue
+                raise
+        n = (data or {}).get("cited_by_count")
+        echoed = ((data or {}).get("doi") or "").strip().lower().replace("https://doi.org/", "")
+        if isinstance(n, int):
+            counts[echoed or doi] = n
+        if (i + 1) % 100 == 0:
+            log(f"  openalex: {len(counts)} counts so far…")
+        if i < len(clean) - 1:
+            sleep(throttle)
+    return counts
+
+
+# ---- merge + parallel orchestration -----------------------------------------
+def merge_counts(*sources: dict[str, int]) -> dict[str, int]:
+    """Combine per-source ``{doi: count}`` maps, keeping the **maximum** count per
+    DOI — the most complete signal across providers."""
+    merged: dict[str, int] = {}
+    for src in sources:
+        for doi, n in (src or {}).items():
+            if isinstance(n, int) and (doi not in merged or n > merged[doi]):
+                merged[doi] = n
+    return merged
+
+
+def fetch_counts_multi(
+    *, due_dois, issn: str, year: str, use_crossref: bool = True,
+    s2_key: str | None = None, openalex_key: str | None = None, mailto: str = "",
+    throttle: float = DEFAULT_THROTTLE, sleep=time.sleep,
+    log: Callable[[str], None] = lambda *_: None,
+) -> tuple[dict[str, int], dict[str, int]]:
+    """Query every enabled provider for one *(journal, year)* **concurrently** and
+    return ``(merged_counts, per_source_sizes)``.
+
+    Each provider runs on its own thread with its own HTTP session (``requests``
+    sessions are not safe to share across threads). A provider that errors yields
+    an empty map rather than failing the whole fetch; counts are merged by max.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    jobs: dict[str, Callable[[], dict[str, int]]] = {}
+    if use_crossref and issn:
+        jobs["crossref"] = lambda: fetch_counts_for_source(
+            issn, from_date=f"{year}-01-01", to_date=f"{year}-12-31",
+            mailto=mailto, throttle=throttle, sleep=sleep, log=log,
+        )
+    if s2_key:
+        jobs["s2"] = lambda: fetch_counts_s2(list(due_dois), s2_key, sleep=sleep, log=log)
+    if openalex_key:
+        jobs["openalex"] = lambda: fetch_counts_openalex(
+            list(due_dois), api_key=openalex_key, mailto=mailto, sleep=sleep, log=log)
+
+    results: dict[str, dict[str, int]] = {}
+    if jobs:
+        with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
+            futures = {pool.submit(fn): name for name, fn in jobs.items()}
+            for fut, name in futures.items():
+                try:
+                    results[name] = fut.result()
+                except Exception as exc:  # one provider down must not sink the rest
+                    log(f"  {name} failed ({type(exc).__name__}: {exc})")
+                    results[name] = {}
+    return merge_counts(*results.values()), {n: len(r) for n, r in results.items()}

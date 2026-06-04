@@ -232,7 +232,6 @@ def cmd_citations(args: argparse.Namespace) -> int:
     from collections import defaultdict
 
     import pandas as pd
-    import requests
 
     from bio_trend import citations as C
     from bio_trend.registry import JournalRegistry
@@ -242,14 +241,29 @@ def cmd_citations(args: argparse.Namespace) -> int:
     year_filter = {y.strip() for y in args.years.split(",")} if args.years else None
     today = datetime.date.fromisoformat(args.today) if args.today else datetime.date.today()
     mailto = args.mailto or os.environ.get("OPENALEX_MAILTO", "")
+
+    # API keys come from the environment (or --flags); never stored in the repo.
+    s2_key = (args.s2_key or os.environ.get("S2_API_KEY") or "").strip() or None
+    openalex_key = (args.openalex_key or os.environ.get("OPENALEX_API_KEY") or "").strip() or None
+    use_crossref = not args.no_crossref
+    if args.no_s2:
+        s2_key = None
+    if args.no_openalex:
+        openalex_key = None
+
+    enabled = [name for name, on in (
+        ("Crossref", use_crossref), ("Semantic Scholar", bool(s2_key)), ("OpenAlex", bool(openalex_key)),
+    ) if on]
+    if not enabled:
+        _eprint("citations: no sources enabled — pass an S2/OpenAlex key or drop --no-crossref")
+        return 1
+    _eprint(f"citations: sources = {', '.join(enabled)} (queried in parallel, merged by max)")
+
     data_dir = Path(args.data_dir)
-    session = requests.Session()
     total_new = 0
 
     for journal in registry.journals:
         if only and journal.key not in only:
-            continue
-        if not journal.issn:
             continue
         key_dir = data_dir / journal.key
         if not key_dir.exists():
@@ -275,11 +289,12 @@ def cmd_citations(args: argparse.Namespace) -> int:
             due = [d for d, pub in doi_pub.items() if C.is_due(history.get(d, []), pub, today)]
             if not due:
                 continue
-            _eprint(f"citations: {journal.key} {year} — {len(due)} due; querying Crossref…")
+            _eprint(f"citations: {journal.key} {year} — {len(due)} due; querying {len(enabled)} source(s)…")
             try:
-                counts = C.fetch_counts_for_source(
-                    journal.issn, from_date=f"{year}-01-01", to_date=f"{year}-12-31",
-                    mailto=mailto, session=session, throttle=args.throttle,
+                counts, sizes = C.fetch_counts_multi(
+                    due_dois=due, issn=journal.issn or "", year=year,
+                    use_crossref=use_crossref, s2_key=s2_key, openalex_key=openalex_key,
+                    mailto=mailto, throttle=args.throttle,
                 )
             except Exception as exc:
                 _eprint(f"citations: {journal.key} {year} failed ({type(exc).__name__}: {exc})")
@@ -291,7 +306,8 @@ def cmd_citations(args: argparse.Namespace) -> int:
                     n_new += 1
             C.save_history(path, history)
             total_new += n_new
-            _eprint(f"citations: {journal.key} {year} +{n_new} snapshot(s) -> {path}")
+            srcs = ", ".join(f"{k} {v}" for k, v in sizes.items())
+            _eprint(f"citations: {journal.key} {year} +{n_new} snapshot(s) [{srcs}] -> {path}")
 
     _eprint(f"citations: {total_new} snapshot(s) recorded; re-run export-site to surface them")
     return 0
@@ -393,10 +409,15 @@ def build_parser() -> argparse.ArgumentParser:
     _add_trend_opts(p_trd)
     p_trd.set_defaults(func=cmd_trends)
 
-    p_cit = sub.add_parser("citations", help="track Crossref citation counts per paper (on addition + monthly for 3 months)")
+    p_cit = sub.add_parser("citations", help="track citation counts per paper from Crossref + optional Semantic Scholar & OpenAlex (parallel, merged by max; on addition + monthly for 3 months)")
     p_cit.add_argument("--journal", default=None, help="comma-separated journal keys (default: all)")
     p_cit.add_argument("--years", default=None, help="comma-separated years (default: all present)")
-    p_cit.add_argument("--mailto", default=None, help="contact email for Crossref polite pool (or $OPENALEX_MAILTO)")
+    p_cit.add_argument("--mailto", default=None, help="contact email for Crossref/OpenAlex polite pool (or $OPENALEX_MAILTO)")
+    p_cit.add_argument("--s2-key", default=None, help="Semantic Scholar API key (or $S2_API_KEY); enables the S2 source")
+    p_cit.add_argument("--openalex-key", default=None, help="OpenAlex API key (or $OPENALEX_API_KEY); enables the OpenAlex source")
+    p_cit.add_argument("--no-crossref", action="store_true", help="skip the Crossref source")
+    p_cit.add_argument("--no-s2", action="store_true", help="skip Semantic Scholar even if a key is set")
+    p_cit.add_argument("--no-openalex", action="store_true", help="skip OpenAlex even if a key is set")
     p_cit.add_argument("--data-dir", default="data")
     p_cit.add_argument("--throttle", type=float, default=0.5, help="seconds between Crossref pages")
     p_cit.add_argument("--today", default=None, help="override today's date (YYYY-MM-DD), for scheduling/testing")

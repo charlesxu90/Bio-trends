@@ -144,3 +144,7 @@ provided for running the agentic pipeline locally via `claude -p`.
 3. `bio-trend refresh`.
 
 See **[CLAUDE.md](CLAUDE.md)** for architecture and the environment rule.
+
+## License
+
+Released under the MIT License. See **[LICENSE](LICENSE)** for details.

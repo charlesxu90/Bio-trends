@@ -1,0 +1,255 @@
+{
+  "version": "0.1",
+  "domains": [
+    {"code": "SEQ", "name": "Sequencing & genomics",
+     "summary": "Reading genomes and their variation: sequencing technologies, assembly, association genetics and comparative, population and somatic genomics.",
+     "children": [
+      {"name": "Sequencing technologies", "children": [
+        {"name": "Short-read sequencing", "examples": ["Illumina SBS (Bentley et al.)"], "keywords": ["next-generation sequencing", "high-throughput sequencing", "illumina sequencing", "deep sequencing", "massively parallel sequencing"]},
+        {"name": "Long-read & nanopore sequencing", "examples": ["SMRT sequencing (Eid et al.)", "Ultra-long nanopore reads (Jain et al.)"], "keywords": ["long-read sequencing", "long-read", "nanopore sequencing", "oxford nanopore", "pacbio", "hifi read", "single-molecule real-time sequencing"]},
+        {"name": "Genome assembly & pangenomes", "examples": ["T2T-CHM13", "Human pangenome reference"], "keywords": ["genome assembly", "de novo assembly", "telomere-to-telomere", "pangenome", "reference genome", "chromosome-level genome", "chromosome-level assembly"]},
+        {"name": "Whole-genome & exome sequencing", "examples": ["1000 Genomes"], "keywords": ["whole-genome sequencing", "whole genome sequencing", "whole-exome sequencing", "exome sequencing", "targeted sequencing", "genome sequencing"]},
+        {"name": "Metagenomics & amplicon sequencing", "examples": ["Human Microbiome Project"], "keywords": ["metagenomic", "shotgun metagenomic", "16s rrna sequencing", "16s rrna gene sequencing", "metagenome-assembled genome", "amplicon sequencing", "metagenome"]}
+      ]},
+      {"name": "Association & population genetics", "children": [
+        {"name": "Genome-wide association studies", "examples": ["UK Biobank resource"], "keywords": ["genome-wide association", "gwas", "fine-mapping", "fine mapping", "quantitative trait loci", "eqtl"]},
+        {"name": "Polygenic scores & heritability", "examples": ["LD score regression"], "keywords": ["polygenic risk score", "polygenic score", "heritability", "ld score regression", "genetic correlation"]},
+        {"name": "Rare-variant & de novo mutation analysis", "examples": ["gnomAD constraint"], "keywords": ["rare variant", "de novo mutation", "de novo variant", "loss-of-function variant", "mutational constraint", "rare coding variant"]},
+        {"name": "Population & ancient genomics", "examples": ["Neandertal genome"], "keywords": ["ancient dna", "ancient genome", "paleogenomic", "palaeogenomic", "population genetic", "admixture", "demographic history", "selective sweep"]},
+        {"name": "Somatic mutation & clonal analysis", "examples": ["Mutational signatures (Alexandrov et al.)"], "keywords": ["somatic mutation", "clonal hematopoiesis", "clonal haematopoiesis", "mutational signature", "somatic variant", "somatic evolution"]},
+        {"name": "Phylogenetics & comparative genomics", "examples": ["Zoonomia"], "keywords": ["phylogenetic", "phylogenomic", "phylogeny", "molecular clock", "comparative genomic", "synteny", "whole-genome duplication", "horizontal gene transfer"]}
+      ]}
+    ]},
+    {"code": "TX", "name": "Transcriptomics & epigenomics",
+     "summary": "Measuring gene expression and its regulation: bulk, single-cell and spatial transcriptomes, translation, RNA modification, chromatin and the 3D genome.",
+     "children": [
+      {"name": "Transcriptome profiling", "children": [
+        {"name": "Bulk RNA-seq", "examples": ["RNA-seq (Mortazavi et al.)"], "keywords": ["rna-seq", "rna sequencing", "transcriptome sequencing", "transcriptomic profiling", "differential gene expression", "differential expression analysis"]},
+        {"name": "Single-cell RNA-seq", "examples": ["Drop-seq"], "keywords": ["single-cell rna sequencing", "single-cell rna-seq", "scrna-seq", "single-cell transcriptomic", "single-nucleus rna", "snrna-seq", "single-cell sequencing", "single-cell transcriptome"]},
+        {"name": "Spatial transcriptomics", "examples": ["Spatial transcriptomics (Ståhl et al.)", "MERFISH"], "keywords": ["spatial transcriptomic", "spatially resolved transcriptomic", "merfish", "seqfish", "visium", "slide-seq", "stereo-seq", "spatial omic", "xenium"]},
+        {"name": "Isoforms & splicing", "keywords": ["alternative splicing", "isoform", "splicing variant", "full-length transcript", "direct rna sequencing", "splice site"]},
+        {"name": "Translation & ribosome profiling", "examples": ["Ribosome profiling (Ingolia et al.)"], "keywords": ["ribosome profiling", "ribo-seq", "translatome", "polysome profiling"]},
+        {"name": "RNA modification & structure", "keywords": ["m6a", "n6-methyladenosine", "epitranscriptome", "epitranscriptomic", "rna modification", "rna structure probing", "pseudouridine", "rna structure"]}
+      ]},
+      {"name": "Epigenome & chromatin", "children": [
+        {"name": "Chromatin accessibility", "examples": ["ATAC-seq"], "keywords": ["atac-seq", "chromatin accessibility", "dnase-seq", "dnase i hypersensitive", "open chromatin"]},
+        {"name": "Protein–DNA binding maps", "examples": ["ChIP-seq (Johnson et al.)", "CUT&RUN"], "keywords": ["chip-seq", "cut&run", "cut&tag", "chromatin immunoprecipitation", "transcription factor binding", "histone modification"]},
+        {"name": "DNA methylation profiling", "examples": ["Epigenetic clock (Horvath)"], "keywords": ["dna methylation", "bisulfite sequencing", "methylome", "epigenetic clock", "5-hydroxymethylcytosine"]},
+        {"name": "3D genome mapping", "examples": ["Hi-C"], "keywords": ["hi-c", "chromosome conformation capture", "chromatin loop", "topologically associating domain", "3d genome", "micro-c", "genome folding"]},
+        {"name": "Enhancer & reporter assays", "examples": ["STARR-seq"], "keywords": ["massively parallel reporter assay", "mpra", "starr-seq", "enhancer screen", "reporter assay", "enhancer activity"]}
+      ]},
+      {"name": "Cell state & lineage", "children": [
+        {"name": "Single-cell multiomics", "examples": ["CITE-seq"], "keywords": ["single-cell multiome", "single-cell multiomic", "single-cell multi-omic", "single-cell atac", "scatac-seq", "cite-seq", "multiome"]},
+        {"name": "Lineage tracing & barcoding", "keywords": ["lineage tracing", "lineage barcoding", "cellular barcoding", "fate mapping", "clonal tracing", "lineage recording"]}
+      ]}
+    ]},
+    {"code": "EDIT", "name": "Genome engineering & perturbation",
+     "summary": "Changing genes and gene expression on purpose: CRISPR and its successors, genetic screens, delivery vectors, synthetic circuits and directed evolution.",
+     "children": [
+      {"name": "Gene editing", "children": [
+        {"name": "CRISPR–Cas nuclease editing", "examples": ["CRISPR-Cas9 (Jinek et al.)", "Multiplex CRISPR editing (Cong et al.)"], "keywords": ["crispr-cas9", "crispr/cas9", "cas9", "cas12a", "crispr knockout", "gene editing", "genome editing", "crispr-cas"]},
+        {"name": "Base editing", "examples": ["Cytosine base editor (Komor et al.)"], "keywords": ["base editing", "base editor", "adenine base editor", "cytosine base editor"]},
+        {"name": "Prime editing", "examples": ["Prime editing (Anzalone et al.)"], "keywords": ["prime editing", "prime editor", "pegrna"]},
+        {"name": "CRISPRi/a & epigenome editing", "examples": ["CRISPRi (Qi et al.)"], "keywords": ["crispri", "crispra", "crispr interference", "crispr activation", "epigenome editing", "dcas9", "epigenetic editing"]},
+        {"name": "Recombinases, transposases & large insertions", "examples": ["Bridge RNA recombination"], "keywords": ["recombinase", "integrase", "crispr-associated transposase", "bridge rna", "site-specific integration", "large dna insertion", "transposase"]},
+        {"name": "RNA editing & targeting", "examples": ["Cas13 RNA editing (Cox et al.)"], "keywords": ["rna editing", "cas13", "adar", "rna targeting", "rna base editing"]}
+      ]},
+      {"name": "Genetic screens & perturbation", "children": [
+        {"name": "Pooled CRISPR screens", "examples": ["Genome-scale CRISPR screen (Shalem et al.)"], "keywords": ["crispr screen", "genome-wide screen", "pooled screen", "genetic screen", "knockout screen", "loss-of-function screen", "crispr-cas9 screen"]},
+        {"name": "Single-cell & optical perturbation screens", "examples": ["Perturb-seq"], "keywords": ["perturb-seq", "crop-seq", "single-cell crispr screen", "optical pooled screen", "perturbation atlas"]},
+        {"name": "RNA interference & knockdown", "examples": ["RNAi (Fire et al.)"], "keywords": ["rna interference", "rnai", "sirna", "shrna", "knockdown"]},
+        {"name": "Deep mutational scanning", "examples": ["Deep mutational scanning review"], "keywords": ["deep mutational scanning", "saturation mutagenesis", "mutational scanning", "variant effect map", "multiplexed assay of variant effect"]}
+      ]},
+      {"name": "Genetic models, delivery & design", "children": [
+        {"name": "Transgenic & knockout animals", "keywords": ["knockout mice", "knockout mouse", "transgenic mice", "transgenic mouse", "knock-in mice", "knock-in mouse", "conditional knockout", "cre-lox", "cre recombinase", "conditional deletion"]},
+        {"name": "Gene delivery vectors", "examples": ["AAV-PHP.B capsid evolution"], "keywords": ["adeno-associated virus", "aav", "lentiviral", "lentivirus", "lipid nanoparticle", "viral vector", "gene delivery", "capsid engineering"]},
+        {"name": "Synthetic gene circuits", "examples": ["Repressilator", "Genetic toggle switch"], "keywords": ["gene circuit", "genetic circuit", "synthetic circuit", "synthetic gene network", "toggle switch", "repressilator", "logic gate"]},
+        {"name": "Directed evolution", "examples": ["PACE (Esvelt et al.)"], "keywords": ["directed evolution", "phage-assisted continuous evolution", "continuous evolution", "laboratory evolution", "experimental evolution"]}
+      ]}
+    ]},
+    {"code": "PROT", "name": "Proteomics, metabolomics & chemical biology",
+     "summary": "Measuring proteins, modifications, interactions and metabolites, and probing them with chemistry, screening and single-molecule biophysics.",
+     "children": [
+      {"name": "Mass-spectrometry omics", "children": [
+        {"name": "Quantitative proteomics", "examples": ["MS-based proteomics (Aebersold & Mann)"], "keywords": ["proteomic", "proteome", "mass spectrometry-based proteomic", "data-independent acquisition", "tandem mass tag", "label-free quantification"]},
+        {"name": "PTM & phosphoproteomics", "keywords": ["phosphoproteomic", "phosphoproteome", "ubiquitinome", "glycoproteomic", "acetylome", "post-translational modification", "phosphorylation site"]},
+        {"name": "Single-cell & spatial proteomics", "examples": ["Mass cytometry (Bendall et al.)"], "keywords": ["single-cell proteomic", "spatial proteomic", "mass cytometry", "cytof", "imaging mass cytometry", "multiplexed immunofluorescence", "deep visual proteomic", "multiplexed imaging"]},
+        {"name": "Plasma & affinity proteomics", "examples": ["UK Biobank plasma proteomics"], "keywords": ["plasma proteomic", "plasma proteome", "olink", "somascan", "proximity extension assay", "aptamer-based proteomic", "circulating protein"]},
+        {"name": "Metabolomics & lipidomics", "keywords": ["metabolomic", "metabolome", "lipidomic", "lipidome", "metabolic profiling", "isotope tracing", "stable isotope tracing", "metabolic flux analysis"]}
+      ]},
+      {"name": "Interactions & chemical biology", "children": [
+        {"name": "Interactomics & proximity labeling", "examples": ["TurboID"], "keywords": ["proximity labeling", "proximity labelling", "bioid", "turboid", "apex2", "affinity purification-mass spectrometry", "interactome", "protein-protein interaction", "cross-linking mass spectrometry"]},
+        {"name": "Chemoproteomics & bioorthogonal chemistry", "examples": ["Bioorthogonal chemistry (Sletten & Bertozzi)"], "keywords": ["chemoproteomic", "activity-based protein profiling", "bioorthogonal", "click chemistry", "photoaffinity labeling", "covalent ligand", "chemical probe"]},
+        {"name": "High-throughput & display screening", "keywords": ["high-throughput screening", "compound screen", "drug screen", "dna-encoded library", "phage display", "yeast display", "mrna display", "chemical screen"]},
+        {"name": "Single-molecule biophysics", "keywords": ["single-molecule", "optical tweezers", "magnetic tweezers", "smfret", "high-speed atomic force microscopy", "force spectroscopy"]},
+        {"name": "Biochemical reconstitution & enzymology", "keywords": ["in vitro reconstitution", "biochemical reconstitution", "reconstituted in vitro", "enzyme kinetic", "steady-state kinetic", "cell-free expression", "cell-free system", "biochemical assay"]}
+      ]}
+    ]},
+    {"code": "STRUCT", "name": "Structural biology",
+     "summary": "Determining the 3D structures and dynamics of biomolecules and their assemblies, in vitro and inside cells.",
+     "children": [
+      {"name": "Electron cryo-microscopy", "children": [
+        {"name": "Single-particle cryo-EM", "examples": ["Resolution revolution (Kühlbrandt)", "TRPV1 cryo-EM structure"], "keywords": ["cryo-em", "cryo-electron microscopy", "cryoem", "single-particle analysis", "electron cryo-microscopy", "cryo-em structure"]},
+        {"name": "Cryo-electron tomography & in situ structure", "examples": ["Nuclear periphery cryo-ET (Mahamid et al.)"], "keywords": ["cryo-electron tomography", "cryo-et", "subtomogram averaging", "in situ structural", "focused ion beam milling", "cryo-fib", "electron cryotomography"]}
+      ]},
+      {"name": "Diffraction & spectroscopy", "children": [
+        {"name": "X-ray crystallography & XFEL", "keywords": ["crystal structure", "x-ray crystallography", "crystallographic", "serial femtosecond crystallography", "x-ray free-electron laser", "time-resolved crystallography"]},
+        {"name": "NMR spectroscopy", "keywords": ["nmr", "nuclear magnetic resonance", "solid-state nmr", "chemical shift"]},
+        {"name": "Integrative & solution methods", "keywords": ["hydrogen-deuterium exchange", "hdx-ms", "small-angle x-ray scattering", "saxs", "native mass spectrometry", "integrative structural", "integrative modeling", "conformational dynamics"]}
+      ]}
+    ]},
+    {"code": "IMG", "name": "Imaging & microscopy",
+     "summary": "Seeing biology from molecules to whole bodies: super-resolution and volumetric light microscopy, electron microscopy, and medical imaging.",
+     "children": [
+      {"name": "Light microscopy", "children": [
+        {"name": "Super-resolution microscopy", "examples": ["PALM (Betzig et al.)", "STORM (Rust et al.)"], "keywords": ["super-resolution", "sted microscopy", "dstorm", "stochastic optical reconstruction microscopy", "photoactivated localization microscopy", "structured illumination microscopy", "single-molecule localization microscopy", "minflux"]},
+        {"name": "Expansion microscopy", "examples": ["Expansion microscopy (Chen et al.)"], "keywords": ["expansion microscopy"]},
+        {"name": "Light-sheet & tissue clearing", "examples": ["Lattice light-sheet microscopy", "CLARITY"], "keywords": ["light-sheet", "lightsheet", "lattice light-sheet", "tissue clearing", "cleared tissue", "whole-brain imaging", "whole-body imaging"]},
+        {"name": "Live-cell & intravital imaging", "keywords": ["live-cell imaging", "live imaging", "time-lapse imaging", "time-lapse microscopy", "intravital", "two-photon", "multiphoton", "in vivo imaging"]},
+        {"name": "Fluorescent proteins & probes", "examples": ["GFP as a marker (Chalfie et al.)"], "keywords": ["fluorescent protein", "gfp", "genetically encoded sensor", "genetically encoded indicator", "fluorescent probe", "fluorogenic", "fluorescent reporter"]}
+      ]},
+      {"name": "Electron & volume imaging", "children": [
+        {"name": "Volume EM & connectomics", "examples": ["FlyWire connectome"], "keywords": ["connectome", "connectomic", "serial-section electron microscopy", "volume electron microscopy", "focused ion beam scanning electron", "serial block-face", "wiring diagram"]},
+        {"name": "Electron microscopy & correlative imaging", "keywords": ["correlative light and electron microscopy", "transmission electron microscopy", "electron micrograph", "immunogold", "ultrastructure", "ultrastructural"]}
+      ]},
+      {"name": "Medical & whole-body imaging", "children": [
+        {"name": "MRI & fMRI", "keywords": ["mri", "magnetic resonance imaging", "fmri", "functional magnetic resonance", "diffusion tensor imaging", "neuroimaging"]},
+        {"name": "PET, CT & molecular imaging", "keywords": ["positron emission tomography", "pet imaging", "pet/ct", "computed tomography", "spect", "molecular imaging", "radiotracer"]},
+        {"name": "Ultrasound & photoacoustic imaging", "keywords": ["ultrasound imaging", "functional ultrasound", "photoacoustic", "optoacoustic", "echocardiography", "ultrasonography"]},
+        {"name": "Histopathology & digital pathology", "keywords": ["histopathology", "histopathological", "whole-slide image", "digital pathology", "immunohistochemistry", "histological analysis"]}
+      ]}
+    ]},
+    {"code": "CELL", "name": "Cell & tissue models",
+     "summary": "Growing and analysing human-relevant cells and tissues outside the body: organoids, stem-cell derivation, organ chips and cell analysis.",
+     "children": [
+      {"name": "Engineered tissue models", "children": [
+        {"name": "Organoids & embryo models", "examples": ["Intestinal organoids (Sato et al.)"], "keywords": ["organoid", "assembloid", "gastruloid", "embryoid", "blastoid", "embryo model"]},
+        {"name": "Stem-cell derivation & reprogramming", "examples": ["iPSCs (Takahashi & Yamanaka)"], "keywords": ["induced pluripotent stem cell", "ipsc", "ipsc-derived", "reprogramming", "directed differentiation", "embryonic stem cell", "hpsc", "transdifferentiation"]},
+        {"name": "Organ-on-chip & microfluidics", "examples": ["Lung-on-a-chip (Huh et al.)"], "keywords": ["organ-on-a-chip", "organ-on-chip", "microfluidic", "lung-on-a-chip", "microphysiological system", "droplet microfluidic"]},
+        {"name": "3D culture & bioprinting", "examples": ["3D bioprinting review"], "keywords": ["hydrogel", "3d culture", "three-dimensional culture", "bioprinting", "spheroid", "engineered tissue"]}
+      ]},
+      {"name": "Cell analysis", "children": [
+        {"name": "Flow cytometry & cell sorting", "keywords": ["flow cytometry", "facs", "fluorescence-activated cell sorting", "spectral flow cytometry", "cell sorting"]},
+        {"name": "Cell-based functional assays", "keywords": ["co-culture", "coculture", "killing assay", "cytotoxicity assay", "migration assay", "transwell", "proliferation assay", "colony formation"]},
+        {"name": "Primary cells & ex vivo tissue", "keywords": ["primary cell culture", "explant culture", "tissue explant", "ex vivo culture", "precision-cut slice", "patient-derived cell", "primary human cell"]}
+      ]}
+    ]},
+    {"code": "ORG", "name": "Model organisms & in vivo models",
+     "summary": "The organisms and in vivo systems used to test biology: mice and xenografts, zebrafish, primates, invertebrates, microbes and plants.",
+     "children": [
+      {"name": "Vertebrate models", "children": [
+        {"name": "Mouse models", "keywords": ["mouse model", "murine model", "genetically engineered mouse", "humanized mice", "humanized mouse", "mouse strain"]},
+        {"name": "Xenografts & PDX", "keywords": ["xenograft", "patient-derived xenograft", "pdx model", "orthotopic"]},
+        {"name": "Zebrafish", "keywords": ["zebrafish", "danio rerio"]},
+        {"name": "Non-human primates", "keywords": ["non-human primate", "nonhuman primate", "macaque", "rhesus", "marmoset"]},
+        {"name": "Xenopus, chick & axolotl", "keywords": ["xenopus", "chick embryo", "axolotl", "lamprey"]},
+        {"name": "Germ-free & gnotobiotic animals", "keywords": ["germ-free", "gnotobiotic", "fecal microbiota transplant", "faecal microbiota transplant", "antibiotic-treated mice"]}
+      ]},
+      {"name": "Invertebrates & microbes", "children": [
+        {"name": "Drosophila", "keywords": ["drosophila", "fruit fly"]},
+        {"name": "C. elegans", "keywords": ["elegans", "caenorhabditis", "nematode"]},
+        {"name": "Yeast", "keywords": ["yeast", "saccharomyces", "schizosaccharomyces", "budding yeast", "fission yeast"]},
+        {"name": "Bacteria & phage models", "keywords": ["escherichia coli", "e. coli", "bacillus subtilis", "bacteriophage", "caulobacter"]}
+      ]},
+      {"name": "Plant models", "children": [
+        {"name": "Arabidopsis & model plants", "keywords": ["arabidopsis", "nicotiana benthamiana", "physcomitrella", "marchantia", "brachypodium"]}
+      ]}
+    ]},
+    {"code": "PHYS", "name": "Neural & physiological recording",
+     "summary": "Recording and manipulating the nervous system and whole-body physiology: electrophysiology, imaging of activity, opto- and chemogenetics, behaviour and wearables.",
+     "children": [
+      {"name": "Neural recording", "children": [
+        {"name": "Electrophysiology & patch clamp", "keywords": ["patch clamp", "patch-clamp", "whole-cell recording", "electrophysiological recording", "electrophysiology", "field potential"]},
+        {"name": "High-density probes & arrays", "examples": ["Neuropixels"], "keywords": ["neuropixels", "multielectrode array", "microelectrode array", "silicon probe", "high-density electrode", "intracortical", "single-unit recording"]},
+        {"name": "Calcium & voltage imaging", "examples": ["GCaMP6"], "keywords": ["calcium imaging", "gcamp", "voltage imaging", "voltage indicator", "fiber photometry", "fibre photometry", "miniscope"]},
+        {"name": "Human neurophysiology", "keywords": ["eeg", "electroencephalography", "magnetoencephalography", "intracranial recording", "electrocorticography", "ecog"]}
+      ]},
+      {"name": "Neural manipulation & mapping", "children": [
+        {"name": "Optogenetics", "examples": ["Optogenetics (Boyden et al.)"], "keywords": ["optogenetic", "channelrhodopsin", "halorhodopsin", "optogenetically"]},
+        {"name": "Chemogenetics", "examples": ["DREADDs (Armbruster et al.)"], "keywords": ["chemogenetic", "dreadd", "designer receptors exclusively"]},
+        {"name": "Brain & nerve stimulation", "keywords": ["deep brain stimulation", "transcranial magnetic stimulation", "vagus nerve stimulation", "neuromodulation", "focused ultrasound", "spinal cord stimulation"]},
+        {"name": "Circuit tracing", "keywords": ["viral tracing", "rabies tracing", "trans-synaptic", "anterograde tracing", "retrograde tracing", "neuronal tracing", "circuit mapping"]}
+      ]},
+      {"name": "Behaviour & physiology", "children": [
+        {"name": "Behavioural assays & pose tracking", "examples": ["DeepLabCut"], "keywords": ["behavioral assay", "behavioural assay", "pose estimation", "deeplabcut", "fear conditioning", "water maze", "open field test", "behavioral tracking"]},
+        {"name": "Wearables & physiological monitoring", "keywords": ["wearable", "continuous glucose monitoring", "actigraphy", "heart rate variability", "wearable sensor", "physiological monitoring"]}
+      ]}
+    ]},
+    {"code": "CLIN", "name": "Clinical & population methods",
+     "summary": "How evidence is gathered in people: trials, cohorts and biobanks, causal and epidemiological inference, and diagnostic tests.",
+     "children": [
+      {"name": "Clinical studies", "children": [
+        {"name": "Randomized controlled trials", "keywords": ["randomized controlled trial", "randomised controlled trial", "randomized trial", "randomised trial", "phase 3 trial", "phase iii trial", "double-blind", "placebo-controlled"]},
+        {"name": "Early-phase & first-in-human trials", "keywords": ["phase 1 trial", "phase i trial", "phase 2 trial", "phase ii trial", "first-in-human", "dose-escalation", "open-label"]},
+        {"name": "Cohort & observational studies", "keywords": ["cohort study", "prospective cohort", "longitudinal cohort", "case-control", "cross-sectional study", "observational study", "retrospective cohort"]},
+        {"name": "Biobanks & health records", "keywords": ["biobank", "electronic health record", "health record", "registry data", "nationwide cohort", "claims data", "population-based registry"]},
+        {"name": "Meta-analysis & systematic review", "keywords": ["meta-analysis", "systematic review", "pooled analysis", "meta-analyses"]}
+      ]},
+      {"name": "Causal & epidemiological inference", "children": [
+        {"name": "Mendelian randomization", "keywords": ["mendelian randomization", "mendelian randomisation"]},
+        {"name": "Causal inference & trial emulation", "keywords": ["causal inference", "target trial emulation", "instrumental variable", "difference-in-differences", "propensity score", "natural experiment"]},
+        {"name": "Infectious-disease modelling & surveillance", "keywords": ["transmission model", "epidemic model", "compartmental model", "reproduction number", "phylodynamic", "genomic surveillance", "wastewater surveillance"]}
+      ]},
+      {"name": "Diagnostics", "children": [
+        {"name": "Liquid biopsy & cell-free DNA", "keywords": ["liquid biopsy", "cell-free dna", "cfdna", "circulating tumor dna", "circulating tumour dna", "ctdna", "circulating tumor cell"]},
+        {"name": "Biomarker discovery", "keywords": ["biomarker", "diagnostic accuracy", "prognostic marker", "risk prediction", "risk score"]},
+        {"name": "Point-of-care & CRISPR diagnostics", "examples": ["SHERLOCK"], "keywords": ["point-of-care", "rapid diagnostic", "crispr-based diagnostic", "crispr diagnostic", "sherlock", "lateral flow", "isothermal amplification"]}
+      ]}
+    ]},
+    {"code": "COMP", "name": "Computational & systems biology",
+     "summary": "Simulation, modelling and data analysis: molecular dynamics and docking, mathematical and network models, and omics analysis pipelines and atlases.",
+     "children": [
+      {"name": "Physics-based simulation", "children": [
+        {"name": "Molecular dynamics", "keywords": ["molecular dynamics", "md simulation", "all-atom simulation", "coarse-grained simulation", "free energy calculation", "markov state model"]},
+        {"name": "Docking & virtual screening", "examples": ["Ultra-large library docking"], "keywords": ["molecular docking", "virtual screening", "docking screen", "ultra-large library", "structure-based virtual screening"]}
+      ]},
+      {"name": "Modelling & theory", "children": [
+        {"name": "Mathematical & mechanistic models", "keywords": ["mathematical model", "mechanistic model", "ordinary differential equation", "stochastic model", "agent-based model", "biophysical model", "theoretical model"]},
+        {"name": "Network & systems biology", "keywords": ["gene regulatory network", "systems biology", "network medicine", "co-expression network", "pathway analysis", "genome-scale metabolic model", "flux balance analysis", "network analysis"]},
+        {"name": "Evolutionary & ecological models", "keywords": ["population genetic model", "fitness landscape", "eco-evolutionary", "coalescent", "evolutionary model", "evolutionary simulation"]}
+      ]},
+      {"name": "Omics data analysis", "children": [
+        {"name": "Single-cell & spatial computational analysis", "examples": ["RNA velocity", "Seurat integration"], "keywords": ["cell type annotation", "trajectory inference", "rna velocity", "pseudotime", "batch correction", "cell-cell communication", "cell type deconvolution", "single-cell data integration"]},
+        {"name": "Multi-omics integration", "keywords": ["multi-omics integration", "multi-omic", "multiomic", "multi-omics", "integrative analysis", "integrative omic"]},
+        {"name": "Sequence analysis & annotation", "examples": ["BLAST"], "keywords": ["sequence alignment", "read alignment", "variant calling", "genome annotation", "homology search", "multiple sequence alignment", "bioinformatic pipeline"]},
+        {"name": "Atlases & data resources", "examples": ["Human Cell Atlas"], "keywords": ["cell atlas", "atlas", "database", "data resource", "knowledgebase", "reference map", "web portal"]}
+      ]}
+    ]},
+    {"code": "ML", "name": "AI & machine learning for biology",
+     "summary": "Learned models of biology: structure prediction and protein design, sequence and single-cell foundation models, bioimage and clinical AI, and LLM agents.",
+     "children": [
+      {"name": "Protein & structure AI", "children": [
+        {"name": "Protein structure prediction", "examples": ["AlphaFold2", "AlphaFold 3"], "keywords": ["alphafold", "alphafold2", "alphafold3", "rosettafold", "esmfold", "structure prediction", "protein structure prediction"]},
+        {"name": "De novo protein design", "examples": ["RFdiffusion", "ProteinMPNN"], "keywords": ["protein design", "de novo design", "de novo protein", "designed protein", "designed binder", "rfdiffusion", "proteinmpnn", "binder design"]},
+        {"name": "Protein language models", "examples": ["ESM-2 / ESMFold"], "keywords": ["protein language model", "esm-2", "esm2", "esm3", "evolutionary scale modeling", "protein foundation model"]},
+        {"name": "Variant effect prediction", "examples": ["AlphaMissense"], "keywords": ["variant effect prediction", "variant effect predictor", "alphamissense", "pathogenicity prediction", "missense variant effect", "variant pathogenicity"]}
+      ]},
+      {"name": "Sequence & omics AI", "children": [
+        {"name": "Genomic sequence models", "examples": ["Enformer"], "keywords": ["dna language model", "genomic language model", "enformer", "borzoi", "alphagenome", "sequence-to-function", "sequence-to-expression", "genome language model"]},
+        {"name": "Single-cell & virtual-cell foundation models", "examples": ["scGPT", "Geneformer"], "keywords": ["foundation model", "scgpt", "geneformer", "virtual cell", "cell foundation model", "single-cell foundation model"]},
+        {"name": "Deep learning", "keywords": ["deep learning", "neural network", "convolutional neural network", "transformer model", "graph neural network", "deep neural network"]},
+        {"name": "Machine learning & general AI", "keywords": ["machine learning", "machine-learning", "artificial intelligence", "random forest", "support vector machine", "gradient boosting", "xgboost"]}
+      ]},
+      {"name": "Imaging, clinical & agentic AI", "children": [
+        {"name": "Bioimage analysis", "examples": ["Cellpose"], "keywords": ["image segmentation", "cell segmentation", "cellpose", "image analysis pipeline", "computer vision", "automated image analysis"]},
+        {"name": "Medical AI & computational pathology", "examples": ["Dermatologist-level classification"], "keywords": ["computational pathology", "pathology foundation model", "medical imaging ai", "clinical ai", "medical ai", "ai-assisted diagnosis", "ai-based diagnosis", "radiology ai"]},
+        {"name": "Large language models & AI agents", "examples": ["Med-PaLM (Singhal et al.)"], "keywords": ["large language model", "llm", "gpt-4", "chatgpt", "ai agent", "ai scientist", "language model"]},
+        {"name": "Generative AI for molecules & drugs", "examples": ["Deep learning antibiotic discovery (Stokes et al.)"], "keywords": ["generative model", "molecular generation", "diffusion model", "generative ai", "de novo drug design", "deep generative"]}
+      ]}
+    ]}
+  ],
+  "facets": [
+    {"name": "Organism / system", "tags": ["human", "mouse", "other vertebrate", "invertebrate", "plant", "microbe", "virus", "cell-free / in vitro"]},
+    {"name": "Biological scale", "tags": ["molecule", "cell", "tissue / organ", "organism", "population", "ecosystem"]},
+    {"name": "Data type", "tags": ["sequence", "omics profile", "image", "structure", "physiological signal", "clinical record"]},
+    {"name": "Contribution form", "tags": ["new method/technology", "biological mechanism", "resource/atlas", "therapeutic/clinical result", "software/model", "review/perspective"]}
+  ],
+  "heuristics": [
+    "Pick the primary node by the paper's main methodological contribution, not the organism or disease it studies (a new spatial atlas of the tumour microenvironment is Transcriptomics > Spatial transcriptomics).",
+    "A paper that introduces a new assay, instrument or reagent belongs under the technique it advances; papers that only use routine assays take their primary node from the method that drives the discovery.",
+    "Combined computational-experimental papers: choose Computational or AI only when the model drives the discovery; otherwise the experimental method is primary and the computation is secondary.",
+    "Perturbation plus readout (e.g. Perturb-seq): the perturbation branch is primary when the screen is the contribution; the readout branch is secondary.",
+    "Clinical papers take their node from the study design (trial, cohort, Mendelian randomization); the disease belongs in the Application Tree.",
+    "Use the Application Tree (and the organism facet) for what the work is for; keep the Method Tree for how the work was done."
+  ]
+}

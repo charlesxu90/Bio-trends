@@ -1,0 +1,517 @@
+{
+ "1000 Genomes": {
+  "title": "A global reference for human genetic variation",
+  "year": 2015,
+  "url": "https://doi.org/10.1038/nature15393"
+ },
+ "3D bioprinting review": {
+  "title": "3D bioprinting of tissues and organs",
+  "year": 2014,
+  "url": "https://doi.org/10.1038/nbt.2958"
+ },
+ "AAV-PHP.B capsid evolution": {
+  "title": "Cre-dependent selection yields AAV variants for widespread gene transfer to the adult brain",
+  "year": 2016,
+  "url": "https://doi.org/10.1038/nbt.3440"
+ },
+ "ATAC-seq": {
+  "title": "Transposition of native chromatin for fast and sensitive epigenomic profiling of open chromatin, DNA-binding proteins and nucleosome position",
+  "year": 2013,
+  "url": "https://doi.org/10.1038/nmeth.2688"
+ },
+ "AlphaFold 3": {
+  "title": "Accurate structure prediction of biomolecular interactions with AlphaFold 3",
+  "year": 2024,
+  "url": "https://doi.org/10.1038/s41586-024-07487-w"
+ },
+ "AlphaFold2": {
+  "title": "Highly accurate protein structure prediction with AlphaFold",
+  "year": 2021,
+  "url": "https://doi.org/10.1038/s41586-021-03819-2"
+ },
+ "AlphaMissense": {
+  "title": "Accurate proteome-wide missense variant effect prediction with AlphaMissense",
+  "year": 2023,
+  "url": "https://doi.org/10.1126/science.adg7492"
+ },
+ "BLAST": {
+  "title": "Basic local alignment search tool",
+  "year": 1990,
+  "url": "https://doi.org/10.1016/S0022-2836(05)80360-2"
+ },
+ "BNT162b2 efficacy trial": {
+  "title": "Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine",
+  "year": 2020,
+  "url": "https://doi.org/10.1056/NEJMoa2034577"
+ },
+ "Bioorthogonal chemistry (Sletten & Bertozzi)": {
+  "title": "Bioorthogonal Chemistry: Fishing for Selectivity in a Sea of Functionality",
+  "year": 2009,
+  "url": "https://doi.org/10.1002/anie.200900942"
+ },
+ "Bridge RNA recombination": {
+  "title": "Bridge RNAs direct programmable recombination of target and donor DNA",
+  "year": 2024,
+  "url": "https://doi.org/10.1038/s41586-024-07552-4"
+ },
+ "CAR-T in CLL (Porter et al.)": {
+  "title": "Chimeric Antigen Receptor–Modified T Cells in Chronic Lymphoid Leukemia",
+  "year": 2011,
+  "url": "https://doi.org/10.1056/NEJMoa1103849"
+ },
+ "CITE-seq": {
+  "title": "Simultaneous epitope and transcriptome measurement in single cells",
+  "year": 2017,
+  "url": "https://doi.org/10.1038/nmeth.4380"
+ },
+ "CLARITY": {
+  "title": "Structural and molecular interrogation of intact biological systems",
+  "year": 2013,
+  "url": "https://doi.org/10.1038/nature12107"
+ },
+ "CRISPR for SCD & β-thalassemia (Frangoul et al.)": {
+  "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia",
+  "year": 2021,
+  "url": "https://doi.org/10.1056/NEJMoa2031054"
+ },
+ "CRISPR-Cas9 (Jinek et al.)": {
+  "title": "A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity",
+  "year": 2012,
+  "url": "https://doi.org/10.1126/science.1225829"
+ },
+ "CRISPRi (Qi et al.)": {
+  "title": "Repurposing CRISPR as an RNA-Guided Platform for Sequence-Specific Control of Gene Expression",
+  "year": 2013,
+  "url": "https://doi.org/10.1016/j.cell.2013.02.022"
+ },
+ "CUT&RUN": {
+  "title": "An efficient targeted nuclease strategy for high-resolution mapping of DNA binding sites",
+  "year": 2017,
+  "url": "https://doi.org/10.7554/eLife.21856"
+ },
+ "Cas13 RNA editing (Cox et al.)": {
+  "title": "RNA editing with CRISPR-Cas13",
+  "year": 2017,
+  "url": "https://doi.org/10.1126/science.aaq0180"
+ },
+ "Cellpose": {
+  "title": "Cellpose: a generalist algorithm for cellular segmentation",
+  "year": 2021,
+  "url": "https://doi.org/10.1038/s41592-020-01018-x"
+ },
+ "ChIP-seq (Johnson et al.)": {
+  "title": "Genome-Wide Mapping of in Vivo Protein-DNA Interactions",
+  "year": 2007,
+  "url": "https://doi.org/10.1126/science.1141319"
+ },
+ "Cytosine base editor (Komor et al.)": {
+  "title": "Programmable editing of a target base in genomic DNA without double-stranded DNA cleavage",
+  "year": 2016,
+  "url": "https://doi.org/10.1038/nature17946"
+ },
+ "DNA origami (Rothemund)": {
+  "title": "Folding DNA to create nanoscale shapes and patterns",
+  "year": 2006,
+  "url": "https://doi.org/10.1038/nature04586"
+ },
+ "DREADDs (Armbruster et al.)": {
+  "title": "Evolving the lock to fit the key to create a family of G protein-coupled receptors potently activated by an inert ligand",
+  "year": 2007,
+  "url": "https://doi.org/10.1073/pnas.0700293104"
+ },
+ "Deep learning antibiotic discovery (Stokes et al.)": {
+  "title": "A Deep Learning Approach to Antibiotic Discovery",
+  "year": 2020,
+  "url": "https://doi.org/10.1016/j.cell.2020.01.021"
+ },
+ "Deep mutational scanning review": {
+  "title": "Deep mutational scanning: a new style of protein science",
+  "year": 2014,
+  "url": "https://doi.org/10.1038/nmeth.3027"
+ },
+ "DeepLabCut": {
+  "title": "DeepLabCut: markerless pose estimation of user-defined body parts with deep learning",
+  "year": 2018,
+  "url": "https://doi.org/10.1038/s41593-018-0209-y"
+ },
+ "Dermatologist-level classification": {
+  "title": "Dermatologist-level classification of skin cancer with deep neural networks",
+  "year": 2017,
+  "url": "https://doi.org/10.1038/nature21056"
+ },
+ "Directed evolution (Arnold)": {
+  "title": "Directed Evolution: Bringing New Chemistry to Life",
+  "year": 2018,
+  "url": "https://doi.org/10.1002/anie.201708408"
+ },
+ "Drop-seq": {
+  "title": "Highly Parallel Genome-wide Expression Profiling of Individual Cells Using Nanoliter Droplets",
+  "year": 2015,
+  "url": "https://doi.org/10.1016/j.cell.2015.05.002"
+ },
+ "ESM-2 / ESMFold": {
+  "title": "Evolutionary-scale prediction of atomic-level protein structure with a language model",
+  "year": 2023,
+  "url": "https://doi.org/10.1126/science.ade2574"
+ },
+ "Enformer": {
+  "title": "Effective gene expression prediction from sequence by integrating long-range interactions",
+  "year": 2021,
+  "url": "https://doi.org/10.1038/s41592-021-01252-x"
+ },
+ "Epigenetic clock (Horvath)": {
+  "title": "DNA methylation age of human tissues and cell types",
+  "year": 2013,
+  "url": "https://doi.org/10.1186/gb-2013-14-10-r115"
+ },
+ "Expansion microscopy (Chen et al.)": {
+  "title": "Expansion microscopy",
+  "year": 2015,
+  "url": "https://doi.org/10.1126/science.1260088"
+ },
+ "FlyWire connectome": {
+  "title": "Neuronal wiring diagram of an adult brain",
+  "year": 2024,
+  "url": "https://doi.org/10.1038/s41586-024-07558-y"
+ },
+ "GCaMP6": {
+  "title": "Ultrasensitive fluorescent proteins for imaging neuronal activity",
+  "year": 2013,
+  "url": "https://doi.org/10.1038/nature12354"
+ },
+ "GFP as a marker (Chalfie et al.)": {
+  "title": "Green Fluorescent Protein as a Marker for Gene Expression",
+  "year": 1994,
+  "url": "https://doi.org/10.1126/science.8303295"
+ },
+ "Geneformer": {
+  "title": "Transfer learning enables predictions in network biology",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-06139-9"
+ },
+ "Genetic toggle switch": {
+  "title": "Construction of a genetic toggle switch in Escherichia coli",
+  "year": 2000,
+  "url": "https://doi.org/10.1038/35002131"
+ },
+ "Genome-scale CRISPR screen (Shalem et al.)": {
+  "title": "Genome-Scale CRISPR-Cas9 Knockout Screening in Human Cells",
+  "year": 2014,
+  "url": "https://doi.org/10.1126/science.1247005"
+ },
+ "Hi-C": {
+  "title": "Comprehensive Mapping of Long-Range Interactions Reveals Folding Principles of the Human Genome",
+  "year": 2009,
+  "url": "https://doi.org/10.1126/science.1181369"
+ },
+ "Human Cell Atlas": {
+  "title": "The Human Cell Atlas",
+  "year": 2017,
+  "url": "https://doi.org/10.7554/eLife.27041"
+ },
+ "Human Microbiome Project": {
+  "title": "Structure, function and diversity of the healthy human microbiome",
+  "year": 2012,
+  "url": "https://doi.org/10.1038/nature11234"
+ },
+ "Human pangenome reference": {
+  "title": "A draft human pangenome reference",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-05896-x"
+ },
+ "Illumina SBS (Bentley et al.)": {
+  "title": "Accurate whole human genome sequencing using reversible terminator chemistry",
+  "year": 2008,
+  "url": "https://doi.org/10.1038/nature07517"
+ },
+ "In vivo CRISPR for ATTR (Gillmore et al.)": {
+  "title": "CRISPR-Cas9 In Vivo Gene Editing for Transthyretin Amyloidosis",
+  "year": 2021,
+  "url": "https://doi.org/10.1056/NEJMoa2107454"
+ },
+ "Intestinal organoids (Sato et al.)": {
+  "title": "Single Lgr5 stem cells build crypt-villus structures in vitro without a mesenchymal niche",
+  "year": 2009,
+  "url": "https://doi.org/10.1038/nature07935"
+ },
+ "Ipilimumab in melanoma (Hodi et al.)": {
+  "title": "Improved Survival with Ipilimumab in Patients with Metastatic Melanoma",
+  "year": 2010,
+  "url": "https://doi.org/10.1056/NEJMoa1003466"
+ },
+ "LD score regression": {
+  "title": "LD Score regression distinguishes confounding from polygenicity in genome-wide association studies",
+  "year": 2015,
+  "url": "https://doi.org/10.1038/ng.3211"
+ },
+ "Lattice light-sheet microscopy": {
+  "title": "Lattice light-sheet microscopy: Imaging molecules to embryos at high spatiotemporal resolution",
+  "year": 2014,
+  "url": "https://doi.org/10.1126/science.1257998"
+ },
+ "Lecanemab trial": {
+  "title": "Lecanemab in Early Alzheimer’s Disease",
+  "year": 2023,
+  "url": "https://doi.org/10.1056/NEJMoa2212948"
+ },
+ "Lung-on-a-chip (Huh et al.)": {
+  "title": "Reconstituting Organ-Level Lung Functions on a Chip",
+  "year": 2010,
+  "url": "https://doi.org/10.1126/science.1188302"
+ },
+ "MERFISH": {
+  "title": "Spatially resolved, highly multiplexed RNA profiling in single cells",
+  "year": 2015,
+  "url": "https://doi.org/10.1126/science.aaa6090"
+ },
+ "MS-based proteomics (Aebersold & Mann)": {
+  "title": "Mass spectrometry-based proteomics",
+  "year": 2003,
+  "url": "https://doi.org/10.1038/nature01511"
+ },
+ "Mass cytometry (Bendall et al.)": {
+  "title": "Single-Cell Mass Cytometry of Differential Immune and Drug Responses Across a Human Hematopoietic Continuum",
+  "year": 2011,
+  "url": "https://doi.org/10.1126/science.1198704"
+ },
+ "Med-PaLM (Singhal et al.)": {
+  "title": "Large language models encode clinical knowledge",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-06291-2"
+ },
+ "Multiplex CRISPR editing (Cong et al.)": {
+  "title": "Multiplex Genome Engineering Using CRISPR/Cas Systems",
+  "year": 2013,
+  "url": "https://doi.org/10.1126/science.1231143"
+ },
+ "Mutational signatures (Alexandrov et al.)": {
+  "title": "Signatures of mutational processes in human cancer",
+  "year": 2013,
+  "url": "https://doi.org/10.1038/nature12477"
+ },
+ "Neandertal genome": {
+  "title": "A Draft Sequence of the Neandertal Genome",
+  "year": 2010,
+  "url": "https://doi.org/10.1126/science.1188021"
+ },
+ "Neuropixels": {
+  "title": "Fully integrated silicon probes for high-density recording of neural activity",
+  "year": 2017,
+  "url": "https://doi.org/10.1038/nature24636"
+ },
+ "Nuclear periphery cryo-ET (Mahamid et al.)": {
+  "title": "Visualizing the molecular sociology at the HeLa cell nuclear periphery",
+  "year": 2016,
+  "url": "https://doi.org/10.1126/science.aad8857"
+ },
+ "Nusinersen in SMA (Finkel et al.)": {
+  "title": "Nusinersen versus Sham Control in Infantile-Onset Spinal Muscular Atrophy",
+  "year": 2017,
+  "url": "https://doi.org/10.1056/NEJMoa1702752"
+ },
+ "Optogenetics (Boyden et al.)": {
+  "title": "Millisecond-timescale, genetically targeted optical control of neural activity",
+  "year": 2005,
+  "url": "https://doi.org/10.1038/nn1525"
+ },
+ "PACE (Esvelt et al.)": {
+  "title": "A system for the continuous directed evolution of biomolecules",
+  "year": 2011,
+  "url": "https://doi.org/10.1038/nature09929"
+ },
+ "PALM (Betzig et al.)": {
+  "title": "Imaging Intracellular Fluorescent Proteins at Nanometer Resolution",
+  "year": 2006,
+  "url": "https://doi.org/10.1126/science.1127344"
+ },
+ "PROTACs (Sakamoto et al.)": {
+  "title": "Protacs: Chimeric molecules that target proteins to the Skp1–Cullin–F box complex for ubiquitination and degradation",
+  "year": 2001,
+  "url": "https://doi.org/10.1073/pnas.141230798"
+ },
+ "Personal neoantigen vaccine (Ott et al.)": {
+  "title": "An immunogenic personal neoantigen vaccine for patients with melanoma",
+  "year": 2017,
+  "url": "https://doi.org/10.1038/nature22991"
+ },
+ "Perturb-seq": {
+  "title": "Perturb-Seq: Dissecting Molecular Circuits with Scalable Single-Cell RNA Profiling of Pooled Genetic Screens",
+  "year": 2016,
+  "url": "https://doi.org/10.1016/j.cell.2016.11.038"
+ },
+ "Pig-to-human heart xenotransplant": {
+  "title": "Genetically Modified Porcine-to-Human Cardiac Xenotransplantation",
+  "year": 2022,
+  "url": "https://doi.org/10.1056/NEJMoa2201422"
+ },
+ "Prime editing (Anzalone et al.)": {
+  "title": "Search-and-replace genome editing without double-strand breaks or donor DNA",
+  "year": 2019,
+  "url": "https://doi.org/10.1038/s41586-019-1711-4"
+ },
+ "ProteinMPNN": {
+  "title": "Robust deep learning–based protein sequence design using ProteinMPNN",
+  "year": 2022,
+  "url": "https://doi.org/10.1126/science.add2187"
+ },
+ "RFdiffusion": {
+  "title": "De novo design of protein structure and function with RFdiffusion",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-06415-8"
+ },
+ "RNA velocity": {
+  "title": "RNA velocity of single cells",
+  "year": 2018,
+  "url": "https://doi.org/10.1038/s41586-018-0414-6"
+ },
+ "RNA-seq (Mortazavi et al.)": {
+  "title": "Mapping and quantifying mammalian transcriptomes by RNA-Seq",
+  "year": 2008,
+  "url": "https://doi.org/10.1038/nmeth.1226"
+ },
+ "RNAi (Fire et al.)": {
+  "title": "Potent and specific genetic interference by double-stranded RNA in Caenorhabditis elegans",
+  "year": 1998,
+  "url": "https://doi.org/10.1038/35888"
+ },
+ "Repressilator": {
+  "title": "A synthetic oscillatory network of transcriptional regulators",
+  "year": 2000,
+  "url": "https://doi.org/10.1038/35002125"
+ },
+ "Resolution revolution (Kühlbrandt)": {
+  "title": "The Resolution Revolution",
+  "year": 2014,
+  "url": "https://doi.org/10.1126/science.1251652"
+ },
+ "Ribosome profiling (Ingolia et al.)": {
+  "title": "Genome-Wide Analysis in Vivo of Translation with Nucleotide Resolution Using Ribosome Profiling",
+  "year": 2009,
+  "url": "https://doi.org/10.1126/science.1168978"
+ },
+ "SARS-CoV-2 discovery (Zhou et al.)": {
+  "title": "A pneumonia outbreak associated with a new coronavirus of probable bat origin",
+  "year": 2020,
+  "url": "https://doi.org/10.1038/s41586-020-2012-7"
+ },
+ "SHERLOCK": {
+  "title": "Nucleic acid detection with CRISPR-Cas13a/C2c2",
+  "year": 2017,
+  "url": "https://doi.org/10.1126/science.aam9321"
+ },
+ "SMRT sequencing (Eid et al.)": {
+  "title": "Real-Time DNA Sequencing from Single Polymerase Molecules",
+  "year": 2009,
+  "url": "https://doi.org/10.1126/science.1162986"
+ },
+ "STARR-seq": {
+  "title": "Genome-Wide Quantitative Enhancer Activity Maps Identified by STARR-seq",
+  "year": 2013,
+  "url": "https://doi.org/10.1126/science.1232542"
+ },
+ "STORM (Rust et al.)": {
+  "title": "Sub-diffraction-limit imaging by stochastic optical reconstruction microscopy (STORM)",
+  "year": 2006,
+  "url": "https://doi.org/10.1038/nmeth929"
+ },
+ "Semaglutide STEP 1 trial": {
+  "title": "Once-Weekly Semaglutide in Adults with Overweight or Obesity",
+  "year": 2021,
+  "url": "https://doi.org/10.1056/NEJMoa2032183"
+ },
+ "Senolytics (Baker et al.)": {
+  "title": "Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders",
+  "year": 2011,
+  "url": "https://doi.org/10.1038/nature10600"
+ },
+ "Seurat integration": {
+  "title": "Comprehensive Integration of Single-Cell Data",
+  "year": 2019,
+  "url": "https://doi.org/10.1016/j.cell.2019.05.031"
+ },
+ "Spatial transcriptomics (Ståhl et al.)": {
+  "title": "Visualization and analysis of gene expression in tissue sections by spatial transcriptomics",
+  "year": 2016,
+  "url": "https://doi.org/10.1126/science.aaf2403"
+ },
+ "Speech neuroprosthesis (Willett et al.)": {
+  "title": "A high-performance speech neuroprosthesis",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-06377-x"
+ },
+ "Synthetic-genome cell (Gibson et al.)": {
+  "title": "Creation of a Bacterial Cell Controlled by a Chemically Synthesized Genome",
+  "year": 2010,
+  "url": "https://doi.org/10.1126/science.1190719"
+ },
+ "T2T-CHM13": {
+  "title": "The complete sequence of a human genome",
+  "year": 2022,
+  "url": "https://doi.org/10.1126/science.abj6987"
+ },
+ "TRACERx lung": {
+  "title": "Tracking the Evolution of Non–Small-Cell Lung Cancer",
+  "year": 2017,
+  "url": "https://doi.org/10.1056/NEJMoa1616288"
+ },
+ "TRPV1 cryo-EM structure": {
+  "title": "Structure of the TRPV1 ion channel determined by electron cryo-microscopy",
+  "year": 2013,
+  "url": "https://doi.org/10.1038/nature12822"
+ },
+ "TurboID": {
+  "title": "Efficient proximity labeling in living cells and organisms with TurboID",
+  "year": 2018,
+  "url": "https://doi.org/10.1038/nbt.4201"
+ },
+ "UK Biobank plasma proteomics": {
+  "title": "Plasma proteomic associations with genetics and health in the UK Biobank",
+  "year": 2023,
+  "url": "https://doi.org/10.1038/s41586-023-06592-6"
+ },
+ "UK Biobank resource": {
+  "title": "The UK Biobank resource with deep phenotyping and genomic data",
+  "year": 2018,
+  "url": "https://doi.org/10.1038/s41586-018-0579-z"
+ },
+ "Ultra-large library docking": {
+  "title": "Ultra-large library docking for discovering new chemotypes",
+  "year": 2019,
+  "url": "https://doi.org/10.1038/s41586-019-0917-9"
+ },
+ "Ultra-long nanopore reads (Jain et al.)": {
+  "title": "Nanopore sequencing and assembly of a human genome with ultra-long reads",
+  "year": 2018,
+  "url": "https://doi.org/10.1038/nbt.4060"
+ },
+ "ZAR1 resistosome": {
+  "title": "Reconstitution and structure of a plant NLR resistosome conferring immunity",
+  "year": 2019,
+  "url": "https://doi.org/10.1126/science.aav5870"
+ },
+ "Zoonomia": {
+  "title": "A comparative genomics multitool for scientific discovery and conservation",
+  "year": 2020,
+  "url": "https://doi.org/10.1038/s41586-020-2876-6"
+ },
+ "cGAS (Sun et al.)": {
+  "title": "Cyclic GMP-AMP Synthase Is a Cytosolic DNA Sensor That Activates the Type I Interferon Pathway",
+  "year": 2013,
+  "url": "https://doi.org/10.1126/science.1232458"
+ },
+ "gnomAD constraint": {
+  "title": "The mutational constraint spectrum quantified from variation in 141,456 humans",
+  "year": 2020,
+  "url": "https://doi.org/10.1038/s41586-020-2308-7"
+ },
+ "iPSCs (Takahashi & Yamanaka)": {
+  "title": "Induction of Pluripotent Stem Cells from Mouse Embryonic and Adult Fibroblast Cultures by Defined Factors",
+  "year": 2006,
+  "url": "https://doi.org/10.1016/j.cell.2006.07.024"
+ },
+ "scGPT": {
+  "title": "scGPT: toward building a foundation model for single-cell multi-omics using generative AI",
+  "year": 2024,
+  "url": "https://doi.org/10.1038/s41592-024-02201-0"
+ }
+}

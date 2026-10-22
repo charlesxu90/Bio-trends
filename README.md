@@ -28,6 +28,11 @@ Feed catalog: **[Journal-RSS.md](Journal-RSS.md)**.
   snapshots is the **rising** signal — sort Rising Stars by "Rising (citation gain)".
   History lives in `citations/<journal>/<year>.json` (committed). Follows the Zotero
   *Citation Counts Manager* approach.
+- **Method Tree & Application Tree** — two curated hierarchies (how the work was
+  done: sequencing, genome engineering, imaging, AI, …; and what it is for: cancer,
+  immunology, neuroscience, drug discovery, …), each leaf linked to a landmark paper
+  and to the top corpus papers per year, matched by keyword over title + abstract.
+  Ported from AI-trend; configs in `config/{ontology,applications,method_refs}.json`.
 - **Static site** — a fast GitHub Pages browser, rebuilt from the data.
 
 The only non-deterministic step is **topic curation** (deciding which keywords map

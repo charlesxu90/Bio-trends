@@ -1,0 +1,224 @@
+{
+  "version": "0.1",
+  "domains": [
+    {"code": "CANC", "name": "Cancer",
+     "summary": "How tumours start, evolve and spread, and how they are detected and treated — from immunotherapy and cell therapy to targeted drugs.",
+     "children": [
+      {"name": "Tumour biology", "children": [
+        {"name": "Tumour evolution & heterogeneity", "examples": ["TRACERx lung"], "keywords": ["tumor evolution", "tumour evolution", "intratumor heterogeneity", "intratumoral heterogeneity", "intratumour heterogeneity", "clonal evolution", "tumor heterogeneity", "tumour heterogeneity"]},
+        {"name": "Metastasis", "keywords": ["metastasis", "metastases", "metastatic", "metastatic colonization"]},
+        {"name": "Tumour microenvironment", "keywords": ["tumor microenvironment", "tumour microenvironment", "cancer-associated fibroblast", "tumor-associated macrophage", "tumour-associated macrophage", "tumor stroma", "tumour stroma"]},
+        {"name": "Oncogenes & tumour suppressors", "keywords": ["oncogene", "tumor suppressor", "tumour suppressor", "kras", "myc", "p53", "tp53", "driver mutation", "oncogenic"]},
+        {"name": "Cancer metabolism", "keywords": ["cancer metabolism", "tumor metabolism", "tumour metabolism", "warburg", "metabolic vulnerability"]}
+      ]},
+      {"name": "Cancer therapy", "children": [
+        {"name": "Immune checkpoint blockade", "examples": ["Ipilimumab in melanoma (Hodi et al.)"], "keywords": ["immune checkpoint", "checkpoint blockade", "checkpoint inhibitor", "pd-1", "pd-l1", "ctla-4", "immunotherapy"]},
+        {"name": "CAR-T & cell therapy", "examples": ["CAR-T in CLL (Porter et al.)"], "keywords": ["car-t", "car t cell", "chimeric antigen receptor", "car-nk", "adoptive cell therapy", "adoptive cell transfer", "tcr-t"]},
+        {"name": "Targeted therapy & drug resistance", "keywords": ["targeted therapy", "kinase inhibitor", "therapy resistance", "kras inhibitor", "egfr inhibitor", "synthetic lethality", "parp inhibitor", "drug-tolerant persister"]},
+        {"name": "Cancer vaccines & neoantigens", "examples": ["Personal neoantigen vaccine (Ott et al.)"], "keywords": ["neoantigen", "cancer vaccine", "personalized vaccine", "tumor antigen", "tumour antigen"]},
+        {"name": "Radiotherapy & chemotherapy", "keywords": ["radiotherapy", "radiation therapy", "chemotherapy", "chemoradiotherapy", "neoadjuvant", "adjuvant chemotherapy"]}
+      ]},
+      {"name": "Cancer types & detection", "children": [
+        {"name": "Early detection & precancer", "keywords": ["early detection", "cancer screening", "multi-cancer early detection", "precancerous", "premalignant", "precancer"]},
+        {"name": "Haematological malignancies", "keywords": ["leukemia", "leukaemia", "lymphoma", "myeloma", "myelodysplastic", "myeloproliferative"]},
+        {"name": "Lung cancer", "keywords": ["lung cancer", "lung adenocarcinoma", "non-small-cell lung", "non-small cell lung", "small-cell lung", "nsclc"]},
+        {"name": "Breast & gynaecological cancers", "keywords": ["breast cancer", "ovarian cancer", "endometrial cancer", "cervical cancer", "triple-negative"]},
+        {"name": "Gastrointestinal cancers", "keywords": ["colorectal cancer", "gastric cancer", "pancreatic cancer", "pancreatic ductal adenocarcinoma", "hepatocellular carcinoma", "liver cancer", "esophageal cancer", "oesophageal cancer"]},
+        {"name": "Brain tumours", "keywords": ["glioblastoma", "glioma", "medulloblastoma", "brain tumor", "brain tumour", "diffuse midline glioma"]},
+        {"name": "Skin, prostate & other solid tumours", "keywords": ["melanoma", "prostate cancer", "renal cell carcinoma", "bladder cancer", "head and neck cancer", "sarcoma"]}
+      ]}
+    ]},
+    {"code": "IMM", "name": "Immunology & immune disease",
+     "summary": "How the immune system senses, remembers and regulates, what goes wrong in autoimmunity, allergy and transplantation, and how vaccines and antibodies harness it.",
+     "children": [
+      {"name": "Immune system biology", "children": [
+        {"name": "T cell biology", "keywords": ["t cell", "cd8", "cd4", "regulatory t cell", "treg", "t cell exhaustion", "t-cell exhaustion", "t cell receptor", "thymus", "thymic"]},
+        {"name": "B cells & antibody responses", "keywords": ["b cell", "antibody response", "germinal center", "germinal centre", "plasma cell", "humoral immunity", "memory b cell"]},
+        {"name": "Innate immune sensing", "examples": ["cGAS (Sun et al.)"], "keywords": ["innate immunity", "innate immune", "inflammasome", "toll-like receptor", "type i interferon", "cgas", "sting pathway", "pattern recognition receptor"]},
+        {"name": "Inflammation & tissue immunity", "keywords": ["inflammation", "inflammatory", "macrophage", "neutrophil", "innate lymphoid cell", "tissue-resident", "cytokine storm"]},
+        {"name": "Immune memory & trained immunity", "keywords": ["immunological memory", "memory t cell", "trained immunity", "tissue-resident memory", "immune memory"]}
+      ]},
+      {"name": "Immune disorders", "children": [
+        {"name": "Autoimmune disease", "keywords": ["autoimmune", "autoimmunity", "lupus", "rheumatoid arthritis", "multiple sclerosis", "type 1 diabetes", "inflammatory bowel disease", "crohn", "ulcerative colitis", "psoriasis"]},
+        {"name": "Allergy & asthma", "keywords": ["allergy", "allergic", "asthma", "atopic dermatitis", "anaphylaxis", "ige", "food allergy"]},
+        {"name": "Transplantation & tolerance", "examples": ["Pig-to-human heart xenotransplant"], "keywords": ["transplantation", "transplant rejection", "graft-versus-host", "immune tolerance", "xenotransplantation", "allograft"]},
+        {"name": "Immunodeficiency & inborn errors of immunity", "keywords": ["immunodeficiency", "inborn errors of immunity", "inborn error of immunity", "primary immunodeficiency"]}
+      ]},
+      {"name": "Vaccines & immunotherapeutics", "children": [
+        {"name": "Vaccines", "examples": ["BNT162b2 efficacy trial"], "keywords": ["vaccine", "vaccination", "immunization", "immunisation", "adjuvant", "mrna vaccine"]},
+        {"name": "Therapeutic & neutralizing antibodies", "keywords": ["monoclonal antibody", "neutralizing antibody", "neutralising antibody", "broadly neutralizing", "bispecific antibody", "nanobody", "antibody therapy"]}
+      ]}
+    ]},
+    {"code": "INF", "name": "Infection & microbiology",
+     "summary": "Viruses, bacteria, fungi and parasites that cause disease, antimicrobial resistance, and the microbiomes we live with.",
+     "children": [
+      {"name": "Viral infection", "children": [
+        {"name": "SARS-CoV-2 & COVID-19", "examples": ["SARS-CoV-2 discovery (Zhou et al.)"], "keywords": ["sars-cov-2", "covid-19", "coronavirus", "long covid", "post-covid"]},
+        {"name": "HIV", "keywords": ["hiv", "hiv-1", "antiretroviral", "hiv reservoir"]},
+        {"name": "Influenza & respiratory viruses", "keywords": ["influenza", "respiratory syncytial virus", "rsv", "avian influenza", "h5n1"]},
+        {"name": "Emerging & arthropod-borne viruses", "keywords": ["dengue", "zika", "ebola", "mpox", "arbovirus", "emerging virus", "zoonotic", "spillover"]},
+        {"name": "Hepatitis & herpesviruses", "keywords": ["hepatitis b", "hepatitis c", "herpesvirus", "cytomegalovirus", "epstein-barr", "herpes simplex"]}
+      ]},
+      {"name": "Bacteria, fungi & parasites", "children": [
+        {"name": "Antimicrobial resistance & antibiotics", "keywords": ["antimicrobial resistance", "antibiotic resistance", "antibiotic", "multidrug-resistant", "carbapenem", "antimicrobial"]},
+        {"name": "Tuberculosis & bacterial pathogens", "keywords": ["tuberculosis", "mycobacterium", "staphylococcus aureus", "salmonella", "pseudomonas aeruginosa", "bacterial infection", "sepsis", "bacterial pathogen"]},
+        {"name": "Malaria & parasitic disease", "keywords": ["malaria", "plasmodium", "parasite", "helminth", "trypanosoma", "toxoplasma", "leishmania"]},
+        {"name": "Fungal infection", "keywords": ["fungal infection", "fungal pathogen", "candida", "aspergillus", "cryptococcus"]},
+        {"name": "Phages & anti-phage defence", "keywords": ["phage therapy", "anti-phage defense", "anti-phage defence", "phage defense", "phage defence", "crispr immunity", "prophage"]}
+      ]},
+      {"name": "Microbiome & host interaction", "children": [
+        {"name": "Gut microbiome", "keywords": ["gut microbiota", "gut microbiome", "intestinal microbiota", "microbiome", "microbiota", "gut bacteria"]},
+        {"name": "Host–pathogen interactions", "keywords": ["host-microbe", "host-pathogen", "commensal", "colonization resistance", "virulence factor", "pathogenesis", "virulence"]}
+      ]}
+    ]},
+    {"code": "NEURO", "name": "Neuroscience & brain disorders",
+     "summary": "How the brain senses, learns, remembers and acts, and the neurological and psychiatric disorders that disrupt it.",
+     "children": [
+      {"name": "Neurological disease", "children": [
+        {"name": "Alzheimer's disease & dementia", "examples": ["Lecanemab trial"], "keywords": ["alzheimer", "dementia", "amyloid-beta", "amyloid beta", "tau pathology", "apoe4", "cognitive decline", "neurodegeneration"]},
+        {"name": "Parkinson's & movement disorders", "keywords": ["parkinson", "synuclein", "huntington", "dopaminergic neuron", "movement disorder"]},
+        {"name": "ALS & neuromuscular disease", "keywords": ["amyotrophic lateral sclerosis", "motor neuron disease", "spinal muscular atrophy", "muscular dystrophy", "myasthenia", "neuromuscular"]},
+        {"name": "Stroke & neural injury", "keywords": ["stroke", "ischemic stroke", "ischaemic stroke", "traumatic brain injury", "spinal cord injury", "cerebral ischemia", "axon regeneration"]},
+        {"name": "Epilepsy", "keywords": ["epilepsy", "seizure", "epileptic"]},
+        {"name": "Glia & neuroinflammation", "keywords": ["microglia", "astrocyte", "oligodendrocyte", "neuroinflammation", "myelin", "glial"]}
+      ]},
+      {"name": "Psychiatry & behaviour", "children": [
+        {"name": "Depression, anxiety & mood", "keywords": ["depression", "depressive disorder", "bipolar", "anxiety", "antidepressant", "psychedelic", "ketamine"]},
+        {"name": "Schizophrenia & psychosis", "keywords": ["schizophrenia", "psychosis", "psychotic"]},
+        {"name": "Autism & neurodevelopmental disorders", "keywords": ["autism", "autism spectrum", "adhd", "neurodevelopmental disorder", "intellectual disability"]},
+        {"name": "Addiction & reward", "keywords": ["addiction", "substance use", "opioid", "reward", "alcohol use", "nicotine"]},
+        {"name": "Sleep & circadian rhythms", "keywords": ["sleep", "circadian", "clock gene", "suprachiasmatic"]}
+      ]},
+      {"name": "Brain function", "children": [
+        {"name": "Learning & memory", "keywords": ["learning and memory", "memory consolidation", "synaptic plasticity", "hippocampus", "hippocampal", "engram", "long-term potentiation"]},
+        {"name": "Sensory systems & perception", "keywords": ["visual cortex", "olfactory", "auditory", "somatosensory", "perception", "retina", "photoreceptor", "hearing", "itch"]},
+        {"name": "Motor control", "keywords": ["motor cortex", "motor control", "locomotion", "basal ganglia", "cerebellum", "cerebellar", "motor learning"]},
+        {"name": "Pain", "keywords": ["pain", "nociception", "nociceptor", "analgesic", "chronic pain", "analgesia"]},
+        {"name": "Social & innate behaviour", "keywords": ["social behavior", "social behaviour", "aggression", "feeding behavior", "feeding behaviour", "parental behavior", "mating behavior", "decision-making"]},
+        {"name": "Brain development", "keywords": ["brain development", "cortical development", "neurogenesis", "neural progenitor", "neural crest", "neuronal migration"]}
+      ]}
+    ]},
+    {"code": "MET", "name": "Cardiometabolic & organ disease",
+     "summary": "Obesity, diabetes and liver disease, the heart and vessels, kidneys, lungs and the musculoskeletal system.",
+     "children": [
+      {"name": "Metabolic disease", "children": [
+        {"name": "Obesity & adipose biology", "examples": ["Semaglutide STEP 1 trial"], "keywords": ["obesity", "adipose", "adipocyte", "body weight", "thermogenesis", "brown fat", "glp-1", "semaglutide", "tirzepatide"]},
+        {"name": "Diabetes & insulin", "keywords": ["diabetes", "insulin resistance", "insulin secretion", "glucose homeostasis", "islet", "glycemic", "glycaemic"]},
+        {"name": "Fatty liver & liver disease", "keywords": ["fatty liver", "nafld", "masld", "nash", "mash", "liver fibrosis", "cirrhosis", "hepatic steatosis"]},
+        {"name": "Nutrition & diet", "keywords": ["diet", "dietary", "nutrition", "nutrient sensing", "fasting", "caloric restriction", "ketogenic"]}
+      ]},
+      {"name": "Cardiovascular disease", "children": [
+        {"name": "Atherosclerosis & lipids", "keywords": ["atherosclerosis", "coronary artery disease", "cholesterol", "ldl", "lipoprotein", "pcsk9", "myocardial infarction"]},
+        {"name": "Heart failure & cardiomyopathy", "keywords": ["heart failure", "cardiomyopathy", "cardiac hypertrophy", "arrhythmia", "atrial fibrillation", "cardiomyocyte", "heart regeneration"]},
+        {"name": "Hypertension & vascular biology", "keywords": ["hypertension", "blood pressure", "endothelial", "angiogenesis", "vascular", "aneurysm"]}
+      ]},
+      {"name": "Other organ systems", "children": [
+        {"name": "Kidney disease", "keywords": ["kidney disease", "chronic kidney", "renal", "nephropathy", "acute kidney injury", "kidney"]},
+        {"name": "Lung & respiratory disease", "keywords": ["copd", "pulmonary fibrosis", "lung injury", "cystic fibrosis", "respiratory disease", "pulmonary hypertension"]},
+        {"name": "Bone, muscle & joints", "keywords": ["osteoporosis", "osteoarthritis", "skeletal muscle", "cartilage", "sarcopenia", "bone loss", "bone formation", "osteoclast", "osteoblast"]},
+        {"name": "Gut & skin barrier disease", "keywords": ["intestinal barrier", "intestinal epithelium", "skin barrier", "epidermis", "wound", "fibrosis"]}
+      ]}
+    ]},
+    {"code": "DEV", "name": "Development, stem cells & ageing",
+     "summary": "How embryos form and organs are patterned, reproduction, stem cells and regeneration, and the biology of ageing.",
+     "children": [
+      {"name": "Development & reproduction", "children": [
+        {"name": "Embryogenesis & early development", "keywords": ["embryo", "embryonic development", "gastrulation", "embryogenesis", "zygote", "blastocyst", "implantation"]},
+        {"name": "Organogenesis & patterning", "keywords": ["organogenesis", "patterning", "morphogen", "morphogenesis", "limb development", "somite", "left-right asymmetry"]},
+        {"name": "Reproduction & fertility", "keywords": ["fertility", "infertility", "oocyte", "sperm", "spermatogenesis", "meiosis", "placenta", "ivf"]},
+        {"name": "Pregnancy, maternal & child health", "keywords": ["pregnancy", "preterm birth", "neonatal", "newborn", "infant", "maternal", "preeclampsia", "child health"]}
+      ]},
+      {"name": "Stem cells & regeneration", "children": [
+        {"name": "Stem cells & niches", "keywords": ["stem cell", "stem-cell niche", "hematopoietic stem cell", "haematopoietic stem cell", "self-renewal", "pluripotency", "progenitor"]},
+        {"name": "Regeneration & wound healing", "keywords": ["regeneration", "regenerative", "wound healing", "tissue repair", "planarian", "blastema"]},
+        {"name": "Cell therapy & tissue engineering", "keywords": ["cell therapy", "tissue engineering", "islet transplantation", "cell replacement", "stem cell therapy", "stem cell-derived"]}
+      ]},
+      {"name": "Ageing", "children": [
+        {"name": "Ageing & longevity", "keywords": ["aging", "ageing", "longevity", "lifespan", "healthspan", "age-related"]},
+        {"name": "Senescence & rejuvenation", "examples": ["Senolytics (Baker et al.)"], "keywords": ["senescence", "senescent", "senolytic", "rejuvenation", "partial reprogramming"]}
+      ]}
+    ]},
+    {"code": "GENE", "name": "Genetic disease & genetic medicine",
+     "summary": "Inherited and rare disease, the genetics of common disease, and therapies that act on genes and RNA.",
+     "children": [
+      {"name": "Genetic disease", "children": [
+        {"name": "Rare & monogenic disease", "keywords": ["rare disease", "mendelian disorder", "monogenic", "genetic diagnosis", "undiagnosed", "inherited disease", "genetic disorder"]},
+        {"name": "Sickle cell disease & thalassaemia", "examples": ["CRISPR for SCD & β-thalassemia (Frangoul et al.)"], "keywords": ["sickle cell", "thalassemia", "thalassaemia", "fetal hemoglobin", "fetal haemoglobin"]},
+        {"name": "Inborn errors of metabolism & mitochondrial disease", "keywords": ["inborn error of metabolism", "inborn errors of metabolism", "lysosomal storage", "mitochondrial disease", "phenylketonuria", "mitochondrial dna", "mtdna"]},
+        {"name": "Complex-trait genetics", "keywords": ["genetic risk", "genetic architecture", "common variant", "susceptibility loci", "risk locus", "risk loci", "polygenic"]}
+      ]},
+      {"name": "Genetic medicine", "children": [
+        {"name": "Gene therapy & in vivo editing", "examples": ["In vivo CRISPR for ATTR (Gillmore et al.)"], "keywords": ["gene therapy", "gene replacement", "in vivo gene editing", "in vivo editing", "ex vivo gene", "therapeutic editing"]},
+        {"name": "RNA therapeutics", "examples": ["Nusinersen in SMA (Finkel et al.)"], "keywords": ["rna therapeutic", "antisense therapy", "antisense oligonucleotide", "sirna therapeutic", "mrna therapeutic", "mrna therapy", "splice-switching"]},
+        {"name": "Precision medicine & pharmacogenomics", "keywords": ["precision medicine", "personalized medicine", "personalised medicine", "pharmacogenomic", "genomic medicine", "clinical sequencing"]}
+      ]}
+    ]},
+    {"code": "DRUG", "name": "Drug discovery & therapeutics",
+     "summary": "Finding and developing medicines: small molecules, degraders, biologics, peptides and delivery systems, their targets and their safety.",
+     "children": [
+      {"name": "Therapeutic modalities", "children": [
+        {"name": "Small-molecule drug discovery", "keywords": ["drug discovery", "small molecule", "small-molecule", "lead compound", "hit-to-lead", "medicinal chemistry", "structure-activity relationship"]},
+        {"name": "Targeted protein degradation", "examples": ["PROTACs (Sakamoto et al.)"], "keywords": ["protac", "molecular glue", "targeted protein degradation", "degrader"]},
+        {"name": "Biologics & antibody engineering", "keywords": ["antibody-drug conjugate", "biologic", "fc engineering", "antibody engineering", "de novo antibody", "therapeutic protein"]},
+        {"name": "Peptides & macrocycles", "keywords": ["peptide therapeutic", "macrocycle", "macrocyclic", "cyclic peptide", "stapled peptide", "peptide drug"]},
+        {"name": "Drug delivery & nanomedicine", "keywords": ["drug delivery", "nanoparticle delivery", "nanomedicine", "targeted delivery", "nanocarrier"]}
+      ]},
+      {"name": "Targets & pharmacology", "children": [
+        {"name": "Drug targets & mechanism of action", "keywords": ["drug target", "druggable", "target identification", "mechanism of action", "allosteric", "target engagement"]},
+        {"name": "GPCRs & ion channels", "keywords": ["gpcr", "g protein-coupled receptor", "g-protein-coupled receptor", "ion channel"]},
+        {"name": "Drug repurposing", "keywords": ["drug repurposing", "drug repositioning", "repurposed drug", "repurposing"]},
+        {"name": "Pharmacology & toxicology", "keywords": ["pharmacokinetic", "pharmacodynamic", "toxicity", "adverse event", "drug safety", "off-target"]},
+        {"name": "Antiviral & anti-infective discovery", "keywords": ["antiviral", "antibiotic discovery", "antifungal", "antiviral drug", "protease inhibitor", "antimalarial"]}
+      ]}
+    ]},
+    {"code": "EVO", "name": "Evolution, ecology & environment",
+     "summary": "How life and genomes evolve, human origins, biodiversity and conservation, climate impacts, and life in the oceans and soils.",
+     "children": [
+      {"name": "Evolution", "children": [
+        {"name": "Molecular & genome evolution", "keywords": ["molecular evolution", "gene duplication", "positive selection", "adaptive evolution", "convergent evolution", "de novo gene", "genome evolution"]},
+        {"name": "Human evolution & ancestry", "keywords": ["human evolution", "neanderthal", "neandertal", "denisovan", "hominin", "ancestry", "archaic human"]},
+        {"name": "Origin & early evolution of life", "keywords": ["origin of life", "last universal common ancestor", "eukaryogenesis", "asgard", "endosymbiosis", "prebiotic", "early life"]},
+        {"name": "Speciation & adaptation", "keywords": ["speciation", "local adaptation", "hybridization", "natural selection", "sexual selection", "adaptive radiation"]},
+        {"name": "Animal behaviour & ecology", "keywords": ["animal behavior", "animal behaviour", "foraging", "predator", "pollinator", "birdsong", "insect"]}
+      ]},
+      {"name": "Ecology & environment", "children": [
+        {"name": "Biodiversity & conservation", "keywords": ["biodiversity", "conservation", "extinction", "endangered", "species richness", "habitat loss"]},
+        {"name": "Climate-change biology", "keywords": ["climate change", "global warming", "warming", "heatwave", "ocean acidification", "thermal tolerance"]},
+        {"name": "Marine & coral biology", "keywords": ["coral", "marine", "ocean", "reef", "phytoplankton", "plankton"]},
+        {"name": "Environmental microbiology & biogeochemistry", "keywords": ["soil microbiome", "environmental microbiome", "biogeochemical", "nitrogen cycle", "carbon cycle", "methanogen", "soil microbial"]},
+        {"name": "One Health & vector biology", "keywords": ["one health", "wildlife", "zoonosis", "pandemic preparedness", "vector-borne", "mosquito", "tick-borne"]}
+      ]}
+    ]},
+    {"code": "PLANT", "name": "Plant & agricultural science",
+     "summary": "Photosynthesis, plant immunity, development and stress, symbiosis, and breeding crops and livestock for food security.",
+     "children": [
+      {"name": "Plant biology", "children": [
+        {"name": "Photosynthesis & carbon fixation", "keywords": ["photosynthesis", "photosynthetic", "rubisco", "chloroplast", "carbon fixation", "c4 photosynthesis"]},
+        {"name": "Plant immunity & pathogens", "examples": ["ZAR1 resistosome"], "keywords": ["plant immunity", "plant pathogen", "nlr", "effector-triggered immunity", "pattern-triggered immunity", "resistosome", "plant disease"]},
+        {"name": "Plant development & hormones", "keywords": ["auxin", "gibberellin", "cytokinin", "abscisic acid", "jasmonate", "root development", "flowering", "meristem", "phytohormone", "plant hormone"]},
+        {"name": "Abiotic stress tolerance", "keywords": ["drought", "heat stress", "salt stress", "salinity", "abiotic stress", "cold tolerance", "flooding tolerance"]},
+        {"name": "Symbiosis & nitrogen fixation", "keywords": ["nitrogen fixation", "rhizobia", "rhizobium", "nodulation", "mycorrhizal", "root microbiome", "rhizosphere"]}
+      ]},
+      {"name": "Agriculture & food", "children": [
+        {"name": "Crop improvement & breeding", "keywords": ["crop", "breeding", "domestication", "rice", "maize", "wheat", "soybean", "cultivar", "grain yield"]},
+        {"name": "Livestock & aquaculture", "keywords": ["livestock", "cattle", "pig", "poultry", "chicken", "aquaculture", "sheep"]},
+        {"name": "Food security & sustainable agriculture", "keywords": ["food security", "sustainable agriculture", "fertilizer", "pesticide", "agricultural"]}
+      ]}
+    ]},
+    {"code": "BIOT", "name": "Biotechnology & bioengineering",
+     "summary": "Engineering biology for useful ends: biomanufacturing, enzyme and cell engineering, biosensors, DNA nanotechnology, biomaterials and neural interfaces.",
+     "children": [
+      {"name": "Engineering biology", "children": [
+        {"name": "Metabolic engineering & biomanufacturing", "keywords": ["metabolic engineering", "biomanufacturing", "biosynthetic pathway", "microbial cell factory", "fermentation", "natural product", "biosynthesis"]},
+        {"name": "Enzyme engineering & biocatalysis", "examples": ["Directed evolution (Arnold)"], "keywords": ["enzyme engineering", "protein engineering", "engineered enzyme", "biocatalysis", "biocatalyst", "new-to-nature"]},
+        {"name": "Synthetic biology & engineered cells", "examples": ["Synthetic-genome cell (Gibson et al.)"], "keywords": ["synthetic biology", "engineered cell", "cell engineering", "living therapeutic", "engineered bacteria", "engineered probiotic", "synthetic genome", "minimal cell"]},
+        {"name": "Biosensors", "keywords": ["biosensor", "biosensing", "whole-cell biosensor", "diagnostic device"]},
+        {"name": "DNA nanotechnology & data storage", "examples": ["DNA origami (Rothemund)"], "keywords": ["dna origami", "dna nanotechnology", "dna data storage", "dna nanostructure", "dna computing"]}
+      ]},
+      {"name": "Biomedical engineering", "children": [
+        {"name": "Biomaterials & implants", "keywords": ["biomaterial", "implant", "implantable", "bioelectronic", "bioelectronics", "medical device"]},
+        {"name": "Brain–computer interfaces & neuroprosthetics", "examples": ["Speech neuroprosthesis (Willett et al.)"], "keywords": ["brain-computer interface", "brain-machine interface", "neuroprosthetic", "neuroprosthesis", "speech neuroprosthesis"]}
+      ]}
+    ]}
+  ]
+}

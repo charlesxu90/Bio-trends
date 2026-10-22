@@ -49,6 +49,15 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
   `docs/`, which lazy-loads only the years viewed. `trends.json` is keyed by bucket
   (`{year, quarter, month}`). Shards omit zero-topic papers (`topiced_only`) and cap
   authors; `--shard-years N` caps browsable years (trends keep full history).
+- **`ontology.py` / `method_papers.py`** — the **Method Tree** (`docs/methods.html`)
+  and **Application Tree** (`docs/applications.html`), ported from AI-trend (via
+  Mater-trend). Each tree is domain → family → leaf; leaves carry `keywords` matched as
+  **whole words** (trailing `s`/`es` tolerated, `^kw` = title only) against title + full
+  abstract of **every** paper (all years, topic or not; correction/retraction notices
+  skipped). `export-site` writes `docs/data/{ontology,applications}.json` with per-node
+  paper counts and the top 3 papers per leaf per year (title hits, then citations).
+  Both pages share `docs/assets/methods.js` (`<body data-tree=…>`). Independent of the
+  flat topic taxonomy.
 - **`citations.py`** — citation counts by DOI (Zotero Citation Counts Manager
   approach), **tracked over time**: snapshot on addition + up to two monthly updates
   within 3 months of publication (≤3), so the gain = "rising" signal. Crossref
@@ -78,6 +87,11 @@ config/journals.json ─▶ rss.fetch_journal ─▶ ingest.accumulate ─▶ as
   backfill).
 - `config/taxonomy.json` — biology topic → keywords (order significant).
 - `config/useless_keywords.json` — noise blocklist.
+- `config/ontology.json` / `config/applications.json` — Method Tree (12 domains) /
+  Application Tree (11 themes); keywords lowercase, and avoid tokens that collapse to
+  ≤2 chars (`α-synuclein` → `synuclein` is fine, `β cell` → `cell` is not).
+  `config/method_refs.json` — landmark paper per leaf `examples` name
+  (`{title, year, url}`, DOI-verified against Crossref); every example needs a ref.
 
 Adding a journal/feed/topic is a **config edit, not a code change**.
 
